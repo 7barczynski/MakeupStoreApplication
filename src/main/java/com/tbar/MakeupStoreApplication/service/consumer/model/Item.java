@@ -1,4 +1,4 @@
-package com.tbar.MakeupStoreApplication.consumer.model;
+package com.tbar.MakeupStoreApplication.service.consumer.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
