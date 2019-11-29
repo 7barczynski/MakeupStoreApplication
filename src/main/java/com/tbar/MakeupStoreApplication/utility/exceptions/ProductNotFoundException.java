@@ -2,13 +2,16 @@ package com.tbar.MakeupStoreApplication.utility.exceptions;
 
 public class ProductNotFoundException extends Exception {
 
+    // === constants ===
+    private static final String MESSAGE = "Product cannot be found in external API.";
+
     // === constructors ===
     public ProductNotFoundException() {
-        super("Product cannot be found in external API.");
+        super(MESSAGE);
     }
 
-    public ProductNotFoundException(String requestArgument) {
-        super("Product cannot be found in external API. Request argument = " + requestArgument);
+    public ProductNotFoundException(String requestUri) {
+        super(MESSAGE + " Request URI = " + requestUri);
     }
 
 }
