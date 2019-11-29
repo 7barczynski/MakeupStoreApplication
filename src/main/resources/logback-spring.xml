@@ -2,7 +2,7 @@
 
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
-    <logger name="com.tbar" level="INFO"/>
+    <logger name="com.tbar" level="DEBUG"/>
     <logger name="org.springframework.boot" level="INFO"/>
     <logger name="org.thymeleaf" level="INFO"/>
 

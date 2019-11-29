@@ -1,7 +1,6 @@
 package com.tbar.MakeupStoreApplication.service.consumer;
 
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -16,7 +15,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,44 +23,31 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MakeupAPIConsumerTest {
+class APIConsumerImplTest {
 
+    // === constants ===
+    private final ResponseEntity<Object> EXPECTED_RESPONSE = new ResponseEntity<>(new Object(), HttpStatus.OK);
+    private final ResponseEntity<Object> EXPECTED_SERVICE_UNAVAILABLE_RESPONSE = new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE);
+    private final URI EXAMPLE_URI = URI.create("http://www.example.com");
+    // === fields ===
     @Mock
     private RestTemplate restTemplate;
     @InjectMocks
-    private MakeupAPIConsumer apiConsumer;
-    private ResponseEntity<List<Item>> expectedResponse;
-    private ResponseEntity<List<Item>> serviceUnavailableResponse;
-    private ResponseEntity<List<Item>> internalServerErrorResponse;
-    private ResponseEntity<List<Item>> actualResponse;
-    private final URI EXAMPLE_URI = URI.create("http://www.example.com");
+    private APIConsumerImpl<Object> apiConsumer;
 
-    @BeforeEach
-    void set_up() {
-        expectedResponse = new ResponseEntity<>(new ArrayList<>(List.of(new Item())), HttpStatus.OK);
-        serviceUnavailableResponse = new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE);
-        internalServerErrorResponse = new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
+    // === tests ===
     @Test
-    void given_URI_when_requestData_return_ResponseEntity() {
+    void given_Uri_when_requestData_return_ResponseEntity() {
         when(restTemplate.exchange(
                 eq(EXAMPLE_URI),
                 eq(HttpMethod.GET),
                 isNull(),
-                ArgumentMatchers.<ParameterizedTypeReference<List<Item>>>any()
-        )).thenReturn(expectedResponse);
+                ArgumentMatchers.<ParameterizedTypeReference<Object>>any()
+        )).thenReturn(EXPECTED_RESPONSE);
 
-        actualResponse = apiConsumer.requestData(EXAMPLE_URI);
+        ResponseEntity<Object> actualResponse = apiConsumer.requestData(EXAMPLE_URI);
 
-        assertEquals(expectedResponse, actualResponse);
-    }
-
-    @Test
-    void given_nullURI_when_requestData_return_emptyResponseEntityWith500StatusCode() {
-        actualResponse = apiConsumer.requestData(null);
-
-        assertEquals(internalServerErrorResponse, actualResponse);
+        assertEquals(EXPECTED_RESPONSE, actualResponse);
     }
 
     @Test
@@ -74,9 +59,9 @@ class MakeupAPIConsumerTest {
                 ArgumentMatchers.<ParameterizedTypeReference<List<Item>>>any()
         )).thenThrow(RestClientException.class);
 
-        actualResponse = apiConsumer.requestData(EXAMPLE_URI);
+        ResponseEntity<Object> actualResponse = apiConsumer.requestData(EXAMPLE_URI);
 
-        assertEquals(serviceUnavailableResponse, actualResponse);
+        assertEquals(EXPECTED_SERVICE_UNAVAILABLE_RESPONSE, actualResponse);
     }
 
 }
