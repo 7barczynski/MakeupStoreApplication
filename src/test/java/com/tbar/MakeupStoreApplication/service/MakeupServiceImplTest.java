@@ -85,6 +85,15 @@ class MakeupServiceImplTest {
     }
 
     @Test
+    void given_emptyMap_when_getProducts_return_listOfItems() throws ProductNotFoundException, APIConnectionException {
+        when(apiConsumer.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXAMPLE_ITEM), HttpStatus.OK));
+
+        List<Item> actualList = makeupService.getProducts(new HashMap<>());
+
+        assertEquals(EXPECTED_LIST, actualList);
+    }
+
+    @Test
     void given_mapOfValidParameters_when_responseHasGotOtherThan200StatusCode_in_getProducts_throw_APIConnectionException() {
         when(apiConsumer.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE));
 

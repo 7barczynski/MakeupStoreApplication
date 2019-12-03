@@ -18,10 +18,12 @@ public class Item {
     private String currency;
     @JsonAlias(value = "image_link")
     private String imageLink;
+    @JsonAlias(value="product_link")
+    private String productLink;
     @JsonAlias(value = "website_link")
     private String websiteLink;
     private String description;
-    private int rating;
+    private Double rating;
     private String category;
     @JsonAlias(value = "product_type")
     private String productType;
