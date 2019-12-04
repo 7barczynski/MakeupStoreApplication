@@ -7,7 +7,6 @@ import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundExcepti
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -27,30 +26,38 @@ class MakeupServiceImplTest {
     // === constants ===
     private final URI STUB_BASE_URI = URI.create("http://www.example.com");
     private final Set<String> STUB_VALID_PARAMETERS = new HashSet<>(Set.of("first", "second"));
-    private final Item EXAMPLE_ITEM = new Item();
-    private final List<Item> EXPECTED_LIST = new ArrayList<>(List.of(EXAMPLE_ITEM));
+    private final String STUB_URI_SUFFIX = ".json";
 
+    private final Item EXPECTED_ITEM = new Item();
+    private final List<Item> EXPECTED_LIST = new ArrayList<>(List.of(EXPECTED_ITEM));
+
+    private final URI URI_WITH_ID_PATH = URI.create(STUB_BASE_URI + "/1000" + STUB_URI_SUFFIX);
     private final URI URI_WITH_TWO_PARAMETERS = URI.create(STUB_BASE_URI + "?first=value&second=value2");
-    private final Map<String, String> MAP_WITH_VALID_PARAMETERS = new HashMap<>(Map.of("first", "value", "second", "value2"));
-    private final Map<String, String> MAP_WITH_MIXED_PARAMETERS = new HashMap<>(Map.of("first", "value", "second", "value2", "third", "value3"));
-    private final Map<String, String> MAP_WITH_WRONG_PARAMETERS = new HashMap<>(Map.of("third", "value3","fourth", "value4", "fifth", "value5"));
+    private final Map<String, String> MAP_WITH_VALID_PARAMETERS = new LinkedHashMap<>(Map.of("first", "value", "second", "value2"));
+    private final Map<String, String> MAP_WITH_MIXED_PARAMETERS = new LinkedHashMap<>(Map.of("first", "value", "second", "value2", "third", "value3"));
+    private final Map<String, String> MAP_WITH_WRONG_PARAMETERS = new LinkedHashMap<>(Map.of("third", "value3","fourth", "value4", "fifth", "value5"));
     // === fields ===
     @Mock
-    private APIConsumerImpl<List<Item>> apiConsumer;
-    @InjectMocks
-    private MakeupServiceImpl makeupService;
+    private APIConsumerImpl<Item> soloSearchConsumerMock;
+    @Mock
+    private APIConsumerImpl<List<Item>> multiSearchConsumerMock;
+    private MakeupService makeupService;
 
     @BeforeEach
     void initialize() {
+        makeupService = new MakeupServiceImpl(multiSearchConsumerMock, soloSearchConsumerMock);
         // initialize fields that are injected from properties file
-        ReflectionTestUtils.setField(makeupService, "baseUri", STUB_BASE_URI);
+        ReflectionTestUtils.setField(makeupService, "multiSearchBaseUri", STUB_BASE_URI);
+        ReflectionTestUtils.setField(makeupService, "soloSearchBaseUri", STUB_BASE_URI);
+        ReflectionTestUtils.setField(makeupService, "soloSearchUriSuffix", STUB_URI_SUFFIX);
         ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
     }
 
     // === tests ===
+        // === getProducts ===
     @Test
     void given_mapOfValidParameters_when_getProducts_return_listOfItems() throws APIConnectionException, ProductNotFoundException {
-        when(apiConsumer.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(List.of(EXAMPLE_ITEM), HttpStatus.OK));
+        when(multiSearchConsumerMock.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(List.of(EXPECTED_ITEM), HttpStatus.OK));
 
         List<Item> actualList = makeupService.getProducts(MAP_WITH_VALID_PARAMETERS);
 
@@ -59,7 +66,7 @@ class MakeupServiceImplTest {
 
     @Test
     void given_mapOfMixedParameters_when_getProducts_return_listOfItems() throws APIConnectionException, ProductNotFoundException {
-        when(apiConsumer.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(List.of(EXAMPLE_ITEM), HttpStatus.OK));
+        when(multiSearchConsumerMock.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(List.of(EXPECTED_ITEM), HttpStatus.OK));
 
         List<Item> actualList = makeupService.getProducts(MAP_WITH_MIXED_PARAMETERS);
 
@@ -68,7 +75,7 @@ class MakeupServiceImplTest {
 
     @Test
     void given_mapOfWrongParameters_when_getProducts_return_listOfItems() throws APIConnectionException, ProductNotFoundException {
-        when(apiConsumer.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXAMPLE_ITEM), HttpStatus.OK));
+        when(multiSearchConsumerMock.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXPECTED_ITEM), HttpStatus.OK));
 
         List<Item> actualList = makeupService.getProducts(MAP_WITH_WRONG_PARAMETERS);
 
@@ -77,7 +84,7 @@ class MakeupServiceImplTest {
 
     @Test
     void given_nullMap_when_getProducts_return_listOfItems() throws ProductNotFoundException, APIConnectionException {
-        when(apiConsumer.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXAMPLE_ITEM), HttpStatus.OK));
+        when(multiSearchConsumerMock.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXPECTED_ITEM), HttpStatus.OK));
 
         List<Item> actualList = makeupService.getProducts(null);
 
@@ -86,7 +93,7 @@ class MakeupServiceImplTest {
 
     @Test
     void given_emptyMap_when_getProducts_return_listOfItems() throws ProductNotFoundException, APIConnectionException {
-        when(apiConsumer.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXAMPLE_ITEM), HttpStatus.OK));
+        when(multiSearchConsumerMock.requestData(STUB_BASE_URI)).thenReturn(new ResponseEntity<>(List.of(EXPECTED_ITEM), HttpStatus.OK));
 
         List<Item> actualList = makeupService.getProducts(new HashMap<>());
 
@@ -94,16 +101,40 @@ class MakeupServiceImplTest {
     }
 
     @Test
-    void given_mapOfValidParameters_when_responseHasGotOtherThan200StatusCode_in_getProducts_throw_APIConnectionException() {
-        when(apiConsumer.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE));
+    void given_responseHasGotOtherStatusCodeThan200_when_getProducts_throw_APIConnectionException() {
+        when(multiSearchConsumerMock.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE));
 
         assertThrows(APIConnectionException.class, ()-> makeupService.getProducts(MAP_WITH_VALID_PARAMETERS));
     }
 
     @Test
-    void given_mapOfValidParameters_when_responseBodyIsEmpty_in_getProducts_throw_ProductNotFoundException() {
-        when(apiConsumer.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK));
+    void given_responseBodyIsEmpty_when_getProducts_throw_ProductNotFoundException() {
+        when(multiSearchConsumerMock.requestData(URI_WITH_TWO_PARAMETERS)).thenReturn(new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK));
 
         assertThrows(ProductNotFoundException.class, ()-> makeupService.getProducts(MAP_WITH_VALID_PARAMETERS));
+    }
+
+        // === getProduct ===
+    @Test
+    void given_properId_when_getProduct_return_Item() throws ProductNotFoundException, APIConnectionException {
+        when(soloSearchConsumerMock.requestData(URI_WITH_ID_PATH)).thenReturn(new ResponseEntity<>(EXPECTED_ITEM, HttpStatus.OK));
+
+        Item actualItem = makeupService.getProduct(1000L);
+
+        assertEquals(EXPECTED_ITEM, actualItem);
+    }
+
+    @Test
+    void given_wrongId_when_getProduct_throw_ProductNotFoundException() {
+        when(soloSearchConsumerMock.requestData(URI_WITH_ID_PATH)).thenReturn(new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+
+        assertThrows(ProductNotFoundException.class, ()-> makeupService.getProduct(1000L));
+    }
+
+    @Test
+    void given_responseHasGotOtherStatusCodeThan200Or404_when_getProduct_throw_APIConnectionException() {
+        when(soloSearchConsumerMock.requestData(URI_WITH_ID_PATH)).thenReturn(new ResponseEntity<>(null, HttpStatus.SERVICE_UNAVAILABLE));
+
+        assertThrows(APIConnectionException.class, ()-> makeupService.getProduct(1000L));
     }
 }
