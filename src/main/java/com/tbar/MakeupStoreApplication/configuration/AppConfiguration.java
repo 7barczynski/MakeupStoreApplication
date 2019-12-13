@@ -1,5 +1,6 @@
 package com.tbar.MakeupStoreApplication.configuration;
 
+import com.tbar.MakeupStoreApplication.utility.exceptions.errorHandlers.MakeupAPIErrorHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,8 @@ public class AppConfiguration {
     // === beans ===
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-        log.debug("RestTemplate is created by RestTemplateBuilder. RestTemplate = {}", restTemplateBuilder.build());
-        return restTemplateBuilder.build();
+        RestTemplate restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
+        log.debug("RestTemplate bean is build by RestTemplateBuilder. RestTemplate = {}", restTemplate);
+        return restTemplate;
     }
 }

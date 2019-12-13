@@ -1,6 +1,7 @@
 package com.tbar.MakeupStoreApplication.service;
 
-import com.tbar.MakeupStoreApplication.service.consumer.APIConsumer;
+import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
+import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
 import com.tbar.MakeupStoreApplication.utility.exceptions.APIConnectionException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundException;
@@ -25,30 +26,30 @@ import java.util.Set;
 public class MakeupServiceImpl implements MakeupService {
 
     // === fields ===
-    private URI multiSearchBaseUri;
-    private URI soloSearchBaseUri;
-    @Value("${application.makeup.api.solo.search.uri.suffix}")
-    private String soloSearchUriSuffix;
+    private URI multiBaseUri;
+    private URI soloBaseUri;
+    @Value("${application.makeup.api.solo.uri.suffix}")
+    private String soloUriSuffix;
     private Set<String> validParameters;
-    private APIConsumer<List<Item>> multiSearchConsumer;
-    private APIConsumer<Item> soloSearchConsumer;
+    private MultiAPIConsumer multiAPIConsumer;
+    private SoloAPIConsumer soloAPIConsumer;
 
     // === constructors ===
     @Autowired
-    public MakeupServiceImpl(APIConsumer<List<Item>> multiSearchConsumer, APIConsumer<Item> soloSearchConsumer) {
-        this.multiSearchConsumer = multiSearchConsumer;
-        this.soloSearchConsumer = soloSearchConsumer;
+    public MakeupServiceImpl(MultiAPIConsumer multiAPIConsumer, SoloAPIConsumer soloAPIConsumer) {
+        this.multiAPIConsumer = multiAPIConsumer;
+        this.soloAPIConsumer = soloAPIConsumer;
     }
 
     // === setters ===
-    @Value("${application.makeup.api.multi.search.base.uri}")
-    private void setMultiSearchBaseUri(String multiSearchBaseUri) {
-        this.multiSearchBaseUri = URI.create(multiSearchBaseUri);
+    @Value("${application.makeup.api.multi.base.uri}")
+    private void setMultiBaseUri(String multiBaseUri) {
+        this.multiBaseUri = URI.create(multiBaseUri);
     }
 
-    @Value("${application.makeup.api.solo.search.base.uri}")
-    private void setSoloSearchBaseUri(String soloSearchBaseUri) {
-        this.soloSearchBaseUri = URI.create(soloSearchBaseUri);
+    @Value("${application.makeup.api.solo.base.uri}")
+    private void setSoloBaseUri(String soloBaseUri) {
+        this.soloBaseUri = URI.create(soloBaseUri);
     }
 
     @Value("${application.makeup.api.valid.parameters}")
@@ -61,7 +62,8 @@ public class MakeupServiceImpl implements MakeupService {
     public List<Item> getProducts(@Nullable Map<String, String> parameters) throws ProductNotFoundException, APIConnectionException {
         // get response
         URI requestUri = buildUri(parameters);
-        ResponseEntity<List<Item>> response = multiSearchConsumer.requestData(requestUri);
+        ResponseEntity<List<Item>> response = multiAPIConsumer.requestData(requestUri);
+        log.debug("getProducts method. URI = {}, ResponseEntity = {}", requestUri, response);
         // check if response is ok and not null then return body
         if (response.getStatusCode() == HttpStatus.OK) {
             if (!response.getBody().isEmpty()) {
@@ -78,9 +80,10 @@ public class MakeupServiceImpl implements MakeupService {
     public Item getProduct(@NonNull Long id) throws ProductNotFoundException, APIConnectionException {
         // get response
         URI requestUri = buildUri(id);
-        ResponseEntity<Item> response = soloSearchConsumer.requestData(requestUri);
+        ResponseEntity<Item> response = soloAPIConsumer.requestData(requestUri);
+//        log.info("Response = {}, class = {}", response, response.getBody().getClass());
         // check if response is ok then return body
-        if (response.getStatusCode() == HttpStatus.OK) {
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
             return response.getBody();
         } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new ProductNotFoundException(requestUri.toString());
@@ -100,7 +103,7 @@ public class MakeupServiceImpl implements MakeupService {
      * @return {@code URI} build with valid (or all) query parameters.
      */
     private URI buildUri(@Nullable Map<String, String> parameters) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(multiSearchBaseUri);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(multiBaseUri);
         if (parameters != null) {
             // loop through arguments parameters to find and add valid ones
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
@@ -120,9 +123,9 @@ public class MakeupServiceImpl implements MakeupService {
      * @return {@code URI} build with id in path
      */
     private URI buildUri(@NonNull Long id) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(soloSearchBaseUri);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(soloBaseUri);
 
-        uriBuilder.path(id + soloSearchUriSuffix);
+        uriBuilder.path(id + soloUriSuffix);
 
         log.debug("Entered buildUri method with id = {}; Build URI = {}", id, uriBuilder.build());
         return uriBuilder.build().toUri();

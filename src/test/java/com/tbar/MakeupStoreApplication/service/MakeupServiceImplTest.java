@@ -1,6 +1,7 @@
 package com.tbar.MakeupStoreApplication.service;
 
-import com.tbar.MakeupStoreApplication.service.consumer.APIConsumerImpl;
+import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
+import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
 import com.tbar.MakeupStoreApplication.utility.exceptions.APIConnectionException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundException;
@@ -38,18 +39,18 @@ class MakeupServiceImplTest {
     private final Map<String, String> MAP_WITH_WRONG_PARAMETERS = new LinkedHashMap<>(Map.of("third", "value3","fourth", "value4", "fifth", "value5"));
     // === fields ===
     @Mock
-    private APIConsumerImpl<Item> soloSearchConsumerMock;
+    private SoloAPIConsumer soloSearchConsumerMock;
     @Mock
-    private APIConsumerImpl<List<Item>> multiSearchConsumerMock;
+    private MultiAPIConsumer multiSearchConsumerMock;
     private MakeupService makeupService;
 
     @BeforeEach
     void initialize() {
         makeupService = new MakeupServiceImpl(multiSearchConsumerMock, soloSearchConsumerMock);
         // initialize fields that are injected from properties file
-        ReflectionTestUtils.setField(makeupService, "multiSearchBaseUri", STUB_BASE_URI);
-        ReflectionTestUtils.setField(makeupService, "soloSearchBaseUri", STUB_BASE_URI);
-        ReflectionTestUtils.setField(makeupService, "soloSearchUriSuffix", STUB_URI_SUFFIX);
+        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
+        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
+        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
         ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
     }
 

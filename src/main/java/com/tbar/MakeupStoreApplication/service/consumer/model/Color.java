@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Color {
+public class Color {
 
     // === fields ===
     @JsonAlias(value = "hex_value")

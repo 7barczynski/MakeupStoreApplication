@@ -1,27 +1,27 @@
 package com.tbar.MakeupStoreApplication.service.consumer;
 
+import com.tbar.MakeupStoreApplication.utility.exceptions.APICallException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 
 import java.net.URI;
 
 /**
- * Functions to request data with from an external API
- * and create response as a {@code ResponseEntity} with body of generic type.
- * Generic type should match parsed type of JSON data of the response.
+ * Functions to request data from an external API
+ * and create response as a {@code ResponseEntity}.
  *
  * @author 7omasz8
- * @param <T> the body type
  * @see #requestData(URI)
  */
-public interface APIConsumer<T> {
+public interface APIConsumer {
 
     /**
-     * Send request and get response from an external API as the ResponseEntity.
+     * Send request and return response from an external API as the ResponseEntity.
      *
      * @param uri URI of the request to the API. Can't be null.
+     * @throws APICallException when nothing has been found or there is client or server error.
      * @return response from API as an entity
      */
-    ResponseEntity<T> requestData(@NonNull URI uri);
+    ResponseEntity requestData(@NonNull URI uri) throws APICallException;
 
 }
