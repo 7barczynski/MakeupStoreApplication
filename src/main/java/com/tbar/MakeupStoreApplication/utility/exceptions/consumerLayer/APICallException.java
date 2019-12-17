@@ -1,4 +1,4 @@
-package com.tbar.MakeupStoreApplication.utility.exceptions;
+package com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer;
 
 /**
  * This is a wrapper exception of all errors caused by calling external API.

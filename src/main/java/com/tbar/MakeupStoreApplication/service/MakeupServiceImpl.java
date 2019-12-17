@@ -3,12 +3,15 @@ package com.tbar.MakeupStoreApplication.service;
 import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
-import com.tbar.MakeupStoreApplication.utility.exceptions.APIConnectionException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallClientSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallServerSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.APIConnectionException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ProductNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ServiceLayerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -59,36 +62,46 @@ public class MakeupServiceImpl implements MakeupService {
 
     // === public methods ===
     @Override
-    public List<Item> getProducts(@Nullable Map<String, String> parameters) throws ProductNotFoundException, APIConnectionException {
-        // get response
+    public List<Item> getProducts(@Nullable Map<String, String> parameters) throws ServiceLayerException {
+        // get response and handle consumer layer exception
         URI requestUri = buildUri(parameters);
-        ResponseEntity<List<Item>> response = multiAPIConsumer.requestData(requestUri);
+        ResponseEntity<List<Item>> response;
+        try {
+            response = multiAPIConsumer.requestData(requestUri);
+        } catch (APICallNotFoundException e) {
+            throw new ProductNotFoundException(requestUri.toString(), parameters);
+        } catch (APICallClientSideException | APICallServerSideException e) {
+            throw new APIConnectionException(requestUri.toString(), parameters);
+        }
         log.debug("getProducts method. URI = {}, ResponseEntity = {}", requestUri, response);
-        // check if response is ok and not null then return body
-        if (response.getStatusCode() == HttpStatus.OK) {
-            if (!response.getBody().isEmpty()) {
-                return response.getBody();
-            } else {
-                throw new ProductNotFoundException(requestUri.toString());
-            }
+
+        // check if response body is not null and empty then return body
+        if (response.getBody() != null && !response.getBody().isEmpty()) {
+            return response.getBody();
         } else {
-            throw new APIConnectionException(response.getStatusCodeValue(), requestUri.toString());
+            throw new ProductNotFoundException(requestUri.toString(), parameters);
         }
     }
 
     @Override
-    public Item getProduct(@NonNull Long id) throws ProductNotFoundException, APIConnectionException {
-        // get response
+    public Item getProduct(@NonNull Long id) throws ServiceLayerException {
+        // get response and handle consumer layer exception
         URI requestUri = buildUri(id);
-        ResponseEntity<Item> response = soloAPIConsumer.requestData(requestUri);
-//        log.info("Response = {}, class = {}", response, response.getBody().getClass());
-        // check if response is ok then return body
-        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+        ResponseEntity<Item> response;
+        try {
+            response = soloAPIConsumer.requestData(requestUri);
+        } catch (APICallNotFoundException e) {
+            throw new ProductNotFoundException(requestUri.toString(), id);
+        } catch (APICallClientSideException | APICallServerSideException e) {
+            throw new APIConnectionException(requestUri.toString(), id);
+        }
+        log.debug("getProduct method. URI = {}, ResponseEntity = {}", requestUri, response);
+
+        // check if response body is not null then return body
+        if (response.getBody() != null) {
             return response.getBody();
-        } else if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-            throw new ProductNotFoundException(requestUri.toString());
         } else {
-            throw new APIConnectionException(response.getStatusCodeValue(), requestUri.toString());
+            throw new ProductNotFoundException(requestUri.toString(), id);
         }
     }
 

@@ -1,8 +1,8 @@
 package com.tbar.MakeupStoreApplication.utility.exceptions.errorHandlers;
 
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallClientSideException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallServerSideException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallClientSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallServerSideException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
@@ -35,11 +35,12 @@ public class MakeupAPIErrorHandler implements ResponseErrorHandler {
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
+        log.debug("Handling response error from MakeupAPI. Response status code = {}", response.getStatusCode());
         if (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
             throw new APICallServerSideException(response.getStatusCode().value());
         } else if (response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
             if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new ProductNotFoundException();
+                throw new APICallNotFoundException();
             } else {
                 throw new APICallClientSideException(response.getStatusCode().value());
             }

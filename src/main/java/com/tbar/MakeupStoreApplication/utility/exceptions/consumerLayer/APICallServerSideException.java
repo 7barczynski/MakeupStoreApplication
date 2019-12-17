@@ -1,4 +1,4 @@
-package com.tbar.MakeupStoreApplication.utility.exceptions;
+package com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer;
 
 public class APICallServerSideException extends APICallException {
     // === constants ===

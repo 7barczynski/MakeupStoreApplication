@@ -1,9 +1,9 @@
 package com.tbar.MakeupStoreApplication.service.consumer;
 
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallClientSideException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallServerSideException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallClientSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallServerSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallNotFoundException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.errorHandlers.MakeupAPIErrorHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +34,8 @@ class APIConsumerImplIntegrationTest {
 
     // === constants ===
     private final String EXAMPLE_URI = "www.example.com";
+    private final String EXPECTED_SOLO_JSON_RESPONSE = "{\"id\" : \"1000\"}";
+    private final String EXPECTED_MULTI_JSON_RESPONSE = "[{\"id\" : \"1000\"}]";
 
 
     // === fields ===
@@ -47,6 +49,7 @@ class APIConsumerImplIntegrationTest {
     private ResponseEntity<List<Item>> expectedMultiResponse;
     private Item expectedItem = new Item();
 
+    // === initialization ===
     @BeforeEach
     void init() {
         restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
@@ -58,11 +61,12 @@ class APIConsumerImplIntegrationTest {
         expectedMultiResponse = new ResponseEntity<>(new ArrayList<>(List.of(expectedItem)), HttpStatus.OK);
     }
 
+    // === tests ===
     @Test
     void given_apiCall_when_soloAPIConsumerRequestData_return_ResponseEntity() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(EXAMPLE_URI))
                 .andExpect(method(HttpMethod.GET))
-                .andRespond(MockRestResponseCreators.withSuccess("{\"id\" : \"1000\"}", MediaType.APPLICATION_JSON));
+                .andRespond(MockRestResponseCreators.withSuccess(EXPECTED_SOLO_JSON_RESPONSE, MediaType.APPLICATION_JSON));
 
         ResponseEntity<Item> actualResponse = soloAPIConsumer.requestData(URI.create(EXAMPLE_URI));
 
@@ -74,7 +78,7 @@ class APIConsumerImplIntegrationTest {
     void given_apiCall_when_multiAPIConsumerRequestData_return_ResponseEntity() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(EXAMPLE_URI))
                 .andExpect(method(HttpMethod.GET))
-                .andRespond(MockRestResponseCreators.withSuccess("[{\"id\" : \"1000\"}]", MediaType.APPLICATION_JSON));
+                .andRespond(MockRestResponseCreators.withSuccess(EXPECTED_MULTI_JSON_RESPONSE, MediaType.APPLICATION_JSON));
 
         ResponseEntity<List<Item>> actualResponse = multiAPIConsumer.requestData(URI.create(EXAMPLE_URI));
 
@@ -124,7 +128,7 @@ class APIConsumerImplIntegrationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
 
-        assertThrows(ProductNotFoundException.class, ()-> soloAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
+        assertThrows(APICallNotFoundException.class, ()-> soloAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
     }
 
     @Test
@@ -133,6 +137,6 @@ class APIConsumerImplIntegrationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
 
-        assertThrows(ProductNotFoundException.class, ()-> multiAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
+        assertThrows(APICallNotFoundException.class, ()-> multiAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
     }
 }

@@ -1,7 +1,7 @@
 package com.tbar.MakeupStoreApplication.service.consumer;
 
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;

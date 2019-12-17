@@ -1,6 +1,6 @@
 package com.tbar.MakeupStoreApplication.service.consumer;
 
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 
@@ -18,9 +18,9 @@ public interface APIConsumer {
     /**
      * Send request and return response from an external API as the ResponseEntity.
      *
-     * @param uri URI of the request to the API. Can't be null.
+     * @param uri URI of the request to the API.
      * @throws APICallException when nothing has been found or there is client or server error.
-     * @return response from API as an entity
+     * @return response from API as an entity.
      */
     ResponseEntity requestData(@NonNull URI uri) throws APICallException;
 

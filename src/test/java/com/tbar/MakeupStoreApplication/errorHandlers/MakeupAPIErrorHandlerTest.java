@@ -1,8 +1,8 @@
 package com.tbar.MakeupStoreApplication.errorHandlers;
 
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallClientSideException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.APICallServerSideException;
-import com.tbar.MakeupStoreApplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallClientSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallServerSideException;
+import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallNotFoundException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.errorHandlers.MakeupAPIErrorHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,12 +32,14 @@ class MakeupAPIErrorHandlerTest {
     private MockRestServiceServer mockRestServiceServer;
     private RestTemplate restTemplate;
 
+    // === initialization ===
     @BeforeEach
     void init() {
         restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
 
+    // === tests ===
     @Test
     void given_httpRequest_when_serverSideError_throw_APICallServerSideException() {
         this.mockRestServiceServer.expect(ExpectedCount.once(), requestTo(EXAMPLE_URI))
@@ -54,7 +56,7 @@ class MakeupAPIErrorHandlerTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        assertThrows(ProductNotFoundException.class,() -> restTemplate.getForEntity(EXAMPLE_URI, null));
+        assertThrows(APICallNotFoundException.class,() -> restTemplate.getForEntity(EXAMPLE_URI, null));
         this.mockRestServiceServer.verify();
     }
 
