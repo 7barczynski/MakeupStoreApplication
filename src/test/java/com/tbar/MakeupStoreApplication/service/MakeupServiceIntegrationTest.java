@@ -14,7 +14,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
@@ -82,14 +81,14 @@ class MakeupServiceIntegrationTest {
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         soloAPIConsumer = new SoloAPIConsumer(restTemplate);
         multiAPIConsumer = new MultiAPIConsumer(restTemplate);
-        makeupService = new MakeupServiceImpl(multiAPIConsumer, soloAPIConsumer);
+        makeupService = new MakeupServiceImpl(STUB_BASE_URI.toString(), STUB_BASE_URI.toString(), STUB_URI_SUFFIX, STUB_VALID_PARAMETERS.toArray(new String[2]), multiAPIConsumer, soloAPIConsumer);
         EXPECTED_ITEM.setId(1000L);
 
         // initialize fields that are injected from properties file
-        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
-        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
-        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
-        ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
+//        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
+//        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
+//        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
+//        ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
     }
 
     // === tests ===

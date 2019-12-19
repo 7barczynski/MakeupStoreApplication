@@ -28,36 +28,29 @@ import java.util.Set;
 @Service
 public class MakeupServiceImpl implements MakeupService {
 
+    // === constants ===
+    private final URI MULTI_BASE_URI;
+    private final URI SOLO_BASE_URI;
+    private final String SOLO_URI_SUFFIX;
+    private final Set<String> VALID_PARAMETERS;
+
     // === fields ===
-    private URI multiBaseUri;
-    private URI soloBaseUri;
-    @Value("${application.makeup.api.solo.uri.suffix}")
-    private String soloUriSuffix;
-    private Set<String> validParameters;
-    private MultiAPIConsumer multiAPIConsumer;
-    private SoloAPIConsumer soloAPIConsumer;
+    private final MultiAPIConsumer multiAPIConsumer;
+    private final SoloAPIConsumer soloAPIConsumer;
 
     // === constructors ===
     @Autowired
-    public MakeupServiceImpl(MultiAPIConsumer multiAPIConsumer, SoloAPIConsumer soloAPIConsumer) {
+    public MakeupServiceImpl(@Value("${application.makeup.api.multi.base.uri}") String MULTI_BASE_URI,
+                             @Value("${application.makeup.api.solo.base.uri}") String SOLO_BASE_URI,
+                             @Value("${application.makeup.api.solo.uri.suffix}") String SOLO_URI_SUFFIX,
+                             @Value("${application.makeup.api.valid.parameters}") String[] VALID_PARAMETERS,
+                             MultiAPIConsumer multiAPIConsumer, SoloAPIConsumer soloAPIConsumer) {
+        this.MULTI_BASE_URI = URI.create(MULTI_BASE_URI);
+        this.SOLO_BASE_URI = URI.create(SOLO_BASE_URI);
+        this.SOLO_URI_SUFFIX = SOLO_URI_SUFFIX;
+        this.VALID_PARAMETERS = new HashSet<>(Set.of(VALID_PARAMETERS));
         this.multiAPIConsumer = multiAPIConsumer;
         this.soloAPIConsumer = soloAPIConsumer;
-    }
-
-    // === setters ===
-    @Value("${application.makeup.api.multi.base.uri}")
-    private void setMultiBaseUri(String multiBaseUri) {
-        this.multiBaseUri = URI.create(multiBaseUri);
-    }
-
-    @Value("${application.makeup.api.solo.base.uri}")
-    private void setSoloBaseUri(String soloBaseUri) {
-        this.soloBaseUri = URI.create(soloBaseUri);
-    }
-
-    @Value("${application.makeup.api.valid.parameters}")
-    private void setValidParameters(String[] validParameters) {
-        this.validParameters = new HashSet<>(Set.of(validParameters));
     }
 
     // === public methods ===
@@ -116,11 +109,11 @@ public class MakeupServiceImpl implements MakeupService {
      * @return {@code URI} build with valid (or all) query parameters.
      */
     private URI buildUri(@Nullable Map<String, String> parameters) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(multiBaseUri);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(MULTI_BASE_URI);
         if (parameters != null) {
             // loop through arguments parameters to find and add valid ones
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
-                if (validParameters.contains(entry.getKey())) {
+                if (VALID_PARAMETERS.contains(entry.getKey())) {
                     uriBuilder.queryParam(entry.getKey(), entry.getValue());
                 }
             }
@@ -136,9 +129,9 @@ public class MakeupServiceImpl implements MakeupService {
      * @return {@code URI} build with id in path
      */
     private URI buildUri(@NonNull Long id) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(soloBaseUri);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(SOLO_BASE_URI);
 
-        uriBuilder.path(id + soloUriSuffix);
+        uriBuilder.path(id + SOLO_URI_SUFFIX);
 
         log.debug("Entered buildUri method with id = {}; Build URI = {}", id, uriBuilder.build());
         return uriBuilder.build().toUri();

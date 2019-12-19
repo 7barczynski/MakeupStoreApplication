@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.net.URI;
 import java.util.*;
@@ -69,12 +68,12 @@ class MakeupServiceImplTest {
     // === initialization ===
     @BeforeEach
     void initialize() {
-        makeupService = new MakeupServiceImpl(multiSearchConsumerMock, soloSearchConsumerMock);
+        makeupService = new MakeupServiceImpl(STUB_BASE_URI.toString(), STUB_BASE_URI.toString(), STUB_URI_SUFFIX, STUB_VALID_PARAMETERS.toArray(new String[2]), multiSearchConsumerMock, soloSearchConsumerMock);
         // initialize fields that are injected from properties file
-        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
-        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
-        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
-        ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
+//        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
+//        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
+//        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
+//        ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
     }
 
     // === tests ===
