@@ -3,6 +3,7 @@ package com.tbar.MakeupStoreApplication.service;
 import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
+import com.tbar.MakeupStoreApplication.utility.AppProperties;
 import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallClientSideException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallNotFoundException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallServerSideException;
@@ -11,7 +12,6 @@ import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ProductNo
 import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ServiceLayerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -40,15 +40,11 @@ public class MakeupServiceImpl implements MakeupService {
 
     // === constructors ===
     @Autowired
-    public MakeupServiceImpl(@Value("${application.makeup.api.multi.base.uri}") String MULTI_BASE_URI,
-                             @Value("${application.makeup.api.solo.base.uri}") String SOLO_BASE_URI,
-                             @Value("${application.makeup.api.solo.uri.suffix}") String SOLO_URI_SUFFIX,
-                             @Value("${application.makeup.api.valid.parameters}") String[] VALID_PARAMETERS,
-                             MultiAPIConsumer multiAPIConsumer, SoloAPIConsumer soloAPIConsumer) {
-        this.MULTI_BASE_URI = URI.create(MULTI_BASE_URI);
-        this.SOLO_BASE_URI = URI.create(SOLO_BASE_URI);
-        this.SOLO_URI_SUFFIX = SOLO_URI_SUFFIX;
-        this.VALID_PARAMETERS = new HashSet<>(Set.of(VALID_PARAMETERS));
+    public MakeupServiceImpl(AppProperties appProperties, MultiAPIConsumer multiAPIConsumer, SoloAPIConsumer soloAPIConsumer) {
+        this.MULTI_BASE_URI = URI.create(appProperties.getMakeupApiMultiBaseUri());
+        this.SOLO_BASE_URI = URI.create(appProperties.getMakeupApiSoloBaseUri());
+        this.SOLO_URI_SUFFIX = appProperties.getMakeupApiSoloUriSuffix();
+        this.VALID_PARAMETERS = new HashSet<>(Set.of(appProperties.getMakeupApiValidParameters()));
         this.multiAPIConsumer = multiAPIConsumer;
         this.soloAPIConsumer = soloAPIConsumer;
     }

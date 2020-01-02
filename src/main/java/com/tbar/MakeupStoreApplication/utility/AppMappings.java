@@ -1,13 +1,11 @@
 package com.tbar.MakeupStoreApplication.utility;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public final class AppMappings {
 
     // === constants ===
     public static final String HOME = "/";
     public static final String ABOUT = "about";
+    public static final String SHOP = "shop";
 
     // === constructor ===
     private AppMappings() {}

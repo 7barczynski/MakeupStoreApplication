@@ -1,6 +1,6 @@
 package com.tbar.MakeupStoreApplication.configuration;
 
-import com.tbar.MakeupStoreApplication.utility.AppResources;
+import com.tbar.MakeupStoreApplication.utility.AppProperties;
 import com.tbar.MakeupStoreApplication.utility.ViewNames;
 import com.tbar.MakeupStoreApplication.utility.interceptors.LocaleChangeInterceptor;
 import com.tbar.MakeupStoreApplication.utility.interceptors.LoggerInterceptor;
@@ -21,12 +21,12 @@ import java.util.Locale;
 public class WebConfig implements WebMvcConfigurer {
 
     // === fields ===
-    private final AppResources appResources;
+    private final AppProperties appProperties;
 
     // === constructors ===
     @Autowired
-    public WebConfig(AppResources appResources) {
-        this.appResources = appResources;
+    public WebConfig(AppProperties appProperties) {
+        this.appProperties = appProperties;
     }
 
     // === bean methods ===
@@ -34,8 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         // Setting default language
-        sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(appResources.APP_DEFAULT_LANGUAGE));
-        log.debug("Setting default language of an application. Default language code = {}", appResources.APP_DEFAULT_LANGUAGE);
+        sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(appProperties.getApplicationDefaultLanguage()));
+        log.debug("Setting default language of an application. Default language code = {}", appProperties.getApplicationDefaultLanguage());
         return sessionLocaleResolver;
     }
 
@@ -49,6 +49,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoggerInterceptor());
 
-        registry.addInterceptor(new LocaleChangeInterceptor(appResources.APP_LANGUAGES_LIST));
+        registry.addInterceptor(new LocaleChangeInterceptor(appProperties.getApplicationLanguagesList()));
     }
 }

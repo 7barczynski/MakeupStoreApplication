@@ -1,0 +1,31 @@
+<thlogic>
+    <attr sel="#topHeader"
+          th:fragment="topHeaderFragment"/>
+
+    <!-- Phone number -->
+    <attr sel="#phoneNumber"
+          th:text="${@AppProperties.getPhoneNumber()}"/>
+    <!-- Logo icon -->
+    <attr sel="#topLogo"
+          th:src="@{__${@AppProperties.getTopHeaderLogoUrl()}__}"/>
+    <attr sel="#logoLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).HOME}__}"/>
+
+    <attr sel="#cartLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+    <attr sel="#cartName"
+          th:text="| #{cart.name}|"/>
+    <attr sel="#totalName"
+          th:text="#{total.name}"/>
+    <attr sel="#viewCartLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{cart.viewCart}"/>
+    <attr sel="#checkoutLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{checkout.name}"/>
+
+    <attr sel="#searchName"
+          th:text="| #{search.name}|"/>
+    <attr sel="#searchPlaceholder"
+          th:placeholder="#{search.placeholder}"/>
+</thlogic>

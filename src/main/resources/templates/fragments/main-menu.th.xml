@@ -1,0 +1,62 @@
+<thlogic>
+    <attr sel="#mainMenu"
+          th:fragment="mainMenuFragment"/>
+
+    <attr sel="#homeLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).HOME}__}"
+          th:text="#{home.name}"/>
+
+    <attr sel="#aboutLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).ABOUT}__}"
+          th:text="#{about.name}"/>
+
+    <!-- Shop -->
+    <attr sel="#shopLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+    <attr sel="#shopName"
+          th:text="|#{shop.name} |"/>
+    <attr sel="#faceLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{face.name}"/>
+    <attr sel="#blushLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{blush.name}"/>
+    <attr sel="#bronzerLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{bronzer.name}"/>
+    <attr sel="#foundationLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{foundation.name}"/>
+    <attr sel="#eyesLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{eyes.name}"/>
+    <attr sel="#eyebrowLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{eyebrow.name}"/>
+    <attr sel="#eyelinerLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{eyeliner.name}"/>
+    <attr sel="#eyeshadowLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{eyeshadow.name}"/>
+    <attr sel="#mascaraLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{mascara.name}"/>
+    <attr sel="#lipsLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{lips.name}"/>
+    <attr sel="#lipstickLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{lipstick.name}"/>
+    <attr sel="#liplinerLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{lipliner.name}"/>
+    <attr sel="#nailsLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{nails.name}"/>
+    <attr sel="#nailPolishLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:text="#{nail.polish.name}"/>
+    <attr sel="#menuShopImage"
+          th:src="@{__${@AppProperties.getMenuShopImageUrl()}__}"/>
+</thlogic>

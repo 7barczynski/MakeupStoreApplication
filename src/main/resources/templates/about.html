@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="headTemplate">
+	<meta charset="UTF-8">
+	<title id="appName">Page Title PH</title>
+	<link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/about.css">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="imagesFinal/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagesFinal/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="imagesFinal/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="imagesFinal/favicon_io/site.webmanifest">
+</head>
+<body>
+	<!-- Part with slider image and main message -->
+	<section class="hero-area overly">
+		<div class="animated-bg"></div>
+			<div class="block">
+				<h1 id="appName">Application Title PH</h1>
+				<p id="mainMessage" style="white-space: pre-line">Main message PH<br>main message 2nd line PH</p>
+				<a id="goToIndex" class="btn btn-main mt-30">Go to main PH</a>
+			</div>
+		<div id="mouse-scroll">
+			<a data-scroll href="#selfPromotion">
+				<div class="mouse">
+					<div class="mouse-in"></div>
+				</div>
+			</a>
+		</div>
+	</section>
+
+	<!-- Part with self-promotion links and icons -->
+	<section class="template-list" id='selfPromotion'>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="template-item text-center">
+<!--						TODO Ticker jest bez sensu, ale zachowaj na przyszłość gdy będzie strona CV-->
+						<span class="ticker">Check!</span>
+						<a id="myGitHub">
+							<img id ="gitHubImage" class="img-responsive" alt="gitHub image PH" src="">
+						</a>
+						<h4>GitHub</h4>
+						<p id="myGitHubText">My GitHub text PH</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Linkedin part -->
+	<section class="call-to-action">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h2 id="linkedinMessage" style="white-space: pre-line">Linkedin message PH<br>Second line of linkedin message PH</h2>
+					<a id="linkedinButton" class="btn btn-buy-button">Go to linkedin page PH</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer id="footerCreatedBy"></footer>
+
+
+<script src="plugins/smooth-scroll/dist/js/smooth-scroll.min.js"></script>
+
+<script>
+	var scroll = new SmoothScroll('a[href*="#"]');
+</script>
+</body>
+</html>

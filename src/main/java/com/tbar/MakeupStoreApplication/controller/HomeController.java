@@ -1,6 +1,7 @@
 package com.tbar.MakeupStoreApplication.controller;
 
 import com.tbar.MakeupStoreApplication.service.MakeupService;
+import com.tbar.MakeupStoreApplication.utility.AppMappings;
 import com.tbar.MakeupStoreApplication.utility.AttributeNames;
 import com.tbar.MakeupStoreApplication.utility.ViewNames;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,11 @@ public class HomeController {
     public String homePage(Model model) {
         model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
         return ViewNames.HOME;
+    }
+
+    @GetMapping("/" + AppMappings.ABOUT)
+    public String aboutPage() {
+        return ViewNames.ABOUT;
     }
 }
 

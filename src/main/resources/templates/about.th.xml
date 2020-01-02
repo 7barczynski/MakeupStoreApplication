@@ -1,0 +1,34 @@
+<thlogic>
+    <!-- Head -->
+<!--    <attr sel="#headTemplate"-->
+<!--          th:replace="~{fragments/head :: headFragment}"/>-->
+
+    <!-- Part with slider image and main message -->
+    <attr sel="#appName"
+        th:text="${@AppProperties.getApplicationName()}"/>
+    <attr sel="#mainMessage"
+        th:text="#{about.main.message}"/>
+    <attr sel="#goToIndex"
+        th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).HOME}__}"
+        th:text="#{about.enter.app}"/>
+
+    <!-- Part with self-promotion links and icons -->
+    <attr sel="#myGitHub"
+        th:href="@{__${@AppProperties.getGithubUrl()}__}"/>
+    <attr sel="#gitHubImage"
+        th:src="@{__${@AppProperties.getGithubImageUrl()}__}"/>
+    <attr sel="#myGitHubText"
+        th:text="#{about.github.message}"/>
+
+    <!-- Part with contact proposal -->
+    <attr sel="#linkedinMessage"
+        th:text="#{linkedin.message}"/>
+    <attr sel="#linkedinButton"
+        th:href="@{__${@AppProperties.getLinkedinUrl()}__}"
+        th:text="#{linkedin.button.message}"/>
+
+    <!-- Footer -->
+    <attr sel="#footerCreatedBy"
+        th:replace="~{fragments/footer :: footerCreatedByFragment}"/>
+
+</thlogic>

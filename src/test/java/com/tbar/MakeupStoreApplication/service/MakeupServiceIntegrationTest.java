@@ -3,6 +3,7 @@ package com.tbar.MakeupStoreApplication.service;
 import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
+import com.tbar.MakeupStoreApplication.utility.AppProperties;
 import com.tbar.MakeupStoreApplication.utility.exceptions.errorHandlers.MakeupAPIErrorHandler;
 import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.APIConnectionException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ProductNotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
@@ -59,9 +61,16 @@ class MakeupServiceIntegrationTest {
     private SoloAPIConsumer soloAPIConsumer;
     private MultiAPIConsumer multiAPIConsumer;
     private MakeupService makeupService;
+    private AppProperties appProperties = new AppProperties();
 
     // === constructors ===
     MakeupServiceIntegrationTest() {
+        // initialize fields that are injected from properties file
+        ReflectionTestUtils.setField(appProperties, "makeupApiMultiBaseUri", STUB_BASE_URI.toString());
+        ReflectionTestUtils.setField(appProperties, "makeupApiSoloBaseUri", STUB_BASE_URI.toString());
+        ReflectionTestUtils.setField(appProperties, "makeupApiSoloUriSuffix", STUB_URI_SUFFIX);
+        ReflectionTestUtils.setField(appProperties, "makeupApiValidParameters", STUB_VALID_PARAMETERS.toArray(new String[0]));
+
         // Putting here just to ensure proper order of entries. If wasn't tests may occasionally crush.
         MAP_WITH_VALID_PARAMETERS.put(FIRST_ENTRY_KEY, FIRST_ENTRY_VALUE);
         MAP_WITH_VALID_PARAMETERS.put(SECOND_ENTRY_KEY, SECOND_ENTRY_VALUE);
@@ -81,7 +90,7 @@ class MakeupServiceIntegrationTest {
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         soloAPIConsumer = new SoloAPIConsumer(restTemplate);
         multiAPIConsumer = new MultiAPIConsumer(restTemplate);
-        makeupService = new MakeupServiceImpl(STUB_BASE_URI.toString(), STUB_BASE_URI.toString(), STUB_URI_SUFFIX, STUB_VALID_PARAMETERS.toArray(new String[2]), multiAPIConsumer, soloAPIConsumer);
+        makeupService = new MakeupServiceImpl(appProperties, multiAPIConsumer, soloAPIConsumer);
         EXPECTED_ITEM.setId(1000L);
 
         // initialize fields that are injected from properties file

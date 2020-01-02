@@ -3,6 +3,7 @@ package com.tbar.MakeupStoreApplication.service;
 import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
+import com.tbar.MakeupStoreApplication.utility.AppProperties;
 import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallClientSideException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallNotFoundException;
 import com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer.APICallServerSideException;
@@ -15,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.net.URI;
 import java.util.*;
@@ -50,9 +52,16 @@ class MakeupServiceImplTest {
     @Mock
     private MultiAPIConsumer multiSearchConsumerMock;
     private MakeupService makeupService;
+    private AppProperties appProperties = new AppProperties();
 
     // === constructors ===
     MakeupServiceImplTest() {
+        // initialize fields that are injected from properties file
+        ReflectionTestUtils.setField(appProperties, "makeupApiMultiBaseUri", STUB_BASE_URI.toString());
+        ReflectionTestUtils.setField(appProperties, "makeupApiSoloBaseUri", STUB_BASE_URI.toString());
+        ReflectionTestUtils.setField(appProperties, "makeupApiSoloUriSuffix", STUB_URI_SUFFIX);
+        ReflectionTestUtils.setField(appProperties, "makeupApiValidParameters", STUB_VALID_PARAMETERS.toArray(new String[0]));
+        
         // Putting here just to ensure proper order of entries. If wasn't tests may occasionally crush.
         MAP_WITH_VALID_PARAMETERS.put(FIRST_ENTRY_KEY, FIRST_ENTRY_VALUE);
         MAP_WITH_VALID_PARAMETERS.put(SECOND_ENTRY_KEY, SECOND_ENTRY_VALUE);
@@ -68,12 +77,7 @@ class MakeupServiceImplTest {
     // === initialization ===
     @BeforeEach
     void initialize() {
-        makeupService = new MakeupServiceImpl(STUB_BASE_URI.toString(), STUB_BASE_URI.toString(), STUB_URI_SUFFIX, STUB_VALID_PARAMETERS.toArray(new String[2]), multiSearchConsumerMock, soloSearchConsumerMock);
-        // initialize fields that are injected from properties file
-//        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
-//        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
-//        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
-//        ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
+        makeupService = new MakeupServiceImpl(appProperties, multiSearchConsumerMock, soloSearchConsumerMock);
     }
 
     // === tests ===
