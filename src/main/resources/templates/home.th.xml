@@ -1,16 +1,14 @@
 <thlogic>
     <!-- Head -->
-<!--    <attr sel="#headTemplate"-->
-<!--          th:replace="~{fragments/head :: headFragment}"/>-->
-    <attr sel="#appName"
-          th:text="${@AppProperties.getApplicationName()}"/>
+    <attr sel="#headTemplate"
+          th:replace="~{fragments/head :: headFragment}"/>
 
     <!-- Top header -->
-    <attr sel="#topHeader"
+    <attr sel="#topHeaderTemplate"
           th:replace="~{fragments/top-header :: topHeaderFragment}"/>
 
     <!-- Menu -->
-    <attr sel="#mainMenu"
+    <attr sel="#mainMenuTemplate"
           th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
 
     <!-- Products categories -->
@@ -45,8 +43,7 @@
           th:text="#{trendy.products}"/>
 
     <!-- Scripts -->
-    <attr sel="#languageVariableInit"
-          th:inline="javascript"
-          th:utext='|var currentLanguage = "${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).CURRENT_LANGUAGE}__}";
-                    var defaultLanguage = "${__${@AppProperties.getApplicationDefaultLanguage()}__}";|'/>
+    <attr sel="#scriptTemplate"
+          th:replace="~{fragments/script :: scriptFragment}"/>
+
 </thlogic>

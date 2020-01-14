@@ -1,0 +1,18 @@
+<thlogic>
+    <!-- Head -->
+    <attr sel="#headTemplate"
+          th:replace="~{fragments/head :: headFragment}"/>
+
+    <!-- Top header -->
+    <attr sel="#topHeaderTemplate"
+          th:replace="~{fragments/top-header :: topHeaderFragment}"/>
+
+    <!-- Menu -->
+    <attr sel="#mainMenuTemplate"
+          th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
+
+    <!-- Scripts -->
+    <attr sel="#scriptTemplate"
+          th:replace="~{fragments/script :: scriptFragment}"/>
+
+</thlogic>

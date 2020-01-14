@@ -30,6 +30,12 @@ public class HomeController {
         return ViewNames.HOME;
     }
 
+    @GetMapping("/" + AppMappings.SHOP)
+    public String shopPage(Model model) {
+        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+        return ViewNames.SHOP;
+    }
+
     @GetMapping("/" + AppMappings.ABOUT)
     public String aboutPage() {
         return ViewNames.ABOUT;

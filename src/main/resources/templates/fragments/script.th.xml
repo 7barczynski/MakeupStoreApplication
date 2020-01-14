@@ -1,0 +1,8 @@
+<thlogic>
+    <attr sel="#scriptFragment"
+          th:fragment="scriptFragment"/>
+    <attr sel="#languageVariableInit"
+          th:inline="javascript"
+          th:utext='|var currentLanguage = "${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).CURRENT_LANGUAGE}__}";
+                    var defaultLanguage = "${__${@AppProperties.getApplicationDefaultLanguage()}__}";|'/>
+</thlogic>

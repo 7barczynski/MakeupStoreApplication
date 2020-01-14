@@ -1,0 +1,6 @@
+<thlogic>
+    <attr sel="#headFragment"
+          th:fragment="headFragment"/>
+    <attr sel="#appName"
+          th:text="${@AppProperties.getApplicationName()}"/>
+</thlogic>
