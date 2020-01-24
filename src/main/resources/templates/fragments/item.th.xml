@@ -1,0 +1,10 @@
+<thlogic>
+    <attr sel="#itemFragment"
+          th:fragment="itemFragment"/>
+    <attr sel="#itemImage"
+          th:src="@{__${item.getImageLink()}__}"/>
+    <attr sel="#itemName"
+          th:text="${item.getName()}"/>
+    <attr sel="#itemPrice"
+          th:text="|$${item.getPrice()}|"/>
+</thlogic>

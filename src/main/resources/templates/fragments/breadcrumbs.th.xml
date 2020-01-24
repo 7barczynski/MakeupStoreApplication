@@ -1,0 +1,9 @@
+<thlogic>
+    <attr sel="#breadcrumbsFragment"
+          th:fragment="breadcrumbsFragment"/>
+    <attr sel="#pageName"
+          th:text="${pageName}"/>
+    <attr sel="#homeLink"
+          th:text="${homeName}"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).HOME}__}"/>
+</thlogic>

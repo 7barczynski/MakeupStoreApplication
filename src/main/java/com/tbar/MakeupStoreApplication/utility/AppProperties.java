@@ -19,6 +19,8 @@ public final class AppProperties {
     private String[] makeupApiValidParameters;
     private String applicationDefaultLanguage;
     private String[] applicationLanguagesList;
+    private int paginationNumbersSize;
+    private int paginationLeftOffset;
     private String phoneNumber;
     private String githubUrl;
     private String linkedinUrl;

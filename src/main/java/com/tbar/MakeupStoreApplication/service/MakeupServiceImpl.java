@@ -12,6 +12,9 @@ import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ProductNo
 import com.tbar.MakeupStoreApplication.utility.exceptions.serviceLayer.ServiceLayerException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -19,10 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -33,6 +35,8 @@ public class MakeupServiceImpl implements MakeupService {
     private final URI SOLO_BASE_URI;
     private final String SOLO_URI_SUFFIX;
     private final Set<String> VALID_PARAMETERS;
+    private final int PAGINATION_NUMBERS_SIZE;
+    private final int PAGINATION_LEFT_OFFSET;
 
     // === fields ===
     private final MultiAPIConsumer multiAPIConsumer;
@@ -45,11 +49,32 @@ public class MakeupServiceImpl implements MakeupService {
         this.SOLO_BASE_URI = URI.create(appProperties.getMakeupApiSoloBaseUri());
         this.SOLO_URI_SUFFIX = appProperties.getMakeupApiSoloUriSuffix();
         this.VALID_PARAMETERS = new HashSet<>(Set.of(appProperties.getMakeupApiValidParameters()));
+        this.PAGINATION_NUMBERS_SIZE = appProperties.getPaginationNumbersSize();
+        this.PAGINATION_LEFT_OFFSET = appProperties.getPaginationLeftOffset();
         this.multiAPIConsumer = multiAPIConsumer;
         this.soloAPIConsumer = soloAPIConsumer;
     }
 
     // === public methods ===
+    @Override
+    public Page<Item> getPaginatedProducts(@Nullable Map<String, String> parameters, int page, int size) throws ServiceLayerException {
+        List<Item> items = getProducts(parameters);
+        int currentPage = page-1;
+        int startItem = currentPage * size;
+        List<Item> itemsListOnPage;
+
+        // if there is no item to show return empty list
+        if (items.size() < startItem) {
+            itemsListOnPage = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + size, items.size());
+            itemsListOnPage = items.subList(startItem, toIndex);
+        }
+        log.debug("getPaginatedProducts method. currentPage = {}, startItem = {}, itemsListOnPage = {}", currentPage, startItem, itemsListOnPage);
+
+        return new PageImpl<>(itemsListOnPage, PageRequest.of(currentPage, size), items.size());
+    }
+
     @Override
     public List<Item> getProducts(@Nullable Map<String, String> parameters) throws ServiceLayerException {
         // get response and handle consumer layer exception
@@ -92,6 +117,40 @@ public class MakeupServiceImpl implements MakeupService {
         } else {
             throw new ProductNotFoundException(requestUri.toString(), id);
         }
+    }
+
+    @Override
+    public List<Integer> getPaginationNumbers(@NonNull Page<Item> itemsPage) {
+        List<Integer> paginationNumbers = null;
+        int totalPages = itemsPage.getTotalPages();
+
+        if (totalPages > 0 && itemsPage.getNumber() < totalPages) {
+            int firstNumber;
+            int lastNumber;
+            int currentPageMinusOffset = itemsPage.getNumber() - PAGINATION_LEFT_OFFSET + 1;
+            int totalPagesMinusSize = totalPages - PAGINATION_NUMBERS_SIZE + 1;
+            int offsetNumberPlusSize = currentPageMinusOffset + PAGINATION_NUMBERS_SIZE - 1;
+
+            // if current page number is lower than offset or there are less pages than max pagination size
+            if (currentPageMinusOffset <= 1 || totalPagesMinusSize <= 1) {
+                firstNumber = 1;
+                lastNumber = Math.min(PAGINATION_NUMBERS_SIZE, totalPages);
+            // if current page number is reaching end of a numbers list and offset should be disabled
+            } else if (offsetNumberPlusSize >= totalPages) {
+                firstNumber = totalPagesMinusSize;
+                lastNumber = totalPages;
+            } else {
+                firstNumber = currentPageMinusOffset;
+                lastNumber = offsetNumberPlusSize;
+            }
+
+            paginationNumbers = IntStream.rangeClosed(firstNumber, lastNumber)
+                    .boxed()
+                    .collect(Collectors.toList());
+        }
+        log.debug("getPaginationNumbers method. paginationNumbers = {}", paginationNumbers);
+
+        return paginationNumbers;
     }
 
     // === private methods ===
