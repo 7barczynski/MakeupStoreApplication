@@ -29,7 +29,7 @@
                     queryParamPage=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PAGE}"
           th:if="${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__.totalPages > 1}"/>
     <attr sel="#previousIconCondition"
-          th:if="${page.number > 0 && page.number < page.totalPages}"/>
+          th:if="${page.hasPrevious() && page.hasContent()}"/>
     <attr sel="#previousLink"
           th:href="@{__${shopMapping}__(__${queryParamPage}__=__${page.number}__)}"/>
     <attr sel="#paginationList"
@@ -38,7 +38,7 @@
           th:text="${pageNumber}"
           th:class="${pageNumber==page.number + 1} ? active"/>
     <attr sel="#nextIconCondition"
-          th:if="${page.number+1 < page.totalPages}"/>
+          th:if="${page.hasNext() && page.hasContent()}"/>
     <attr sel="#nextLink"
           th:href="@{__${shopMapping}__(__${queryParamPage}__=__${page.number+2}__)}"/>
 

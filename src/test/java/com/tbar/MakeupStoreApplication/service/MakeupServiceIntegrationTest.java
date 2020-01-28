@@ -92,17 +92,9 @@ class MakeupServiceIntegrationTest {
         multiAPIConsumer = new MultiAPIConsumer(restTemplate);
         makeupService = new MakeupServiceImpl(appProperties, multiAPIConsumer, soloAPIConsumer);
         EXPECTED_ITEM.setId(1000L);
-
-        // initialize fields that are injected from properties file
-//        ReflectionTestUtils.setField(makeupService, "multiBaseUri", STUB_BASE_URI);
-//        ReflectionTestUtils.setField(makeupService, "soloBaseUri", STUB_BASE_URI);
-//        ReflectionTestUtils.setField(makeupService, "soloUriSuffix", STUB_URI_SUFFIX);
-//        ReflectionTestUtils.setField(makeupService, "validParameters", STUB_VALID_PARAMETERS);
     }
 
-    // === tests ===
-        // === getProducts method ===
-            // === proper behaviour ===
+    // === getProducts method ===
     @Test
     void given_mapOfValidParameters_when_getProducts_return_listOfItems() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(URI_WITH_TWO_PARAMETERS))
@@ -158,7 +150,6 @@ class MakeupServiceIntegrationTest {
         assertEquals(EXPECTED_LIST, actualList);
     }
 
-            // === errors ===
     @Test
     void given_APIRespondWithNotFoundStatus_when_getProducts_throw_ProductNotFoundException() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(URI_WITH_TWO_PARAMETERS))
@@ -204,7 +195,7 @@ class MakeupServiceIntegrationTest {
         assertThrows(ProductNotFoundException.class, () -> makeupService.getProducts(MAP_WITH_VALID_PARAMETERS));
     }
 
-        // === getProduct method ===
+    // === getProduct method ===
     @Test
     void given_validId_when_getProduct_return_Item() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(URI_WITH_ID_PATH))

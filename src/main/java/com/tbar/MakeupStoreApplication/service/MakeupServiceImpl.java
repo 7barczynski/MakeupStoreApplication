@@ -63,7 +63,7 @@ public class MakeupServiceImpl implements MakeupService {
         int startItem = currentPage * size;
         List<Item> itemsListOnPage;
 
-        // if there is no item to show return empty list
+        // if there is no item to show send foward an empty list
         if (items.size() < startItem) {
             itemsListOnPage = Collections.emptyList();
         } else {
@@ -124,7 +124,7 @@ public class MakeupServiceImpl implements MakeupService {
         List<Integer> paginationNumbers = null;
         int totalPages = itemsPage.getTotalPages();
 
-        if (totalPages > 0 && itemsPage.getNumber() < totalPages) {
+        if (totalPages > 1 && itemsPage.getNumber() < totalPages) {
             int firstNumber;
             int lastNumber;
             int currentPageMinusOffset = itemsPage.getNumber() - PAGINATION_LEFT_OFFSET + 1;
