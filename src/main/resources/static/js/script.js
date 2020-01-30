@@ -256,15 +256,14 @@
         // if the url hasn't got any parameters
         } else location.replace(url + "?" + LOCALE + selectedValue);
     }
-//
-//    $('form').submit(function()
-//    {
-//        var values = [];
-//
-//        $(this).find('input[type='checkbox'][name='id']:checked').each(function()
-//    {
-//    values.push(this.value);
-//    });
-//
-//    window.location = 'localhost:8080/index/shop?id=' + values.join(',');
-//    });
+
+    /*
+    * This function disable empty inputs in a form to clear URL from unused parameters.
+    * It is used on filter panel in shop view.
+    */
+    function disableEmptyInputs(form) {
+      var controls = form.elements;
+      for (var i=0; i<controls.length; i++) {
+        controls[i].disabled = controls[i].value == "" || controls[i].value == "-";
+      }
+    }

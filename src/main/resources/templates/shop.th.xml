@@ -16,6 +16,40 @@
     <attr sel="#breadcrumbsTemplate"
           th:replace="~{fragments/breadcrumbs :: breadcrumbsFragment(pageName=#{shop.name}, homeName=#{home.name})}"/>
 
+    <!-- Filter -->
+    <attr sel="#filter"
+          th:attr="action=@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+    <attr sel="#typeName"
+          th:text="#{type.name}"/>
+    <attr sel="#typeForEach"
+          th:each="type : ${@AppProperties.getProductTypeList()}"
+          th:text="#{__${type}__.name}"
+          th:attr="value=${type}"/>
+    <attr sel="#categoryName"
+          th:text="#{category.name}"/>
+    <attr sel="#categoryForEach"
+          th:each="category : ${@AppProperties.getProductCategoryList()}"
+          th:text="#{__${category}__.name}"
+          th:attr="value=${category}"/>
+    <attr sel="#brandName"
+          th:text="#{brand.name}"/>
+    <attr sel="#brandForEach"
+          th:each="brand : ${@AppProperties.getBrandList()}"
+          th:text="${#strings.capitalize(brand)}"
+          th:attr="value=${brand}"/>
+    <attr sel="#tagsName"
+          th:text="#{tags.name}"/>
+    <attr sel="#tagsForEach"
+          th:each="tag : ${@AppProperties.getProductTagsList()}"
+          th:text="#{__${tag}__.name}"
+          th:attr="value=${tag}"/>
+    <attr sel="#priceName"
+          th:text="#{price.name}"/>
+    <attr sel="#ratingName"
+          th:text="#{rating.name}"/>
+    <attr sel="#filterName"
+          th:text="#{filter.name}"/>
+
     <!-- Product List -->
     <attr sel="#itemList"
           th:each="item : ${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__}"/>

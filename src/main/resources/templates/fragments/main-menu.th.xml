@@ -50,13 +50,13 @@
           th:text="#{lipstick.name}"/>
     <attr sel="#liplinerLink"
           th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
-          th:text="#{lipliner.name}"/>
+          th:text="#{lip_liner.name}"/>
     <attr sel="#nailsLink"
           th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
           th:text="#{nails.name}"/>
     <attr sel="#nailPolishLink"
           th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
-          th:text="#{nail.polish.name}"/>
+          th:text="#{nail_polish.name}"/>
     <attr sel="#menuShopImage"
           th:src="@{__${@AppProperties.getMenuShopImageUrl()}__}"/>
 </thlogic>

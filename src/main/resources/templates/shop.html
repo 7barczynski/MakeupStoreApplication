@@ -17,84 +17,58 @@
 <!-- Breadcrumbs -->
 <section id="breadcrumbsTemplate"></section>
 
-
+<!-- Products -->
 <section class="products section">
 	<div class="container">
 		<div class="row">
+			<!-- Filter -->
 			<div class="col-md-3">
-				<div class="widget">
-					<h4 class="widget-title">Short By</h4>
-					<form method="post" action="#">
-                        <select class="form-control">
-                            <option>Man</option>
-                            <option>Women</option>
-                            <option>Accessories</option>
-                            <option>Shoes</option>
-                        </select>
-                    </form>
-	            </div>
-				<div class="widget product-category">
-					<h4 class="widget-title">Categories</h4>
-					<div class="panel-group commonAccordion" id="accordion" role="tablist" aria-multiselectable="true">
-					  	<div class="panel panel-default">
-						    <div class="panel-heading" role="tab" id="headingOne">
-						      	<h4 class="panel-title">
-						        	<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-						          	Shoes
-						        	</a>
-						      	</h4>
-						    </div>
-					    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-							<div class="panel-body">
-								<ul>
-									<li><a href="">Brand & Twist</a></li>
-									<li><a href="">Shoe Color</a></li>
-									<li><a href="">Shoe Color</a></li>
-								</ul>
-							</div>
-					    </div>
-					  </div>
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="headingTwo">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-					         	Duty Wear
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-					    	<div class="panel-body">
-					     		<ul>
-									<li><a href="">Brand & Twist</a></li>
-									<li><a href="">Shoe Color</a></li>
-									<li><a href="">Shoe Color</a></li>
-								</ul>
-					    	</div>
-					    </div>
-					  </div>
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="headingThree">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-					          	WorkOut Shoes
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-					    	<div class="panel-body">
-					      		<ul>
-									<li><a href="">Brand & Twist</a></li>
-									<li><a href="">Shoe Color</a></li>
-									<li><a href="">Gladian Shoes</a></li>
-									<li><a href="">Swis Shoes</a></li>
-								</ul>
-					    	</div>
-					    </div>
-					  </div>
+				<form id="filter" onsubmit="disableEmptyInputs(this)">
+					<div class="form-group">
+						<label id="typeName" for="typeList">Type PH</label>
+						<select class="form-control" id="typeList" name="product_type">
+							<option>-</option>
+							<option id="typeForEach"></option>
+						</select>
 					</div>
-					
-				</div>
+					<div class="form-group">
+						<label id="categoryName" for="categoryList">Category PH</label>
+						<select class="form-control" id="categoryList" name="product_category">
+							<option>-</option>
+							<option id="categoryForEach"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label id="brandName" for="brandList">Brand PH</label>
+						<select class="form-control" id="brandList" name="brand">
+							<option>-</option>
+							<option id="brandForEach"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label id="tagsName" for="tagsList">Tags PH</label>
+						<select multiple class="form-control" id="tagsList" name="product_tags">
+							<option id="tagsForEach"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label id="priceName" for="price">Price</label>
+						<input type="number" class="form-control" id="price" placeholder="Min" name="price_greater_than">
+					</div>
+					<div class="form-group">
+						<input type="number" class="form-control" id="price" placeholder="Max" name="price_less_than">
+					</div>
+					<div class="form-group">
+						<label id="ratingName" for="rating">Rating</label>
+						<input type="number" class="form-control" id="rating" placeholder="Min" name="rating_greater_than">
+					</div>
+					<div class="form-group">
+						<input type="number" class="form-control" id="rating" placeholder="Max" name="rating_less_than">
+					</div>
+					<button id="filterName" type="submit" class="btn btn-default">Filter PH</button>
+				</form>
 			</div>
+			<!-- Item list -->
 			<div class="col-md-9">
 				<div class="row">
 					<div id="itemList">
@@ -120,11 +94,6 @@
 		</div>
 	</div>
 </section>
-
-
-
-
-
 
 <footer class="footer section text-center">
 	<div class="container">
