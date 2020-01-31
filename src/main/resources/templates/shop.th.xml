@@ -51,18 +51,27 @@
           th:text="#{filter.name}"/>
 
     <!-- Product List -->
-    <attr sel="#itemList"
+    <attr sel="#itemListSwitch"
+          th:switch="${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__}"/>
+    <attr sel="#itemsNullCase"
+          th:case="null"/>
+    <attr sel="#notFoundId"
+          th:text="#{product.not.found}"/>
+    <attr sel="#itemsDefaultCase"
+          th:case="*"/>
+    <attr sel="#itemsForEach"
           th:each="item : ${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__}"/>
     <attr sel="#itemTemplate"
           th:replace="~{fragments/item :: itemFragment(item=${item})}"/>
 
     <!-- Pagination -->
     <attr sel="#paginationCondition"
+          th:if="${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__ != null and
+            __${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__.totalPages > 1}"
           th:with="page=${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__},
                     shopMapping=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP},
                     queryParamPage=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PAGE},
-                    urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
-          th:if="${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__.totalPages > 1}"/>
+                    urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"/>
     <attr sel="#previousIconCondition"
           th:if="${page.hasPrevious() && page.hasContent()}"/>
     <attr sel="#previousLink"

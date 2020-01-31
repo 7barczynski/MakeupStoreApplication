@@ -70,9 +70,16 @@
 			</div>
 			<!-- Item list -->
 			<div class="col-md-9">
-				<div class="row">
-					<div id="itemList">
-						<div id="itemTemplate"></div>
+				<div id="itemListSwitch" class="row">
+					<div id="itemsNullCase">
+						<div class="alert-part">
+							<div class="alert alert-warning alert-common" role="alert"><i class="tf-ion-alert-circled"></i><span id="notFoundId">Products have not been found!</span></div>
+						</div>
+					</div>
+					<div id="itemsDefaultCase">
+						<div id="itemsForEach">
+							<div id="itemTemplate"></div>
+						</div>
 					</div>
 				</div>
 				<div class="text-center">
