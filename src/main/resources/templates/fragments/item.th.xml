@@ -4,6 +4,7 @@
     <attr sel="#itemImage"
           th:src="@{__${item.getImageLink()}__}"/>
     <attr sel="#itemName"
+          th:href="@{/__${item.getId()}__}"
           th:text="${item.getName()}"/>
     <attr sel="#itemPrice"
           th:text="|$${item.getPrice()}|"/>
