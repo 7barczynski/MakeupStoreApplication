@@ -11,51 +11,54 @@
           th:text="#{about.name}"/>
 
     <!-- Shop -->
+    <attr sel="#varInit"
+          th:with="shopMapping=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP},
+                    product_type=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
     <attr sel="#shopLink"
           th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#shopName"
           th:text="|#{shop.name} |"/>
     <attr sel="#faceLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = foundation)}"
           th:text="#{face.name}"/>
     <attr sel="#blushLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = blush)}"
           th:text="#{blush.name}"/>
     <attr sel="#bronzerLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = bronzer)}"
           th:text="#{bronzer.name}"/>
     <attr sel="#foundationLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = foundation)}"
           th:text="#{foundation.name}"/>
     <attr sel="#eyesLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = eyeshadow)}"
           th:text="#{eyes.name}"/>
     <attr sel="#eyebrowLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = eyebrow)}"
           th:text="#{eyebrow.name}"/>
     <attr sel="#eyelinerLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = eyeliner)}"
           th:text="#{eyeliner.name}"/>
     <attr sel="#eyeshadowLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = eyeshadow)}"
           th:text="#{eyeshadow.name}"/>
     <attr sel="#mascaraLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = mascara)}"
           th:text="#{mascara.name}"/>
     <attr sel="#lipsLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = lipstick)}"
           th:text="#{lips.name}"/>
     <attr sel="#lipstickLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = lipstick)}"
           th:text="#{lipstick.name}"/>
     <attr sel="#liplinerLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = lip_liner)}"
           th:text="#{lip_liner.name}"/>
     <attr sel="#nailsLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = nail_polish)}"
           th:text="#{nails.name}"/>
     <attr sel="#nailPolishLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"
+          th:href="@{__${shopMapping}__(__${product_type}__ = nail_polish)}"
           th:text="#{nail_polish.name}"/>
     <attr sel="#menuShopImage"
           th:src="@{__${@AppProperties.getMenuShopImageUrl()}__}"/>

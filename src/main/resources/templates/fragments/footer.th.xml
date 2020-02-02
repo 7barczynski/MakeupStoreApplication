@@ -1,6 +1,6 @@
 <thlogic>
-    <attr sel="#footerCreatedBy"
-        th:fragment="footerCreatedByFragment"/>
+    <attr sel="#footerFragment"
+        th:fragment="footerFragment"/>
     <attr sel="#footerCreatedByMessage"
         th:text="|#{createdBy.message} 7omasz8|"/>
 </thlogic>

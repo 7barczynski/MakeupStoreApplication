@@ -26,44 +26,44 @@
 				<form id="filter" onsubmit="disableEmptyInputs(this)">
 					<div class="form-group">
 						<label id="typeName" for="typeList">Type PH</label>
-						<select class="form-control" id="typeList" name="product_type">
+						<select class="form-control" id="typeList">
 							<option>-</option>
 							<option id="typeForEach"></option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label id="categoryName" for="categoryList">Category PH</label>
-						<select class="form-control" id="categoryList" name="product_category">
+						<select class="form-control" id="categoryList">
 							<option>-</option>
 							<option id="categoryForEach"></option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label id="brandName" for="brandList">Brand PH</label>
-						<select class="form-control" id="brandList" name="brand">
+						<select class="form-control" id="brandList">
 							<option>-</option>
 							<option id="brandForEach"></option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label id="tagsName" for="tagsList">Tags PH</label>
-						<select multiple class="form-control" id="tagsList" name="product_tags">
+						<select multiple class="form-control" id="tagsList">
 							<option id="tagsForEach"></option>
 						</select>
 					</div>
 					<div class="form-group">
-						<label id="priceName" for="price">Price</label>
-						<input type="number" class="form-control" id="price" placeholder="Min" name="price_greater_than">
+		 				<label id="priceName">Price</label>
+						<input type="number" class="form-control" id="priceGreater" placeholder="Min">
 					</div>
 					<div class="form-group">
-						<input type="number" class="form-control" id="price" placeholder="Max" name="price_less_than">
+						<input type="number" class="form-control" id="priceLess" placeholder="Max">
 					</div>
 					<div class="form-group">
-						<label id="ratingName" for="rating">Rating</label>
-						<input type="number" class="form-control" id="rating" placeholder="Min" name="rating_greater_than">
+						<label id="ratingName">Rating</label>
+						<input type="number" class="form-control" id="ratingGreater" placeholder="Min">
 					</div>
 					<div class="form-group">
-						<input type="number" class="form-control" id="rating" placeholder="Max" name="rating_less_than">
+						<input type="number" class="form-control" id="ratingLess" placeholder="Max">
 					</div>
 					<button id="filterName" type="submit" class="btn btn-default">Filter PH</button>
 				</form>
@@ -102,51 +102,7 @@
 	</div>
 </section>
 
-<footer class="footer section text-center">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<ul class="social-media">
-					<li>
-						<a href="">
-							<i class="tf-ion-social-facebook"></i>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<i class="tf-ion-social-instagram"></i>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<i class="tf-ion-social-twitter"></i>
-						</a>
-					</li>
-					<li>
-						<a href="">
-							<i class="tf-ion-social-pinterest"></i>
-						</a>
-					</li>
-				</ul>
-				<ul class="footer-menu">
-					<li>
-						<a href="">CONTACT</a>
-					</li>
-					<li>
-						<a href="">SHIPPING</a>
-					</li>
-					<li>
-						<a href="">TERMS OF SERVICE</a>
-					</li>
-					<li>
-						<a href="">PRIVACY POLICY</a>
-					</li>
-				</ul>
-				<p class="copyright-text">Powered by Bootstrap</p>
-			</div>
-		</div>
-	</div>
-</footer>
+<footer id="footerTemplate"></footer>
 
 <div id="scriptTemplate"></div>
 

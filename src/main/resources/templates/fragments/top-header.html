@@ -12,7 +12,6 @@
             <div class="col-md-4 col-xs-12 col-sm-4">
                 <!-- Site Logo -->
                 <div class="logo text-center">
-<!--                    TODO ten link musi prowadzić zawsze do czystego home.html-->
                     <a id="logoLink">
                         <img id="topLogo" src="" alt="App logo PH"/>
                     </a>
@@ -21,60 +20,6 @@
             <div class="col-md-4 col-xs-12 col-sm-4">
                 <!-- Cart -->
                 <ul class="top-menu text-right list-inline">
-                    <li class="dropdown cart-nav dropdown-slide">
-                        <a id="cartLink" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i class="tf-ion-android-cart"></i><span id="cartName">Cart PH</span></a>
-                        <div class="dropdown-menu cart-dropdown">
-                            <!--					TODO itemy w cart'cie to cięższa sprawa, naucz się jak generować kod html w thymeleaf? Trzeba będzie zrobić 4 htmle (pusty, z jednym itemem, dwoma i więcej). Albo skrypt w JS-->
-                            <!-- Cart Item -->
-                            <div class="media">
-                                <a class="pull-left" href="#">
-                                    <img  class="media-object" src="images/shop/cart-1.jpg" alt="image" />
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="">Gentlemens Bag</a></h4>
-                                    <div class="cart-price">
-                                        <span>1 x</span>
-                                        <span>1250.00</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="remove"><i class="tf-ion-close"></i></a>
-                            </div><!-- / Cart Item -->
-                            <!-- Cart Item -->
-                            <div class="media">
-                                <a class="pull-left" href="#">
-                                    <img  class="media-object" src="images/shop/cart-1.jpg" alt="image" />
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading"><a href="">Ladies Bag</a></h4>
-                                    <div class="cart-price">
-                                        <span>1 x</span>
-                                        <span>1250.00</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="remove"><i class="tf-ion-close"></i></a>
-                            </div><!-- / Cart Item -->
-
-                            <div class="cart-summary">
-                                <span id="totalName">Total PH</span>
-                                <!--						TODO cena całego koszyka-->
-                                <span class="total-price">$1799.00</span>
-                            </div>
-                            <ul class="text-center cart-buttons">
-                                <li><a id="viewCartLink" class="btn btn-small">View Cart PH</a></li>
-                                <li><a id="checkoutLink" class="btn btn-small btn-solid-border">Checkout PH</a></li>
-                            </ul>
-                        </div>
-
-                    </li><!-- / Cart -->
-
-                    <!-- Search -->
-                    <li class="dropdown search dropdown-slide">
-                        <span class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i class="tf-ion-ios-search-strong"></i><span id="searchName"> Search PH</span></span>
-                        <ul class="dropdown-menu search-dropdown">
-                            <li><form action="post"><input id="searchPlaceholder" type="search" class="form-control"></form></li>
-                        </ul>
-                    </li><!-- / Search -->
-
                     <!-- Languages -->
                     <li class="commonSelect">
                         <!-- This is language switcher with hard-coded language codes and shortcuts -->

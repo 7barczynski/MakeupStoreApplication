@@ -12,13 +12,16 @@
           th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
 
     <!-- Products categories -->
+    <attr sel="#varInit"
+          th:with="shopMapping=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP},
+                    product_type=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
     <attr sel="#productCategoriesHead"
           th:text="#{product.categories.name}"/>
     <attr sel="#viewProductsName"
           th:text="#{view.products.name}"/>
 
     <attr sel="#eyesCategoryLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+          th:href="@{__${shopMapping}__(__${product_type}__ = eyeshadow)}"/>
     <attr sel="#eyesCategoryImage"
           th:src="@{__${@AppProperties.getEyesImageUrl()}__}"/>
     <attr sel="#eyesName"
@@ -27,20 +30,23 @@
     <attr sel="#lipsCategoryImage"
           th:src="@{__${@AppProperties.getLipsImageUrl()}__}"/>
     <attr sel="#lipsCategoryLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+          th:href="@{__${shopMapping}__(__${product_type}__ = lipstick)}"/>
     <attr sel="#lipsName"
           th:text="#{lips.name}"/>
 
     <attr sel="#faceCategoryImage"
           th:src="@{__${@AppProperties.getFaceImageUrl()}__}"/>
     <attr sel="#faceCategoryLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+          th:href="@{__${shopMapping}__(__${product_type}__ = foundation)}"/>
     <attr sel="#faceName"
           th:text="#{face.name}"/>
 
     <!-- Trendy Products -->
     <attr sel="#trendyProducts"
           th:text="#{trendy.products}"/>
+
+    <attr sel="#footerTemplate"
+          th:replace="~{fragments/footer :: footerFragment}"/>
 
     <!-- Scripts -->
     <attr sel="#scriptTemplate"

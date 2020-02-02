@@ -28,7 +28,7 @@
         th:text="#{linkedin.button.message}"/>
 
     <!-- Footer -->
-    <attr sel="#footerCreatedBy"
-        th:replace="~{fragments/footer :: footerCreatedByFragment}"/>
+    <attr sel="#footerTemplate"
+        th:replace="~{fragments/footer :: footerFragment}"/>
 
 </thlogic>

@@ -2579,3 +2579,14 @@ input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focu
   background-color: #ddd;
   border-radius: 5px;
 }
+
+footer {
+  background: #FFF;
+  padding: 30px 0;
+}
+
+footer p {
+  color: #000;
+  font-weight: 400;
+  margin-bottom: 0;
+}

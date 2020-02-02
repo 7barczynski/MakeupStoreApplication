@@ -21,32 +21,48 @@
           th:attr="action=@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#typeName"
           th:text="#{type.name}"/>
+    <attr sel="#typeList"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
     <attr sel="#typeForEach"
           th:each="type : ${@AppProperties.getProductTypeList()}"
           th:text="#{__${type}__.name}"
           th:attr="value=${type}"/>
     <attr sel="#categoryName"
           th:text="#{category.name}"/>
+    <attr sel="#categoryList"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"/>
     <attr sel="#categoryForEach"
           th:each="category : ${@AppProperties.getProductCategoryList()}"
           th:text="#{__${category}__.name}"
           th:attr="value=${category}"/>
     <attr sel="#brandName"
           th:text="#{brand.name}"/>
+    <attr sel="#brandList"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_BRAND}"/>
     <attr sel="#brandForEach"
           th:each="brand : ${@AppProperties.getBrandList()}"
           th:text="${#strings.capitalize(brand)}"
           th:attr="value=${brand}"/>
     <attr sel="#tagsName"
           th:text="#{tags.name}"/>
+    <attr sel="#tagsList"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"/>
     <attr sel="#tagsForEach"
           th:each="tag : ${@AppProperties.getProductTagsList()}"
           th:text="#{__${tag}__.name}"
           th:attr="value=${tag}"/>
     <attr sel="#priceName"
           th:text="#{price.name}"/>
+    <attr sel="#priceGreater"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRICE_GREATER_THAN}"/>
+    <attr sel="#priceLess"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRICE_LESS_THAN}"/>
     <attr sel="#ratingName"
           th:text="#{rating.name}"/>
+    <attr sel="#ratingGreater"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_RATING_GREATER_THAN}"/>
+    <attr sel="#ratingLess"
+          th:attr="name=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_RATING_LESS_THAN}"/>
     <attr sel="#filterName"
           th:text="#{filter.name}"/>
 
@@ -67,9 +83,8 @@
     <!-- Pagination -->
     <attr sel="#paginationCondition"
           th:if="${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__ != null and
-            __${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__.totalPages > 1}"
+                    __${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__.totalPages > 1}"
           th:with="page=${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEMS_PAGE_LIST}__},
-                    shopMapping=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP},
                     queryParamPage=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PAGE},
                     urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"/>
     <attr sel="#previousIconCondition"
@@ -86,6 +101,9 @@
     <attr sel="#nextLink"
           th:href="${urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${page.number+2}__').toUriString()}"/>
 
+    <!-- Footer -->
+    <attr sel="#footerTemplate"
+          th:replace="~{fragments/footer :: footerFragment}"/>
 
     <!-- Scripts -->
     <attr sel="#scriptTemplate"
