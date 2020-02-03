@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,5 +50,15 @@ public class ShopController {
         model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
 
         return ViewNames.SHOP;
+    }
+
+    @GetMapping("/{id}")
+    public String productSinglePage(Model model, @PathVariable("id") long id) {
+
+        Item item = makeupService.getProduct(id);
+        model.addAttribute(AttributeNames.ITEM_SINGLE, item);
+        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+
+        return ViewNames.PRODUCT_SINGLE;
     }
 }

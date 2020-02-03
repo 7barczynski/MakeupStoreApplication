@@ -17,21 +17,24 @@
           th:replace="~{fragments/breadcrumbs :: breadcrumbsFragment(pageName=#{shop.name}, homeName=#{home.name})}"/>
 
     <!-- Product -->
+    <attr sel="#varInit"
+          th:with="item = ${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEM_SINGLE}__}"/>
     <attr sel="#productImage"
-          th:src="@{${itemSingle.getImageLink()}}"/>
+          th:src="@{${item.getImageLink()}}"/>
     <attr sel="#productName"
-          th:text="${itemSingle.getName()}"/>
+          th:text="${item.getName()}"/>
     <attr sel="#productPrice"
-          th:text="${itemSingle.getPrice()}"/>
+          th:text="${item.getPriceSign()} + ${item.getPrice()}"/>
     <attr sel="#productDescription"
-          th:text="${itemSingle.getDescription()}"/>
+          th:text="${item.getDescription()}"/>
     <attr sel="#colorCondition"
-          th:if="${itemSingle.getProductColors().length != 0}"/>
+          th:if="${item.getProductColors().length != 0}"/>
     <attr sel="#colorName"
           th:text="|#{color.name}:|"/>
     <attr sel="#colorForEach"
-          th:each="color : ${itemSingle.getProductColors()}"/>
+          th:each="color : ${item.getProductColors()}"/>
     <attr sel="#colorHex"
+          th:title="${color.getColorName()}"
           th:style="'background-color: ' + ${color.getHexValue()} + ';'"/>
 
     <!-- Footer -->
