@@ -7,6 +7,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * This iterceptor logs every request that is handled by application.
+ */
 @Slf4j
 public class LoggerInterceptor implements HandlerInterceptor {
 

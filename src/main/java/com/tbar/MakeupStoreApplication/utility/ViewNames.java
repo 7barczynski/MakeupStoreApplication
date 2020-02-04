@@ -1,5 +1,8 @@
 package com.tbar.MakeupStoreApplication.utility;
 
+/**
+ * Class of constants that contain names of views, usually html files.
+ */
 public final class ViewNames {
 
     // === constants ===

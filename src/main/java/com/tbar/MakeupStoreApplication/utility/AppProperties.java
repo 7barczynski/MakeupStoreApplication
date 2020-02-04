@@ -5,6 +5,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+/**
+ * Class of values that are initialized in properties file, neccessary for the application to run.
+ */
 @Component(value = "AppProperties")
 @ConfigurationProperties(prefix = "properties")
 @Getter

@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
+/**
+ * This controller is responsible for connecting "shop" view (list of many makeup items) and
+ * "product-single" view (details about one makeup item) with service data.
+ */
+
 @Controller
 @Slf4j
 @RequestMapping("/" + AppMappings.SHOP)

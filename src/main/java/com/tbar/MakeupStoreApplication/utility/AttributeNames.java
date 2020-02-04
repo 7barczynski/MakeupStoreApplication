@@ -1,5 +1,8 @@
 package com.tbar.MakeupStoreApplication.utility;
 
+/**
+ * Class of constants values that contain names of attributes send in model to a view.
+ */
 public final class AttributeNames {
 
     // === constants ===

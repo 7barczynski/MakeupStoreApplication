@@ -1,5 +1,8 @@
 package com.tbar.MakeupStoreApplication.utility;
 
+/**
+ * Class of constants values that contain names of request's paths and names of query parameters.
+ */
 public final class AppMappings {
 
     // === constants ===
