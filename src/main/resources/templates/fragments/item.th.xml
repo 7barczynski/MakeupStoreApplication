@@ -1,6 +1,8 @@
 <thlogic>
     <attr sel="#itemFragment"
           th:fragment="itemFragment"/>
+    <attr sel="#productSingleLink"
+          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__/__${item.getId()}__}"/>
     <attr sel="#itemImage"
           th:src="@{__${item.getImageLink()}__}"/>
     <attr sel="#itemName"
