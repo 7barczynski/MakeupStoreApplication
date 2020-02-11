@@ -33,6 +33,7 @@ public final class AppProperties {
     private String eyesImageUrl;
     private String lipsImageUrl;
     private String faceImageUrl;
+    private String noPhotoImageUrl;
     private String[] productTypeList;
     private String[] productCategoryList;
     private String[] brandList;

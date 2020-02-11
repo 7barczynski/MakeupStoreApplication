@@ -4,10 +4,11 @@
     <attr sel="#productSingleLink"
           th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__/__${item.getId()}__}"/>
     <attr sel="#itemImage"
-          th:src="@{__${item.getImageLink()}__}"/>
+          th:src="${item.getImageLink()}"
+          th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
     <attr sel="#itemName"
           th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__/__${item.getId()}__}"
           th:text="${item.getName()}"/>
     <attr sel="#itemPrice"
-          th:text="${item.getPriceSign()} + ${item.getPrice()}"/>
+          th:text="${(item.getPriceSign() ?: '') + (item.getPrice() ?: '')}"/>
 </thlogic>
