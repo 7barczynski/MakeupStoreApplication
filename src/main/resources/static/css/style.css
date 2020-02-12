@@ -1300,7 +1300,7 @@ input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focu
 }
 
 .single-product {
-  padding: 60px 0 40px;
+  padding: 10px 0 40px;
 }
 
 .single-product .breadcrumb {
@@ -2597,4 +2597,10 @@ footer p {
   text-align: center;
   width: auto;
   height: 80px;
+}
+
+.single-product #productImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }

@@ -20,11 +20,12 @@
     <attr sel="#varInit"
           th:with="item = ${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEM_SINGLE}__}"/>
     <attr sel="#productImage"
-          th:src="@{${item.getImageLink()}}"/>
+          th:src="${item.getImageLink()}"
+          th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
     <attr sel="#productName"
           th:text="${item.getName()}"/>
     <attr sel="#productPrice"
-          th:text="${item.getPriceSign()} + ${item.getPrice()}"/>
+          th:text="${(item.getPriceSign() ?: '') + (item.getPrice() ?: '')}"/>
     <attr sel="#productDescription"
           th:text="${item.getDescription()}"/>
     <attr sel="#colorCondition"
