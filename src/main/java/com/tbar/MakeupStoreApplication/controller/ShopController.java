@@ -49,6 +49,8 @@ public class ShopController {
             model.addAttribute(AttributeNames.PAGINATION_NUMBERS_LIST, makeupService.getPaginationNumbers(itemsPage));
         } catch (ProductNotFoundException e) {
             log.debug("ProductNotFoundException." + e.getMessage());
+
+            // nie powinno się przechwytywać wyjątków
         }
 
         model.addAttribute(AttributeNames.ITEMS_PAGE_LIST, itemsPage);
