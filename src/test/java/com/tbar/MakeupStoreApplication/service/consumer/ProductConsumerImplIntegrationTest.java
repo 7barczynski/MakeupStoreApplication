@@ -29,7 +29,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 
 @RestClientTest
-class APIConsumerImplIntegrationTest {
+class ProductConsumerImplIntegrationTest {
 
 
     // === constants ===
@@ -44,7 +44,7 @@ class APIConsumerImplIntegrationTest {
     private MockRestServiceServer mockRestServiceServer;
     private RestTemplate restTemplate;
     private SoloAPIConsumer soloAPIConsumer;
-    private MultiAPIConsumer multiAPIConsumer;
+    private ProductProductConsumer productAPIConsumer;
     private ResponseEntity<Item> expectedSoloResponse;
     private ResponseEntity<List<Item>> expectedMultiResponse;
     private Item expectedItem = new Item();
@@ -55,7 +55,7 @@ class APIConsumerImplIntegrationTest {
         restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         soloAPIConsumer = new SoloAPIConsumer(restTemplate);
-        multiAPIConsumer = new MultiAPIConsumer(restTemplate);
+        productAPIConsumer = new ProductProductConsumer(restTemplate);
         expectedItem.setId(1000L);
         expectedSoloResponse = new ResponseEntity<>(expectedItem, HttpStatus.OK);
         expectedMultiResponse = new ResponseEntity<>(new ArrayList<>(List.of(expectedItem)), HttpStatus.OK);
@@ -80,7 +80,7 @@ class APIConsumerImplIntegrationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(EXPECTED_MULTI_JSON_RESPONSE, MediaType.APPLICATION_JSON));
 
-        ResponseEntity<List<Item>> actualResponse = multiAPIConsumer.requestData(URI.create(EXAMPLE_URI));
+        ResponseEntity<List<Item>> actualResponse = productAPIConsumer.requestData(URI.create(EXAMPLE_URI));
 
         assertEquals(expectedMultiResponse.getBody(), actualResponse.getBody());
         assertEquals(expectedMultiResponse.getStatusCode(), actualResponse.getStatusCode());
@@ -101,7 +101,7 @@ class APIConsumerImplIntegrationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.SERVICE_UNAVAILABLE));
 
-        assertThrows(APICallServerSideException.class, ()-> multiAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
+        assertThrows(APICallServerSideException.class, ()-> productAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
     }
 
     @Test
@@ -119,7 +119,7 @@ class APIConsumerImplIntegrationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.BAD_REQUEST));
 
-        assertThrows(APICallClientSideException.class, ()-> multiAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
+        assertThrows(APICallClientSideException.class, ()-> productAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
     }
 
     @Test
@@ -137,6 +137,6 @@ class APIConsumerImplIntegrationTest {
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.NOT_FOUND));
 
-        assertThrows(APICallNotFoundException.class, ()-> multiAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
+        assertThrows(APICallNotFoundException.class, ()-> productAPIConsumer.requestData(URI.create(EXAMPLE_URI)));
     }
 }

@@ -1,6 +1,6 @@
 package com.tbar.MakeupStoreApplication.service;
 
-import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
+import com.tbar.MakeupStoreApplication.service.consumer.ProductProductConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
 import com.tbar.MakeupStoreApplication.utility.AppProperties;
@@ -59,7 +59,7 @@ class MakeupServiceIntegrationTest {
     private RestTemplate restTemplate;
     private MockRestServiceServer mockRestServiceServer;
     private SoloAPIConsumer soloAPIConsumer;
-    private MultiAPIConsumer multiAPIConsumer;
+    private ProductProductConsumer productAPIConsumer;
     private MakeupService makeupService;
     private AppProperties appProperties = new AppProperties();
 
@@ -89,8 +89,8 @@ class MakeupServiceIntegrationTest {
         restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         soloAPIConsumer = new SoloAPIConsumer(restTemplate);
-        multiAPIConsumer = new MultiAPIConsumer(restTemplate);
-        makeupService = new MakeupServiceImpl(appProperties, multiAPIConsumer, soloAPIConsumer);
+        productAPIConsumer = new ProductProductConsumer(restTemplate);
+        makeupService = new MakeupServiceImpl(appProperties, productAPIConsumer, soloAPIConsumer);
         EXPECTED_ITEM.setId(1000L);
     }
 

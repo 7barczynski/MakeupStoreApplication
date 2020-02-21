@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class APIConsumerImplTest {
+class ProductConsumerImplTest {
 
     // === constants ===
     private final ResponseEntity<List<Item>> EXPECTED_RESPONSE_FOR_MULTI = new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
@@ -33,7 +33,7 @@ class APIConsumerImplTest {
     @Mock
     private RestTemplate restTemplate;
     @InjectMocks
-    private MultiAPIConsumer multiAPIConsumer;
+    private ProductProductConsumer productAPIConsumer;
     @InjectMocks
     private SoloAPIConsumer soloAPIConsumer;
 
@@ -47,7 +47,7 @@ class APIConsumerImplTest {
                 ArgumentMatchers.<ParameterizedTypeReference<List<Item>>>any()
         )).thenReturn(EXPECTED_RESPONSE_FOR_MULTI);
 
-        ResponseEntity<List<Item>> actualResponse = multiAPIConsumer.requestData(EXAMPLE_URI);
+        ResponseEntity<List<Item>> actualResponse = productAPIConsumer.requestData(EXAMPLE_URI);
 
         assertEquals(EXPECTED_RESPONSE_FOR_MULTI, actualResponse);
     }

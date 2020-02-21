@@ -1,6 +1,6 @@
 package com.tbar.MakeupStoreApplication.service;
 
-import com.tbar.MakeupStoreApplication.service.consumer.MultiAPIConsumer;
+import com.tbar.MakeupStoreApplication.service.consumer.ProductProductConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.SoloAPIConsumer;
 import com.tbar.MakeupStoreApplication.service.consumer.model.Item;
 import com.tbar.MakeupStoreApplication.utility.AppProperties;
@@ -91,7 +91,7 @@ class MakeupServiceImplTest {
     @Mock
     private SoloAPIConsumer soloSearchConsumerMock;
     @Mock
-    private MultiAPIConsumer multiSearchConsumerMock;
+    private ProductProductConsumer multiSearchConsumerMock;
     private MakeupService makeupService;
     private AppProperties appProperties = new AppProperties();
 

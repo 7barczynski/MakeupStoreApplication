@@ -5,11 +5,12 @@ package com.tbar.MakeupStoreApplication.utility.exceptions.consumerLayer;
  *
  * @author 7oamsz8
  */
-public class APICallException extends RuntimeException {
+//dlaczego to jest RuntimeException?
+public class APICallException extends Exception {
 
-    // === constructors ===
-    APICallException(String message) {
-        super(message);
-    }
+  // === constructors ===
+  APICallException(String message) {
+    super(message);
+  }
 
 }
