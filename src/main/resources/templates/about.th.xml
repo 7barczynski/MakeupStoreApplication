@@ -9,7 +9,7 @@
     <attr sel="#mainMessage"
         th:text="#{about.main.message}"/>
     <attr sel="#goToIndex"
-        th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).HOME}__}"
+        th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).HOME}__}"
         th:text="#{about.enter.app}"/>
 
     <!-- Part with self-promotion links and icons -->

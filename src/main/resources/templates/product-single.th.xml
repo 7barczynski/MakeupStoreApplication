@@ -18,7 +18,7 @@
 
     <!-- Product -->
     <attr sel="#varInit"
-          th:with="item = ${__${T(com.tbar.MakeupStoreApplication.utility.AttributeNames).ITEM_SINGLE}__}"/>
+          th:with="item = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEM_SINGLE}__}"/>
     <attr sel="#productImage"
           th:src="${item.getImageLink()}"
           th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>

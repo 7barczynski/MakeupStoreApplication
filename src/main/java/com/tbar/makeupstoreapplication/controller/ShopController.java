@@ -1,0 +1,69 @@
+package com.tbar.makeupstoreapplication.controller;
+
+import com.tbar.makeupstoreapplication.service.MakeupService;
+import com.tbar.makeupstoreapplication.service.consumer.model.Item;
+import com.tbar.makeupstoreapplication.utility.AppMappings;
+import com.tbar.makeupstoreapplication.utility.AttributeNames;
+import com.tbar.makeupstoreapplication.utility.ViewNames;
+import com.tbar.makeupstoreapplication.utility.exceptions.servicelayer.ProductNotFoundException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
+
+/**
+ * This controller is responsible for connecting "shop" view (list of many makeup items) and
+ * "product-single" view (details about one makeup item) with service data.
+ */
+
+@Controller
+@Slf4j
+@RequestMapping("/" + AppMappings.SHOP)
+public class ShopController {
+
+    // === fields ===
+    private final MakeupService makeupService;
+
+    // === constructors ===
+    @Autowired
+    public ShopController(MakeupService makeupService) {
+        this.makeupService = makeupService;
+    }
+
+    @GetMapping
+    public String shopPage(Model model, @RequestParam(required = false) Map<String, String> allParams,
+                           @RequestParam(defaultValue = "1", name = AppMappings.QUERY_PARAM_PAGE) int page,
+                           @RequestParam(defaultValue = "9") int size) {
+
+        Page<Item> itemsPage = null;
+        try {
+            itemsPage = makeupService.getPaginatedProducts(allParams, page, size);
+            model.addAttribute(AttributeNames.PAGINATION_NUMBERS_LIST, makeupService.getPaginationNumbers(itemsPage));
+        } catch (ProductNotFoundException e) {
+            log.debug("ProductNotFoundException." + e.getMessage());
+        }
+
+        model.addAttribute(AttributeNames.ITEMS_PAGE_LIST, itemsPage);
+        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+
+        return ViewNames.SHOP;
+    }
+
+    @GetMapping("/{id}")
+    public String productSinglePage(Model model, @PathVariable("id") long id) {
+
+        Item item = makeupService.getProduct(id);
+        model.addAttribute(AttributeNames.ITEM_SINGLE, item);
+        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+
+        return ViewNames.PRODUCT_SINGLE;
+    }
+}

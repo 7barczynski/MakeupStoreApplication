@@ -3,19 +3,19 @@
           th:fragment="mainMenuFragment"/>
 
     <attr sel="#homeLink"
-          th:href="@{__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).HOME}__}"
+          th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).HOME}__}"
           th:text="#{home.name}"/>
 
     <attr sel="#aboutLink"
-          th:href="@{/__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).ABOUT}__}"
+          th:href="@{/__${T(com.tbar.makeupstoreapplication.utility.AppMappings).ABOUT}__}"
           th:text="#{about.name}"/>
 
     <!-- Shop -->
     <attr sel="#varInit"
-          th:with="shopMapping=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP},
-                    product_type=${T(com.tbar.MakeupStoreApplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
+          th:with="shopMapping=${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP},
+                    product_type=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
     <attr sel="#shopLink"
-          th:href="@{/__${T(com.tbar.MakeupStoreApplication.utility.AppMappings).SHOP}__}"/>
+          th:href="@{/__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#shopName"
           th:text="|#{shop.name} |"/>
     <attr sel="#faceLink"
