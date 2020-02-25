@@ -25,14 +25,14 @@
 
 .hero-area .block {
   position: relative;
-  top: -2vh;
+  top: 2vh;
   z-index: 999999;
 }
 
 .hero-area h1 {
   font-size: 7vw;
   font-weight: 700;
-  margin-bottom: 1vw;
+  padding-bottom: 20px;
   max-width: 85%;
   margin: auto;
 }
@@ -42,6 +42,7 @@
   margin: auto;
   font-size: 2vw;
   line-height: 3vw;
+  padding-bottom: 20px;
   color: #f9f9f9;
 }
 
