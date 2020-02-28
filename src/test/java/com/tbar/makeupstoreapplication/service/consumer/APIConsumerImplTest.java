@@ -1,6 +1,7 @@
 package com.tbar.makeupstoreapplication.service.consumer;
 
 import com.tbar.makeupstoreapplication.service.consumer.model.Item;
+import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -25,39 +26,39 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class APIConsumerImplTest {
 
-    // === constants ===
-    private final ResponseEntity<List<Item>> EXPECTED_RESPONSE_FOR_MULTI = new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-    private final ResponseEntity<Item> EXPECTED_RESPONSE_FOR_SOLO = new ResponseEntity<>(new Item(), HttpStatus.OK);
-    private final URI EXAMPLE_URI = URI.create("http://www.example.com");
-    // === fields ===
     @Mock
     private RestTemplate restTemplate;
     @InjectMocks
-    private MultiAPIConsumer multiAPIConsumer;
-    @InjectMocks
-    private SoloAPIConsumer soloAPIConsumer;
+    private MakeupAPIConsumer makeupAPIConsumer;
+    private final List<Item> expectedCollectionResponse = new ArrayList<>(List.of(new Item()));
+    private final Item expectedSingleObjectResponse = new Item();
+    private final URI exampleUrl = URI.create("http://www.example.com");
 
-    // === tests ===
     @Test
-    void given_uri_when_requestDataInMultiAPIConsumer_return_ResponseEntity() {
-        when(restTemplate.exchange(
-                eq(EXAMPLE_URI),
-                eq(HttpMethod.GET),
-                isNull(),
-                ArgumentMatchers.<ParameterizedTypeReference<List<Item>>>any()
-        )).thenReturn(EXPECTED_RESPONSE_FOR_MULTI);
-
-        ResponseEntity<List<Item>> actualResponse = multiAPIConsumer.requestData(EXAMPLE_URI);
-
-        assertEquals(EXPECTED_RESPONSE_FOR_MULTI, actualResponse);
+    void given_uri_when_requestCollection_return_collectionOfItems() throws APICallException {
+        setupMockRestTemplateResponseForCollection();
+        List<Item> actualResponse = makeupAPIConsumer.requestCollection(exampleUrl);
+        assertEquals(expectedCollectionResponse, actualResponse);
     }
 
     @Test
-    void given_uri_when_requestDataInSoloAPIConsumer_return_ResponseEntity() {
-        when(restTemplate.getForEntity(eq(EXAMPLE_URI), eq(Item.class))).thenReturn(EXPECTED_RESPONSE_FOR_SOLO);
+    void given_uri_when_requestSingleObject_return_item() throws APICallException {
+        setupMockRestTemplateResponseForSingleObject();
+        Item actualResponse = makeupAPIConsumer.requestSingleObject(exampleUrl);
+        assertEquals(expectedSingleObjectResponse, actualResponse);
+    }
 
-        ResponseEntity<Item> actualResponse = soloAPIConsumer.requestData(EXAMPLE_URI);
+    private void setupMockRestTemplateResponseForCollection() {
+        when(restTemplate.exchange(
+                eq(exampleUrl),
+                eq(HttpMethod.GET),
+                isNull(),
+                ArgumentMatchers.<ParameterizedTypeReference<List<Item>>>any()
+        )).thenReturn(new ResponseEntity<>(expectedCollectionResponse, HttpStatus.OK));
+    }
 
-        assertEquals(EXPECTED_RESPONSE_FOR_SOLO, actualResponse);
+    private void setupMockRestTemplateResponseForSingleObject() {
+        when(restTemplate.getForEntity(eq(exampleUrl), eq(Item.class)))
+                .thenReturn(new ResponseEntity<>(expectedSingleObjectResponse, HttpStatus.OK));
     }
 }

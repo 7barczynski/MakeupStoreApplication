@@ -1,9 +1,7 @@
 package com.tbar.makeupstoreapplication.errorHandlers;
 
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallClientSideException;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallServerSideException;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallNotFoundException;
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
+import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,51 +21,35 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest
 class MakeupAPIErrorHandlerTest {
 
-    // === constants ===
-    private final String EXAMPLE_URI = "http://www.example.com";
-
-    // === fields ===
     @Autowired
     private RestTemplateBuilder restTemplateBuilder;
     private MockRestServiceServer mockRestServiceServer;
     private RestTemplate restTemplate;
+    private final String exampleUrl = "http://www.example.com";
 
-    // === initialization ===
     @BeforeEach
     void init() {
         restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
 
-    // === tests ===
     @Test
-    void given_httpRequest_when_serverSideError_throw_APICallServerSideException() {
-        this.mockRestServiceServer.expect(ExpectedCount.once(), requestTo(EXAMPLE_URI))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.SERVICE_UNAVAILABLE));
-
-        assertThrows(APICallServerSideException.class,() -> restTemplate.getForEntity(EXAMPLE_URI, null));
-        this.mockRestServiceServer.verify();
+    void given_httpRequest_when_serverSideError_throw_APICallException() {
+        setupMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
+        assertThrows(APICallException.class,() -> restTemplate.getForEntity(exampleUrl, null));
+        mockRestServiceServer.verify();
     }
 
     @Test
-    void given_httpRequest_when_404Error_throw_ProductNotFoundException() {
-        this.mockRestServiceServer.expect(ExpectedCount.once(), requestTo(EXAMPLE_URI))
-                .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.NOT_FOUND));
-
-        assertThrows(APICallNotFoundException.class,() -> restTemplate.getForEntity(EXAMPLE_URI, null));
-        this.mockRestServiceServer.verify();
+    void given_httpRequest_when_clientSideError_throw_APICallException() {
+        setupMockServerResponse(HttpStatus.BAD_REQUEST);
+        assertThrows(APICallException.class,() -> restTemplate.getForEntity(exampleUrl, null));
+        mockRestServiceServer.verify();
     }
 
-    @Test
-    void given_httpRequest_when_clientSideError_throw_APICallClientSideException() {
-        this.mockRestServiceServer.expect(ExpectedCount.once(), requestTo(EXAMPLE_URI))
+    private void setupMockServerResponse(HttpStatus httpStatus) {
+        mockRestServiceServer.expect(ExpectedCount.once(), requestTo(exampleUrl))
                 .andExpect(method(HttpMethod.GET))
-                .andRespond(withStatus(HttpStatus.BAD_REQUEST));
-
-        assertThrows(APICallClientSideException.class,() -> restTemplate.getForEntity(EXAMPLE_URI, null));
-        this.mockRestServiceServer.verify();
+                .andRespond(withStatus(httpStatus));
     }
-
 }

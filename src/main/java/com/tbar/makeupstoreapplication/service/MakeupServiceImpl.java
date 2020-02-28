@@ -1,12 +1,9 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.service.consumer.MultiAPIConsumer;
-import com.tbar.makeupstoreapplication.service.consumer.SoloAPIConsumer;
+import com.tbar.makeupstoreapplication.service.consumer.MakeupAPIConsumer;
 import com.tbar.makeupstoreapplication.service.consumer.model.Item;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallClientSideException;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallNotFoundException;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallServerSideException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
 import com.tbar.makeupstoreapplication.utility.exceptions.servicelayer.APIConnectionException;
 import com.tbar.makeupstoreapplication.utility.exceptions.servicelayer.ProductNotFoundException;
 import com.tbar.makeupstoreapplication.utility.exceptions.servicelayer.ServiceLayerException;
@@ -15,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -31,28 +27,26 @@ import java.util.stream.IntStream;
 public class MakeupServiceImpl implements MakeupService {
 
     // === constants ===
-    private final URI MULTI_BASE_URI;
-    private final URI SOLO_BASE_URI;
-    private final String SOLO_URI_SUFFIX;
-    private final Set<String> VALID_PARAMETERS;
-    private final int PAGINATION_NUMBERS_SIZE;
-    private final int PAGINATION_LEFT_OFFSET;
+    private final URI baseUriForCollection;
+    private final URI baseUriForSingleObject;
+    private final String singleObjectiUriSuffix;
+    private final Set<String> validParameters;
+    private final int paginationNumbersSize;
+    private final int paginationLeftOffset;
 
     // === fields ===
-    private final MultiAPIConsumer multiAPIConsumer;
-    private final SoloAPIConsumer soloAPIConsumer;
+    private final MakeupAPIConsumer makeupAPIConsumer;
 
     // === constructors ===
     @Autowired
-    public MakeupServiceImpl(AppProperties appProperties, MultiAPIConsumer multiAPIConsumer, SoloAPIConsumer soloAPIConsumer) {
-        this.MULTI_BASE_URI = URI.create(appProperties.getMakeupApiMultiBaseUri());
-        this.SOLO_BASE_URI = URI.create(appProperties.getMakeupApiSoloBaseUri());
-        this.SOLO_URI_SUFFIX = appProperties.getMakeupApiSoloUriSuffix();
-        this.VALID_PARAMETERS = new HashSet<>(Set.of(appProperties.getMakeupApiValidParameters()));
-        this.PAGINATION_NUMBERS_SIZE = appProperties.getPaginationNumbersSize();
-        this.PAGINATION_LEFT_OFFSET = appProperties.getPaginationLeftOffset();
-        this.multiAPIConsumer = multiAPIConsumer;
-        this.soloAPIConsumer = soloAPIConsumer;
+    public MakeupServiceImpl(AppProperties appProperties, MakeupAPIConsumer makeupAPIConsumer) {
+        this.baseUriForCollection = URI.create(appProperties.getMakeupApiBaseUriForCollection());
+        this.baseUriForSingleObject = URI.create(appProperties.getMakeupApiBaseUriForSingleObject());
+        this.singleObjectiUriSuffix = appProperties.getMakeupApiSingleObjectUriSuffix();
+        this.validParameters = new HashSet<>(Set.of(appProperties.getMakeupApiValidParameters()));
+        this.paginationNumbersSize = appProperties.getPaginationNumbersSize();
+        this.paginationLeftOffset = appProperties.getPaginationLeftOffset();
+        this.makeupAPIConsumer = makeupAPIConsumer;
     }
 
     // === public methods ===
@@ -79,19 +73,17 @@ public class MakeupServiceImpl implements MakeupService {
     public List<Item> getProducts(@Nullable Map<String, String> parameters) throws ServiceLayerException {
         // get response and handle consumer layer exception
         URI requestUri = buildUri(parameters);
-        ResponseEntity<List<Item>> response;
+        List<Item> response;
         try {
-            response = multiAPIConsumer.requestData(requestUri);
-        } catch (APICallNotFoundException e) {
-            throw new ProductNotFoundException(requestUri.toString(), parameters);
-        } catch (APICallClientSideException | APICallServerSideException e) {
+            response = makeupAPIConsumer.requestCollection(requestUri);
+        } catch (APICallException e) {
             throw new APIConnectionException(requestUri.toString(), parameters);
         }
         log.debug("getProducts method. URI = {}, ResponseEntity = {}", requestUri, response);
 
         // check if response body is not null and empty then return body
-        if (response.getBody() != null && !response.getBody().isEmpty()) {
-            return response.getBody();
+        if (response != null && !response.isEmpty()) {
+            return response;
         } else {
             throw new ProductNotFoundException(requestUri.toString(), parameters);
         }
@@ -101,19 +93,17 @@ public class MakeupServiceImpl implements MakeupService {
     public Item getProduct(@NonNull Long id) throws ServiceLayerException {
         // get response and handle consumer layer exception
         URI requestUri = buildUri(id);
-        ResponseEntity<Item> response;
+        Item response;
         try {
-            response = soloAPIConsumer.requestData(requestUri);
-        } catch (APICallNotFoundException e) {
-            throw new ProductNotFoundException(requestUri.toString(), id);
-        } catch (APICallClientSideException | APICallServerSideException e) {
+            response = makeupAPIConsumer.requestSingleObject(requestUri);
+        } catch (APICallException e) {
             throw new APIConnectionException(requestUri.toString(), id);
         }
         log.debug("getProduct method. URI = {}, ResponseEntity = {}", requestUri, response);
 
         // check if response body is not null then return body
-        if (response.getBody() != null) {
-            return response.getBody();
+        if (response != null) {
+            return response;
         } else {
             throw new ProductNotFoundException(requestUri.toString(), id);
         }
@@ -127,14 +117,14 @@ public class MakeupServiceImpl implements MakeupService {
         if (totalPages > 1 && itemsPage.getNumber() < totalPages) {
             int firstNumber;
             int lastNumber;
-            int currentPageMinusOffset = itemsPage.getNumber() - PAGINATION_LEFT_OFFSET + 1;
-            int totalPagesMinusSize = totalPages - PAGINATION_NUMBERS_SIZE + 1;
-            int offsetNumberPlusSize = currentPageMinusOffset + PAGINATION_NUMBERS_SIZE - 1;
+            int currentPageMinusOffset = itemsPage.getNumber() - paginationLeftOffset + 1;
+            int totalPagesMinusSize = totalPages - paginationNumbersSize + 1;
+            int offsetNumberPlusSize = currentPageMinusOffset + paginationNumbersSize - 1;
 
             // if current page number is lower than offset or there are less pages than max pagination size
             if (currentPageMinusOffset <= 1 || totalPagesMinusSize <= 1) {
                 firstNumber = 1;
-                lastNumber = Math.min(PAGINATION_NUMBERS_SIZE, totalPages);
+                lastNumber = Math.min(paginationNumbersSize, totalPages);
             // if current page number is reaching end of a numbers list and offset should be disabled
             } else if (offsetNumberPlusSize >= totalPages) {
                 firstNumber = totalPagesMinusSize;
@@ -164,11 +154,11 @@ public class MakeupServiceImpl implements MakeupService {
      * @return {@code URI} build with valid (or all) query parameters.
      */
     private URI buildUri(@Nullable Map<String, String> parameters) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(MULTI_BASE_URI);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(baseUriForCollection);
         if (parameters != null) {
             // loop through arguments parameters to find and add valid ones
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
-                if (VALID_PARAMETERS.contains(entry.getKey())) {
+                if (validParameters.contains(entry.getKey())) {
                     uriBuilder.queryParam(entry.getKey(), entry.getValue());
                 }
             }
@@ -184,9 +174,9 @@ public class MakeupServiceImpl implements MakeupService {
      * @return {@code URI} build with id in path
      */
     private URI buildUri(@NonNull Long id) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(SOLO_BASE_URI);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(baseUriForSingleObject);
 
-        uriBuilder.path(id + SOLO_URI_SUFFIX);
+        uriBuilder.path(id + singleObjectiUriSuffix);
 
         log.debug("Entered buildUri method with id = {}; Build URI = {}", id, uriBuilder.build());
         return uriBuilder.build().toUri();

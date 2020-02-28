@@ -8,10 +8,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Color {
 
-    // === fields ===
     @JsonAlias(value = "hex_value")
     private String hexValue;
     @JsonAlias(value = "colour_name")
     private String colorName;
-
 }

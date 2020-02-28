@@ -11,7 +11,6 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class AppConfiguration {
 
-    // === beans ===
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         RestTemplate restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();

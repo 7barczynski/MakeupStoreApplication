@@ -5,20 +5,16 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-/**
- * Class of values that are initialized in properties file, neccessary for the application to run.
- */
 @Component(value = "AppProperties")
 @ConfigurationProperties(prefix = "properties")
 @Getter
 @Setter
 public final class AppProperties {
 
-    // === fields ===
     private String applicationName;
-    private String makeupApiMultiBaseUri;
-    private String makeupApiSoloBaseUri;
-    private String makeupApiSoloUriSuffix;
+    private String makeupApiBaseUriForCollection;
+    private String makeupApiBaseUriForSingleObject;
+    private String makeupApiSingleObjectUriSuffix;
     private String[] makeupApiValidParameters;
     private String applicationDefaultLanguage;
     private String[] applicationLanguagesList;

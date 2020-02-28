@@ -20,26 +20,22 @@ import java.util.Locale;
 @Slf4j
 public class WebConfig implements WebMvcConfigurer {
 
-    // === fields ===
     private final AppProperties appProperties;
 
-    // === constructors ===
     @Autowired
     public WebConfig(AppProperties appProperties) {
         this.appProperties = appProperties;
     }
 
-    // === bean methods ===
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        // Setting default language
-        sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(appProperties.getApplicationDefaultLanguage()));
-        log.debug("Setting default language of an application. Default language code = {}", appProperties.getApplicationDefaultLanguage());
+        String defaultLanguage = appProperties.getApplicationDefaultLanguage();
+        sessionLocaleResolver.setDefaultLocale(Locale.forLanguageTag(defaultLanguage));
+        log.debug("Setting default language of an application. Default language code = {}", defaultLanguage);
         return sessionLocaleResolver;
     }
 
-    // === configuration methods ===
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName(ViewNames.HOME);

@@ -1,49 +1,43 @@
 package com.tbar.makeupstoreapplication.utility.errorhandlers;
 
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallClientSideException;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallNotFoundException;
-import com.tbar.makeupstoreapplication.utility.exceptions.consumerlayer.APICallServerSideException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Scanner;
 
-import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
-import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
-
-/**
- * This error handler is designed to check and throw appropriate exception on:
- * <ul>
- *     <li>server side errors</li>
- *     <li>client side errors (except 404 error)</li>
- *     <li>404 (NOT_FOUND) error</li>
- * </ul>
- *
- * @author 7omasz8
- */
 @Slf4j
 @Component
 public class MakeupAPIErrorHandler implements ResponseErrorHandler {
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
-        return (response.getStatusCode().series() == CLIENT_ERROR
-                || response.getStatusCode().series() == SERVER_ERROR);
+        return response.getStatusCode().isError();
     }
 
     @Override
     public void handleError(ClientHttpResponse response) throws IOException {
-        log.debug("Handling response error from MakeupAPI. Response status code = {}", response.getStatusCode());
-        if (response.getStatusCode().series() == HttpStatus.Series.SERVER_ERROR) {
-            throw new APICallServerSideException(response.getStatusCode().value());
-        } else if (response.getStatusCode().series() == HttpStatus.Series.CLIENT_ERROR) {
-            if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new APICallNotFoundException();
-            } else {
-                throw new APICallClientSideException(response.getStatusCode().value());
-            }
-        }
+        String responseAsString = toString(response.getStatusCode(), response.getBody());
+        log.error("Response status and body = {}", responseAsString);
+        throw new APICallException(responseAsString);
+    }
+
+    @Override
+    public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
+        String responseAsString = toString(response.getStatusCode(), response.getBody());
+        log.error("URL = {}, HttpMetthod = {}, Response status and body = {}", url, method, responseAsString);
+        throw new APICallException(url, method, responseAsString);
+    }
+
+    private String toString(HttpStatus httpStatus, InputStream responseBody) {
+        String statusCode = httpStatus.toString();
+        Scanner scanner = new Scanner(responseBody).useDelimiter("\\A");
+        return statusCode + "; " + (scanner.hasNext() ? scanner.next() : "");
     }
 }

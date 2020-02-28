@@ -8,7 +8,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Item {
 
-    // === fields ===
     private Long id;
     private String brand;
     private String name;
@@ -40,8 +39,8 @@ public class Item {
     @JsonAlias(value = "product_colors")
     private Color[] productColors;
 
-//    @Override
-//    public String toString() {
-//        return String.format("[ID:%d; Name:%s;Price:%s]", getId(), getName(), getPrice());
-//    }
+    @Override
+    public String toString() {
+        return String.format("[ID:%d; Name:%s;Price:%s]", getId(), getName(), getPrice());
+    }
 }
