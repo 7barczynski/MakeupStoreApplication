@@ -29,7 +29,10 @@ public class MakeupAPIConsumer implements APIConsumer<Item> {
     @Override
      public Item requestSingleObject(@NonNull URI uri) throws APICallException {
         ResponseEntity<Item> response = restTemplate.getForEntity(uri, Item.class);
-        logResponse(response.getStatusCode(), uri, response.getBody().toString());
+        if (response.getBody() == null) {
+            return null;
+        }
+        logResponse(response.getStatusCode(), uri, response.getBody());
         return response.getBody();
     }
 
@@ -37,11 +40,11 @@ public class MakeupAPIConsumer implements APIConsumer<Item> {
     public List<Item> requestCollection(@NonNull URI uri) throws APICallException {
         ResponseEntity<List<Item>> response;
         response = restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
-        logResponse(response.getStatusCode(), uri, response.getBody().toString());
+        logResponse(response.getStatusCode(), uri, response.getBody());
         return response.getBody();
     }
 
-    private void logResponse(HttpStatus statusCode, URI uri, String body) {
+    private void logResponse(HttpStatus statusCode, URI uri, Object body) {
         log.debug("Response taken from external API. Status code = {}; URI = {}; Body = {}",
                 statusCode, uri, body);
     }
