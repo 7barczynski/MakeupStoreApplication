@@ -12,14 +12,15 @@ import org.springframework.stereotype.Component;
 public final class AppProperties {
 
     private String applicationName;
-    private String makeupApiBaseUriForCollection;
-    private String makeupApiBaseUriForSingleObject;
+    private String makeupApiUriForCollection;
+    private String makeupApiUriForSingleObject;
     private String makeupApiSingleObjectUriSuffix;
     private String[] makeupApiValidParameters;
     private String applicationDefaultLanguage;
     private String[] applicationLanguagesList;
     private int paginationNumbersSize;
     private int paginationLeftOffset;
+    private int pageItemListSize;
     private String phoneNumber;
     private String githubUrl;
     private String linkedinUrl;

@@ -1,6 +1,6 @@
 package com.tbar.makeupstoreapplication.utility.errorhandlers;
 
-import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -25,14 +25,14 @@ public class MakeupAPIErrorHandler implements ResponseErrorHandler {
     public void handleError(ClientHttpResponse response) throws IOException {
         String responseAsString = toString(response.getStatusCode(), response.getBody());
         log.error("Response status and body = {}", responseAsString);
-        throw new APICallException(responseAsString);
+        throw new APIConnectionException(responseAsString);
     }
 
     @Override
     public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
         String responseAsString = toString(response.getStatusCode(), response.getBody());
         log.error("URL = {}, HttpMetthod = {}, Response status and body = {}", url, method, responseAsString);
-        throw new APICallException(url, method, responseAsString);
+        throw new APIConnectionException(url, method, responseAsString);
     }
 
     private String toString(HttpStatus httpStatus, InputStream responseBody) {

@@ -1,7 +1,7 @@
 package com.tbar.makeupstoreapplication.service.consumer;
 
 import com.tbar.makeupstoreapplication.service.consumer.model.Item;
-import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -35,14 +35,14 @@ class APIConsumerImplTest {
     private final URI exampleUrl = URI.create("http://www.example.com");
 
     @Test
-    void given_uri_when_requestCollection_return_collectionOfItems() throws APICallException {
+    void given_uri_when_requestCollection_return_collectionOfItems() throws APIConnectionException {
         setupMockRestTemplateResponseForCollection();
         List<Item> actualResponse = makeupAPIConsumer.requestCollection(exampleUrl);
         assertEquals(expectedCollectionResponse, actualResponse);
     }
 
     @Test
-    void given_uri_when_requestSingleObject_return_item() throws APICallException {
+    void given_uri_when_requestSingleObject_return_item() throws APIConnectionException {
         setupMockRestTemplateResponseForSingleObject();
         Item actualResponse = makeupAPIConsumer.requestSingleObject(exampleUrl);
         assertEquals(expectedSingleObjectResponse, actualResponse);

@@ -1,7 +1,7 @@
 package com.tbar.makeupstoreapplication.service.consumer;
 
 import com.tbar.makeupstoreapplication.service.consumer.model.Item;
-import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,7 +27,7 @@ public class MakeupAPIConsumer implements APIConsumer<Item> {
     }
 
     @Override
-     public Item requestSingleObject(@NonNull URI uri) throws APICallException {
+     public Item requestSingleObject(@NonNull URI uri) throws APIConnectionException {
         ResponseEntity<Item> response = restTemplate.getForEntity(uri, Item.class);
         if (response.getBody() == null) {
             return null;
@@ -37,7 +37,7 @@ public class MakeupAPIConsumer implements APIConsumer<Item> {
     }
 
     @Override
-    public List<Item> requestCollection(@NonNull URI uri) throws APICallException {
+    public List<Item> requestCollection(@NonNull URI uri) throws APIConnectionException {
         ResponseEntity<List<Item>> response;
         response = restTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
         logResponse(response.getStatusCode(), uri, response.getBody());

@@ -1,13 +1,15 @@
-package com.tbar.makeupstoreapplication.utility.exceptions.servicelayer;
+package com.tbar.makeupstoreapplication.utility.exceptions;
 
 import java.util.Map;
 
-public class ProductNotFoundException extends ServiceLayerException {
+public class ProductNotFoundException extends Exception {
 
-    // === constants ===
-    private static final String MESSAGE = "Product cannot be found.";
+    private static final String MESSAGE = "Product cannot be found in external API.";
 
-    // === constructors ===
+    public ProductNotFoundException() {
+        super(MESSAGE);
+    }
+
     public ProductNotFoundException(String requestUri, Map<String, String> parameters) {
         super(MESSAGE + " Request URI = " + requestUri + ", parameters = " + parameters);
     }

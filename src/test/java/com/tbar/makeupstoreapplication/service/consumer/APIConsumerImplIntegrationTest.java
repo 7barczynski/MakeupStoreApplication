@@ -2,7 +2,7 @@ package com.tbar.makeupstoreapplication.service.consumer;
 
 import com.tbar.makeupstoreapplication.service.consumer.model.Item;
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
-import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ class APIConsumerImplIntegrationTest {
     }
 
     @Test
-    void given_successfulApiCall_when_requestSingleObject_return_item() throws APICallException {
+    void given_successfulApiCall_when_requestSingleObject_return_item() throws APIConnectionException {
         setupSuccessfulMockServerResponse(expectedSingleObjectJsonResponse);
         Item actualResponse = makeupAPIConsumer.requestSingleObject(exampleUri);
         assertEquals(expectedSingleObjectResponse, actualResponse);
@@ -60,7 +60,7 @@ class APIConsumerImplIntegrationTest {
     }
 
     @Test
-    void given_successfulApiCall_when_requestCollection_return_collectionOfItems() throws APICallException {
+    void given_successfulApiCall_when_requestCollection_return_collectionOfItems() throws APIConnectionException {
         setupSuccessfulMockServerResponse(expectedCollectionJsonResponse);
         List<Item> actualResponse = makeupAPIConsumer.requestCollection(exampleUri);
         assertEquals(expectedCollectionResponse, actualResponse);
@@ -68,30 +68,30 @@ class APIConsumerImplIntegrationTest {
     }
 
     @Test
-    void given_apiCallServerError_when_requestSingleObject_throw_APICallException() {
+    void given_apiCallServerError_when_requestSingleObject_throw_APIConnectionException() {
         setupErrorMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
-        assertThrows(APICallException.class, ()-> makeupAPIConsumer.requestSingleObject(exampleUri));
+        assertThrows(APIConnectionException.class, ()-> makeupAPIConsumer.requestSingleObject(exampleUri));
         mockRestServiceServer.verify();
     }
 
     @Test
-    void given_apiCallServerError_when_requestCollection_throw_APICallException() {
+    void given_apiCallServerError_when_requestCollection_throw_APIConnectionException() {
         setupErrorMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
-        assertThrows(APICallException.class, ()-> makeupAPIConsumer.requestCollection(exampleUri));
+        assertThrows(APIConnectionException.class, ()-> makeupAPIConsumer.requestCollection(exampleUri));
         mockRestServiceServer.verify();
     }
 
     @Test
-    void given_apiCallClientError_when_requestSingleObject_throw_APICallException() {
+    void given_apiCallClientError_when_requestSingleObject_throw_APIConnectionException() {
         setupErrorMockServerResponse(HttpStatus.BAD_REQUEST);
-        assertThrows(APICallException.class, ()-> makeupAPIConsumer.requestSingleObject(exampleUri));
+        assertThrows(APIConnectionException.class, ()-> makeupAPIConsumer.requestSingleObject(exampleUri));
         mockRestServiceServer.verify();
     }
 
     @Test
-    void given_apiCallClientError_when_requestCollection_throw_APICallException() {
+    void given_apiCallClientError_when_requestCollection_throw_APIConnectionException() {
         setupErrorMockServerResponse(HttpStatus.BAD_REQUEST);
-        assertThrows(APICallException.class, ()-> makeupAPIConsumer.requestCollection(exampleUri));
+        assertThrows(APIConnectionException.class, ()-> makeupAPIConsumer.requestCollection(exampleUri));
         mockRestServiceServer.verify();
     }
 

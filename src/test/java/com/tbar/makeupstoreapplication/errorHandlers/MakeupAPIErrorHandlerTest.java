@@ -1,7 +1,7 @@
 package com.tbar.makeupstoreapplication.errorHandlers;
 
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
-import com.tbar.makeupstoreapplication.utility.exceptions.APICallException;
+import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +36,14 @@ class MakeupAPIErrorHandlerTest {
     @Test
     void given_httpRequest_when_serverSideError_throw_APICallException() {
         setupMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
-        assertThrows(APICallException.class,() -> restTemplate.getForEntity(exampleUrl, null));
+        assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, null));
         mockRestServiceServer.verify();
     }
 
     @Test
     void given_httpRequest_when_clientSideError_throw_APICallException() {
         setupMockServerResponse(HttpStatus.BAD_REQUEST);
-        assertThrows(APICallException.class,() -> restTemplate.getForEntity(exampleUrl, null));
+        assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, null));
         mockRestServiceServer.verify();
     }
 
