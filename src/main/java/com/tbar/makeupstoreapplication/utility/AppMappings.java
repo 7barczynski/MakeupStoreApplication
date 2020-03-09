@@ -1,11 +1,7 @@
 package com.tbar.makeupstoreapplication.utility;
 
-/**
- * Class of constants values that contain names of request's paths and names of query parameters.
- */
 public final class AppMappings {
 
-    // === constants ===
     public static final String HOME = "/";
     public static final String ABOUT = "about";
     public static final String SHOP = "shop";
@@ -19,6 +15,5 @@ public final class AppMappings {
     public static final String QUERY_PARAM_RATING_GREATER_THAN = "rating_greater_than";
     public static final String QUERY_PARAM_RATING_LESS_THAN = "rating_less_than";
 
-    // === constructor ===
     private AppMappings() {}
 }

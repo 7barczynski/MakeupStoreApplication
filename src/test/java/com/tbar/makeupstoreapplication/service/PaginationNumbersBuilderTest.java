@@ -1,13 +1,12 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Item;
+import com.tbar.makeupstoreapplication.service.consumer.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,38 +21,38 @@ public class PaginationNumbersBuilderTest {
 
     private final int stubPaginationNumbersSize = 10;
     private final int stubPaginationOffset = 4;
-    private final int stubPageItemListSize = 12;
+    private final int stubSizeOfProductListOnPage = 12;
 
-    private final List<Item> expectedList = new ArrayList<>(
-            Collections.nCopies(stubPaginationNumbersSize * stubPageItemListSize * 2, new Item()));
-    private final List<Item> pageItemsList = Collections.nCopies(stubPageItemListSize, new Item());
-    private final List<Item> listSmallerThanPaginationSize = new ArrayList<>(
-            Collections.nCopies(stubPaginationNumbersSize * stubPageItemListSize / 2, new Item()));
-    private final List<Item> listSmallerThanPageListSize = new ArrayList<>(
-            Collections.nCopies(stubPageItemListSize / 2, new Item()));
+    private final List<Product> expectedList = new ArrayList<>(
+            Collections.nCopies(stubPaginationNumbersSize * stubSizeOfProductListOnPage * 2, new Product()));
+    private final List<Product> productsListOnPage = Collections.nCopies(stubSizeOfProductListOnPage, new Product());
+    private final List<Product> listSmallerThanPaginationSize = new ArrayList<>(
+            Collections.nCopies(stubPaginationNumbersSize * stubSizeOfProductListOnPage / 2, new Product()));
+    private final List<Product> listSmallerThanPageListSize = new ArrayList<>(
+            Collections.nCopies(stubSizeOfProductListOnPage / 2, new Product()));
 
     private final int pageNumberMiddle = stubPaginationOffset * 2;
     private final int pageNumberSmallerThanOffset = stubPaginationOffset / 2;
-    private final int pageNumberCloseToMax = expectedList.size() / stubPageItemListSize - stubPaginationOffset;
+    private final int pageNumberCloseToMax = expectedList.size() / stubSizeOfProductListOnPage - stubPaginationOffset;
 
-    private final PageRequest pageRequestMiddleNumber = PageRequest.of(pageNumberMiddle - 1, stubPageItemListSize);
+    private final PageRequest pageRequestMiddleNumber = PageRequest.of(pageNumberMiddle - 1, stubSizeOfProductListOnPage);
     private final PageRequest pageRequestLowNumber = PageRequest.of(
-            pageNumberSmallerThanOffset - 1, stubPageItemListSize);
-    private final PageRequest pageRequestHighNumber = PageRequest.of(pageNumberCloseToMax - 1, stubPageItemListSize);
-    private final PageRequest pageRequestTooHighNumber = PageRequest.of(99999, stubPageItemListSize);
-    private final PageRequest pageRequestZeroNumber = PageRequest.of(0, stubPageItemListSize);
+            pageNumberSmallerThanOffset - 1, stubSizeOfProductListOnPage);
+    private final PageRequest pageRequestHighNumber = PageRequest.of(pageNumberCloseToMax - 1, stubSizeOfProductListOnPage);
+    private final PageRequest pageRequestTooHighNumber = PageRequest.of(99999, stubSizeOfProductListOnPage);
+    private final PageRequest pageRequestZeroNumber = PageRequest.of(0, stubSizeOfProductListOnPage);
 
-    private final Page<Item> expectedPage = new PageImpl<>(
-            pageItemsList, pageRequestMiddleNumber, expectedList.size());
-    private final Page<Item> pageWithLowNumber = new PageImpl<>(
-            pageItemsList, pageRequestLowNumber, expectedList.size());
-    private final Page<Item> pageWithHighNumber = new PageImpl<>(
-            pageItemsList, pageRequestHighNumber, expectedList.size());
-    private final Page<Item> pageWithTooHighNumber = new PageImpl<>(
+    private final Page<Product> expectedPage = new PageImpl<>(
+            productsListOnPage, pageRequestMiddleNumber, expectedList.size());
+    private final Page<Product> pageWithLowNumber = new PageImpl<>(
+            productsListOnPage, pageRequestLowNumber, expectedList.size());
+    private final Page<Product> pageWithHighNumber = new PageImpl<>(
+            productsListOnPage, pageRequestHighNumber, expectedList.size());
+    private final Page<Product> pageWithTooHighNumber = new PageImpl<>(
             Collections.emptyList(), pageRequestTooHighNumber, expectedList.size());
-    private final Page<Item> pageSmaller = new PageImpl<>(
-            pageItemsList, pageRequestLowNumber, listSmallerThanPaginationSize.size());
-    private final Page<Item> onePage = new PageImpl<>(
+    private final Page<Product> pageSmaller = new PageImpl<>(
+            productsListOnPage, pageRequestLowNumber, listSmallerThanPaginationSize.size());
+    private final Page<Product> onePage = new PageImpl<>(
             listSmallerThanPageListSize, pageRequestZeroNumber, listSmallerThanPageListSize.size());
 
     private final List<Integer> expectedNumbersFromOne = IntStream.rangeClosed(1, stubPaginationNumbersSize)
@@ -76,10 +75,9 @@ public class PaginationNumbersBuilderTest {
     private PaginationNumbersBuilder paginationNumbersBuilder;
 
     PaginationNumbersBuilderTest() {
-        // initialize fields that are injected from properties file
-        ReflectionTestUtils.setField(appProperties, "paginationNumbersSize", stubPaginationNumbersSize);
-        ReflectionTestUtils.setField(appProperties, "paginationLeftOffset", stubPaginationOffset);
-        ReflectionTestUtils.setField(appProperties, "pageItemListSize", stubPageItemListSize);
+        appProperties.setPaginationNumbersSize(stubPaginationNumbersSize);
+        appProperties.setPaginationLeftOffset(stubPaginationOffset);
+        appProperties.setSizeOfProductListOnPage(stubSizeOfProductListOnPage);
     }
 
     @BeforeEach

@@ -1,8 +1,8 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Item;
-import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
-import com.tbar.makeupstoreapplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.makeupstoreapplication.service.consumer.model.Product;
+import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
+import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -12,13 +12,13 @@ import java.util.Map;
 
 public interface MakeupService {
 
-    Page<Item> getPaginatedProducts(@Nullable Map<String, String> requestParameters, int page)
-            throws ProductNotFoundException, APIConnectionException;
+    Page<Product> getPaginatedProducts(@Nullable Map<String, String> requestParameters, int page)
+            throws ProductsNotFoundException;
 
-    List<Item> getProducts(@Nullable Map<String, String> requestParameters)
-            throws ProductNotFoundException, APIConnectionException;
+    List<Product> getProductCollection(@Nullable Map<String, String> requestParameters)
+            throws ProductsNotFoundException;
 
-    Item getProduct(@NonNull Long id) throws ProductNotFoundException, APIConnectionException;
+    Product getProduct(@NonNull Long id) throws SingleProductNotFoundException;
 
-    List<Integer> getPaginationNumbers(Page<Item> currentPage);
+    List<Integer> getPaginationNumbers(Page<Product> currentPage);
 }

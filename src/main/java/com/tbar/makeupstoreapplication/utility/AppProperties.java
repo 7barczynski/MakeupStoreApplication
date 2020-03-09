@@ -20,7 +20,7 @@ public final class AppProperties {
     private String[] applicationLanguagesList;
     private int paginationNumbersSize;
     private int paginationLeftOffset;
-    private int pageItemListSize;
+    private int sizeOfProductListOnPage;
     private String phoneNumber;
     private String githubUrl;
     private String linkedinUrl;

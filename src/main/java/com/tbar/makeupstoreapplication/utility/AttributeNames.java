@@ -1,16 +1,12 @@
 package com.tbar.makeupstoreapplication.utility;
 
-/**
- * Class of constants values that contain names of attributes send in model to a view.
- */
 public final class AttributeNames {
 
-    // === constants ===
     public static final String CURRENT_LANGUAGE = "currentLanguage";
-    public static final String ITEMS_PAGE_LIST = "itemsPageList";
-    public static final String ITEM_SINGLE = "itemSingle";
+    public static final String PRODUCTS_LIST_ON_PAGE = "productsListOnPage";
+    public static final String SINGLE_PRODUCT = "singleProduct";
     public static final String PAGINATION_NUMBERS_LIST = "paginationNumbersList";
+    public static final String EXCEPTION = "exception";
 
-    // === constructor ===
     private AttributeNames() {}
 }

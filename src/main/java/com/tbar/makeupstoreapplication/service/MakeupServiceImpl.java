@@ -1,10 +1,10 @@
 package com.tbar.makeupstoreapplication.service;
 
 import com.tbar.makeupstoreapplication.service.consumer.MakeupAPIConsumer;
-import com.tbar.makeupstoreapplication.service.consumer.model.Item;
+import com.tbar.makeupstoreapplication.service.consumer.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
-import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
-import com.tbar.makeupstoreapplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
+import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ public class MakeupServiceImpl implements MakeupService {
     private final URI makeupApiUriForSingleObject;
     private final String makeupApiSingleObjectiUriSuffix;
     private final Set<String> makeupApiValidParameters;
-    private final int pageItemListSize;
+    private final int sizeOfProductListOnPage;
 
     @Autowired
     public MakeupServiceImpl(MakeupAPIConsumer makeupApiConsumer, PaginationNumbersBuilder paginationNumbersBuilder,
@@ -39,26 +39,26 @@ public class MakeupServiceImpl implements MakeupService {
         this.makeupApiUriForSingleObject = URI.create(appProperties.getMakeupApiUriForSingleObject());
         this.makeupApiSingleObjectiUriSuffix = appProperties.getMakeupApiSingleObjectUriSuffix();
         this.makeupApiValidParameters = new HashSet<>(Set.of(appProperties.getMakeupApiValidParameters()));
-        this.pageItemListSize = appProperties.getPageItemListSize();
+        this.sizeOfProductListOnPage = appProperties.getSizeOfProductListOnPage();
     }
 
     @Override
-    public Page<Item> getPaginatedProducts(@Nullable Map<String, String> requestParameters, int page)
-            throws ProductNotFoundException, APIConnectionException {
+    public Page<Product> getPaginatedProducts(@Nullable Map<String, String> requestParameters, int page)
+            throws ProductsNotFoundException {
         // pages in PageImpl are 0 based
         int currentPage = page - 1;
-        int firstItemOnPageIndex = currentPage * pageItemListSize;
-        List<Item> allItems = getProducts(requestParameters);
-        List<Item> currentPageItems = getItemsForCurrentPage(allItems, firstItemOnPageIndex);
-        log.debug("getPaginatedProducts method. currentPage = {}, currentPageItems = {}", currentPage, currentPageItems);
-        return new PageImpl<>(currentPageItems, PageRequest.of(currentPage, pageItemListSize), allItems.size());
+        int firstProductOnPageIndex = currentPage * sizeOfProductListOnPage;
+        List<Product> allProducts = getProductCollection(requestParameters);
+        List<Product> currentPageProducts = getProductsForCurrentPage(allProducts, firstProductOnPageIndex);
+        log.debug("getPaginatedProducts method. currentPage = {}, currentPageProducts = {}", currentPage, currentPageProducts);
+        return new PageImpl<>(currentPageProducts, PageRequest.of(currentPage, sizeOfProductListOnPage), allProducts.size());
     }
 
     @Override
-    public List<Item> getProducts(@Nullable Map<String, String> requestParameters)
-            throws ProductNotFoundException, APIConnectionException {
+    public List<Product> getProductCollection(@Nullable Map<String, String> requestParameters)
+            throws ProductsNotFoundException {
         URI requestUri = buildUri(requestParameters);
-        List<Item> response = makeRequestToApiForCollection(requestUri);
+        List<Product> response = makeRequestToApiForCollection(requestUri);
         isResponseListEmpty(response);
         log.debug("getProducts method. URI = {}, response body = {}", requestUri, response);
         return response;
@@ -82,37 +82,37 @@ public class MakeupServiceImpl implements MakeupService {
         }
     }
 
-    private List<Item> makeRequestToApiForCollection(URI requestUri) throws APIConnectionException {
+    private List<Product> makeRequestToApiForCollection(URI requestUri) {
             return makeupApiConsumer.requestCollection(requestUri);
     }
 
-    private void isResponseListEmpty(List<Item> responseList) throws ProductNotFoundException {
+    private void isResponseListEmpty(List<Product> responseList) throws ProductsNotFoundException {
         if (responseList == null || responseList.isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new ProductsNotFoundException();
         }
     }
 
-    private List<Item> getItemsForCurrentPage(List<Item> allItems, int firstItemOnPageIndex) {
-        if (isThereAnyItemToGetOnPage(allItems.size(), firstItemOnPageIndex)) {
-            return getSubListOfItemsAll(allItems, firstItemOnPageIndex);
+    private List<Product> getProductsForCurrentPage(List<Product> allProducts, int firstProductOnPageIndex) {
+        if (isThereAnyProductToGetOnPage(allProducts.size(), firstProductOnPageIndex)) {
+            return getSubListOfProductsAll(allProducts, firstProductOnPageIndex);
         }
         return Collections.emptyList();
     }
 
-    private boolean isThereAnyItemToGetOnPage(int itemsListSize, int firstItemOnPageIndex) {
-        return itemsListSize > firstItemOnPageIndex;
+    private boolean isThereAnyProductToGetOnPage(int ProductsListSize, int firstProductOnPageIndex) {
+        return ProductsListSize > firstProductOnPageIndex;
     }
 
-    private List<Item> getSubListOfItemsAll(List<Item> allItems, int firstItemOnPageIndex) {
-        int toIndex = Math.min(firstItemOnPageIndex + pageItemListSize, allItems.size());
-        return allItems.subList(firstItemOnPageIndex, toIndex);
+    private List<Product> getSubListOfProductsAll(List<Product> allProducts, int firstProductOnPageIndex) {
+        int toIndex = Math.min(firstProductOnPageIndex + sizeOfProductListOnPage, allProducts.size());
+        return allProducts.subList(firstProductOnPageIndex, toIndex);
     }
 
     @Override
-    public Item getProduct(@NonNull Long id) throws ProductNotFoundException, APIConnectionException {
+    public Product getProduct(@NonNull Long id) throws SingleProductNotFoundException {
         URI requestUri = buildUri(id);
-        Item response = makeRequestToApiForSingleObject(requestUri);
-        isResponseItemNull(response);
+        Product response = makeRequestToApiForSingleObject(requestUri);
+        isResponseProductNull(response);
         log.debug("getProduct method. URI = {}, response body = {}", requestUri, response);
         return response;
     }
@@ -124,18 +124,18 @@ public class MakeupServiceImpl implements MakeupService {
         return uriBuilder.build().toUri();
     }
 
-    private Item makeRequestToApiForSingleObject(URI requestUri) throws APIConnectionException {
+    private Product makeRequestToApiForSingleObject(URI requestUri) {
             return makeupApiConsumer.requestSingleObject(requestUri);
     }
 
-    private void isResponseItemNull(Item responseItem) throws ProductNotFoundException {
-        if (responseItem == null) {
-            throw new ProductNotFoundException();
+    private void isResponseProductNull(Product responseProduct) throws SingleProductNotFoundException {
+        if (responseProduct == null) {
+            throw new SingleProductNotFoundException();
         }
     }
 
     @Override
-    public List<Integer> getPaginationNumbers(Page<Item> currentPage) {
+    public List<Integer> getPaginationNumbers(Page<Product> currentPage) {
         List<Integer> paginationNumbers = paginationNumbersBuilder.build(currentPage);
         log.debug("getPaginationNumbers method. paginationNumbers = {}", paginationNumbers);
         return paginationNumbers;

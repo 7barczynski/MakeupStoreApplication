@@ -67,24 +67,33 @@
           th:text="#{filter.name}"/>
 
     <!-- Product List -->
-    <attr sel="#itemListSwitch"
-          th:switch="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEMS_PAGE_LIST}__}"/>
-    <attr sel="#itemsNullCase"
+    <attr sel="#productListSwitch"
+          th:switch="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__}"/>
+    <attr sel="#productsNullCase"
           th:case="null"/>
-    <attr sel="#notFoundId"
-          th:text="#{product.not.found}"/>
-    <attr sel="#itemsDefaultCase"
+    <attr sel="#exceptionSwitch"
+          th:switch="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).EXCEPTION}__}"/>
+    <attr sel="#productsNotFoundCase"
+          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).PRODUCTS_NOT_FOUND_EXCEPTION}"
+          th:text="#{products.not.found.message}"/>
+    <attr sel="#apiConnectionExceptionCase"
+          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).API_CONNECTION_EXCEPTION}"
+          th:text="#{api.connection.exception.message}"/>
+    <attr sel="#otherExceptionCase"
+          th:case="*"
+          th:text="#{other.exception.message}"/>
+    <attr sel="#productsDefaultCase"
           th:case="*"/>
-    <attr sel="#itemsForEach"
-          th:each="item : ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEMS_PAGE_LIST}__}"/>
-    <attr sel="#itemTemplate"
-          th:replace="~{fragments/item :: itemFragment(item=${item})}"/>
+    <attr sel="#productsForEach"
+          th:each="product : ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__}"/>
+    <attr sel="#productTemplate"
+          th:replace="~{fragments/product :: productFragment(product=${product})}"/>
 
     <!-- Pagination -->
     <attr sel="#paginationCondition"
-          th:if="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEMS_PAGE_LIST}__ != null and
-                    __${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEMS_PAGE_LIST}__.totalPages > 1}"
-          th:with="page=${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEMS_PAGE_LIST}__},
+          th:if="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__ != null and
+                    __${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__.totalPages > 1}"
+          th:with="page=${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__},
                     queryParamPage=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PAGE},
                     urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"/>
     <attr sel="#previousIconCondition"

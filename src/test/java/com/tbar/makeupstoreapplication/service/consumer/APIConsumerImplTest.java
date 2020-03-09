@@ -1,7 +1,6 @@
 package com.tbar.makeupstoreapplication.service.consumer;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Item;
-import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
+import com.tbar.makeupstoreapplication.service.consumer.model.Product;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -30,21 +29,21 @@ class APIConsumerImplTest {
     private RestTemplate restTemplate;
     @InjectMocks
     private MakeupAPIConsumer makeupAPIConsumer;
-    private final List<Item> expectedCollectionResponse = new ArrayList<>(List.of(new Item()));
-    private final Item expectedSingleObjectResponse = new Item();
+    private final List<Product> expectedCollectionResponse = new ArrayList<>(List.of(new Product()));
+    private final Product expectedSingleObjectResponse = new Product();
     private final URI exampleUrl = URI.create("http://www.example.com");
 
     @Test
-    void given_uri_when_requestCollection_return_collectionOfItems() throws APIConnectionException {
+    void given_uri_when_requestCollection_return_collectionOfProducts() {
         setupMockRestTemplateResponseForCollection();
-        List<Item> actualResponse = makeupAPIConsumer.requestCollection(exampleUrl);
+        List<Product> actualResponse = makeupAPIConsumer.requestCollection(exampleUrl);
         assertEquals(expectedCollectionResponse, actualResponse);
     }
 
     @Test
-    void given_uri_when_requestSingleObject_return_item() throws APIConnectionException {
+    void given_uri_when_requestSingleObject_return_product() {
         setupMockRestTemplateResponseForSingleObject();
-        Item actualResponse = makeupAPIConsumer.requestSingleObject(exampleUrl);
+        Product actualResponse = makeupAPIConsumer.requestSingleObject(exampleUrl);
         assertEquals(expectedSingleObjectResponse, actualResponse);
     }
 
@@ -53,12 +52,12 @@ class APIConsumerImplTest {
                 eq(exampleUrl),
                 eq(HttpMethod.GET),
                 isNull(),
-                ArgumentMatchers.<ParameterizedTypeReference<List<Item>>>any()
+                ArgumentMatchers.<ParameterizedTypeReference<List<Product>>>any()
         )).thenReturn(new ResponseEntity<>(expectedCollectionResponse, HttpStatus.OK));
     }
 
     private void setupMockRestTemplateResponseForSingleObject() {
-        when(restTemplate.getForEntity(eq(exampleUrl), eq(Item.class)))
+        when(restTemplate.getForEntity(eq(exampleUrl), eq(Product.class)))
                 .thenReturn(new ResponseEntity<>(expectedSingleObjectResponse, HttpStatus.OK));
     }
 }

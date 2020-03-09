@@ -18,22 +18,39 @@
 
     <!-- Product -->
     <attr sel="#varInit"
-          th:with="item = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).ITEM_SINGLE}__}"/>
+          th:with="product = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).SINGLE_PRODUCT}__}"/>
+    <attr sel="#productSwitch"
+          th:switch="${product}"/>
+    <attr sel="#productNullCase"
+          th:case="null"/>
+    <attr sel="#exceptionSwitch"
+          th:switch="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).EXCEPTION}__}"/>
+    <attr sel="#singleProductNotFoundCase"
+          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).SINGLE_PRODUCT_NOT_FOUND_EXCEPTION}"
+          th:text="#{single.product.not.found.message}"/>
+    <attr sel="#apiConnectionExceptionCase"
+          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).API_CONNECTION_EXCEPTION}"
+          th:text="#{api.connection.exception.message}"/>
+    <attr sel="#otherExceptionCase"
+          th:case="*"
+          th:text="#{other.exception.message}"/>
+    <attr sel="#productDefaultCase"
+          th:case="*"/>
     <attr sel="#productImage"
-          th:src="${item.getImageLink()}"
+          th:src="${product.getImageLink()}"
           th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
     <attr sel="#productName"
-          th:text="${item.getName()}"/>
+          th:text="${product.getName()}"/>
     <attr sel="#productPrice"
-          th:text="${(item.getPriceSign() ?: '') + (item.getPrice() ?: '')}"/>
+          th:text="${(product.getPriceSign() ?: '') + (product.getPrice() ?: '')}"/>
     <attr sel="#productDescription"
-          th:text="${item.getDescription()}"/>
+          th:text="${product.getDescription()}"/>
     <attr sel="#colorCondition"
-          th:if="${item.getProductColors().length != 0}"/>
+          th:if="${product.getProductColors().length != 0}"/>
     <attr sel="#colorName"
           th:text="|#{color.name}:|"/>
     <attr sel="#colorForEach"
-          th:each="color : ${item.getProductColors()}"/>
+          th:each="color : ${product.getProductColors()}"/>
     <attr sel="#colorHex"
           th:title="${color.getColorName()}"
           th:style="'background-color: ' + ${color.getHexValue()} + ';'"/>

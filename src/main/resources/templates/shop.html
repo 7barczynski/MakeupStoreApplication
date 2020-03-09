@@ -70,17 +70,22 @@
 					<button id="filterName" type="submit" class="btn btn-default">Filter PH</button>
 				</form>
 			</div>
-			<!-- Item list -->
+			<!-- Product list -->
 			<div class="col-md-9">
-				<div id="itemListSwitch" class="row">
-					<div id="itemsNullCase">
+				<div id="productListSwitch" class="row">
+					<div id="productsNullCase">
 						<div class="alert-part">
-							<div class="alert alert-warning alert-common" role="alert"><i class="tf-ion-alert-circled"></i><span id="notFoundId">Products have not been found!</span></div>
+							<div id="exceptionSwitch" class="alert alert-warning alert-common" role="alert">
+								<i class="tf-ion-alert-circled"></i>
+								<span id="productsNotFoundCase">Products have not been found.</span>
+								<span id="apiConnectionExceptionCase">Something is wrong with external server. Please try again.</span>
+								<span id="otherExceptionCase">Something went wrong... Please try again.</span>
+							</div>
 						</div>
 					</div>
-					<div id="itemsDefaultCase">
-						<div id="itemsForEach">
-							<div id="itemTemplate"></div>
+					<div id="productsDefaultCase">
+						<div id="productsForEach">
+							<div id="productTemplate"></div>
 						</div>
 					</div>
 				</div>

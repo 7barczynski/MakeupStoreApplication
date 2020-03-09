@@ -19,14 +19,14 @@ import java.util.Locale;
  * <p> * * * * * * * * *
  * === MODIFIED ===
  * * * * * * * * * * </p>
+ * <p>It is modified version of original springframework's LocaleChangeInterceptor
+ * that allow to check if the parameter in request is a valid language of this application
+ * and sets ignoreInvalidLocale variable default to true. Added parts are marked in comments.
+ * All other features are the same.
  *
  * Interceptor that allows for changing the current locale on every request,
  * via a configurable request parameter (default parameter name: "locale").
  *
- * <p>It is override version of original springframework's LocaleChangeInterceptor
- * that allow to check if the parameter in request is a valid language of this application
- * and sets ignoreInvalidLocale variable default to true. Modified parts are marked in comments.
- * All other features are the same.
  *
  * @author Juergen Hoeller
  * @author Rossen Stoyanchev
@@ -37,13 +37,11 @@ import java.util.Locale;
 @Slf4j
 public class LocaleChangeInterceptor extends HandlerInterceptorAdapter {
 
-    // === constants ===
     /**
      * Default name of the locale specification parameter: "locale".
      */
     public static final String DEFAULT_PARAM_NAME = "locale";
 
-    // === fields ===
     private String paramName = DEFAULT_PARAM_NAME;
 
     @Nullable
@@ -51,27 +49,19 @@ public class LocaleChangeInterceptor extends HandlerInterceptorAdapter {
 
     private boolean ignoreInvalidLocale = true;
 
-    /*
-    * * * * * * * * * *
-    * === MODIFIED ===
-    * * * * * * * * * *
-    * languagesList contains languages codes that are available for application.
-    */
+    /* * * * * * * * * * *
+    * === ADDED ===
+    * * * * * * * * * * */
     private final List<String> languagesList;
 
-    // === constructors ===
-    /*
-     * * * * * * * * * *
-     * === MODIFIED ===
-     * * * * * * * * * *
-     * This constructor is added just to set languagesList.
-     */
+    /* * * * * * * * * * *
+     * === ADDED ===
+     * * * * * * * * * * */
     public LocaleChangeInterceptor(String[] languagesList) {
         this.languagesList = Arrays.asList(languagesList);
-        log.debug("Setting languagesList from constructor. languagesList = {}", this.languagesList);
+        log.debug("Setting languagesList. languagesList = {}", this.languagesList);
     }
 
-    // === public methods ===
     /**
      * Set the name of the parameter that contains a locale specification
      * in a locale change request. Default is "locale".
@@ -184,7 +174,6 @@ public class LocaleChangeInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
-    // === private & protected methods ===
     private boolean checkHttpMethod(String currentMethod) {
         String[] configuredMethods = getHttpMethods();
         if (ObjectUtils.isEmpty(configuredMethods)) {
@@ -223,4 +212,3 @@ public class LocaleChangeInterceptor extends HandlerInterceptorAdapter {
         return StringUtils.parseLocale(localeValue);
     }
 }
-

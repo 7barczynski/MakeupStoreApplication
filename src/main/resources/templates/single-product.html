@@ -17,9 +17,19 @@
 <!-- Breadcrumbs -->
 <section id="breadcrumbsTemplate"></section>
 
-<section class="single-product">
-	<div class="container">
-		<div id="varInit" class="row mt-20">
+<section id="varInit" class="single-product">
+	<div id="productSwitch" class="container">
+		<div id="productNullCase">
+			<div class="alert-part">
+				<div id="exceptionSwitch" class="alert alert-warning alert-common" role="alert">
+					<i class="tf-ion-alert-circled"></i>
+					<span id="singleProductNotFoundCase">Unfortunately, product has not beed found.</span>
+					<span id="apiConnectionExceptionCase">Something is wrong with external server. Please try again.</span>
+					<span id="otherExceptionCase">Something went wrong... Please try again.</span>
+				</div>
+			</div>
+		</div>
+		<div id="productDefaultCase" class="row mt-20">
 			<div class="col-md-5">
 				<img id="productImage" class="img-responsive" src="" alt="product image PH">
 			</div>

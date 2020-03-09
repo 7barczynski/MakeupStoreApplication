@@ -1,0 +1,14 @@
+<thlogic>
+    <attr sel="#productFragment"
+          th:fragment="productFragment"/>
+    <attr sel="#productSingleLink"
+          th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"/>
+    <attr sel="#productImage"
+          th:src="${product.getImageLink()}"
+          th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
+    <attr sel="#productName"
+          th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"
+          th:text="${product.getName()}"/>
+    <attr sel="#productPrice"
+          th:text="${(product.getPriceSign() ?: '') + (product.getPrice() ?: '')}"/>
+</thlogic>

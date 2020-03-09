@@ -39,8 +39,8 @@ public class PaginationNumbersBuilder {
     }
 
     public List<Integer> build(Page currentPage) {
-        setupVariables(currentPage);
-        if (isPaginationNeeded()) {
+        if (isPaginationNeeded(currentPage)) {
+            setupVariables(currentPage);
             return buildList();
         }
         return null;
@@ -54,8 +54,9 @@ public class PaginationNumbersBuilder {
         offsetNumberPlusSize = currentPageMinusOffset + paginationNumbersSize - 1;
     }
 
-    private boolean isPaginationNeeded() {
-        return totalPages > 1 && number < totalPages;
+    private boolean isPaginationNeeded(Page currentPage) {
+        return currentPage != null && currentPage.getTotalPages() > 1
+                && currentPage.getNumber() < currentPage.getTotalPages();
     }
 
     private List<Integer> buildList() {

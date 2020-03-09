@@ -11,20 +11,16 @@ import javax.annotation.PostConstruct;
 @Component
 public class DecoupledLogicSetup {
 
-    // === fields ===
     private final SpringResourceTemplateResolver templateResolver;
 
-    // === constructors ===
     @Autowired
     public DecoupledLogicSetup(SpringResourceTemplateResolver templateResolver) {
         this.templateResolver = templateResolver;
     }
 
-    // === init ===
     @PostConstruct
     public void init() {
         templateResolver.setUseDecoupledLogic(true);
         log.info("Decoupled logic of thymeleaf is enabled.");
     }
-
 }

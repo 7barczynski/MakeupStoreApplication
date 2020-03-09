@@ -1,11 +1,12 @@
 package com.tbar.makeupstoreapplication.service;
 
 import com.tbar.makeupstoreapplication.service.consumer.MakeupAPIConsumer;
-import com.tbar.makeupstoreapplication.service.consumer.model.Item;
+import com.tbar.makeupstoreapplication.service.consumer.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
 import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
-import com.tbar.makeupstoreapplication.utility.exceptions.ProductNotFoundException;
+import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
+import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
@@ -40,12 +40,12 @@ class MakeupServiceIntegrationTest {
     private final String stubUriSuffix = ".json";
     private final int stubPaginationNumbersSize = 10;
     private final int stubPaginationOffset = 4;
-    private final int stubPageItemListSize = 12;
+    private final int stubSizeOfProductListOnPage = 12;
 
-    private final Item expectedItem = new Item();
-    private final List<Item> expectedList = new ArrayList<>(
-            Collections.nCopies(stubPaginationNumbersSize * stubPageItemListSize * 2, new Item()));
-    private final List<Item> expectedListWithOneItem = new ArrayList<>(List.of(expectedItem));
+    private final Product expectedProduct = new Product();
+    private final List<Product> expectedList = new ArrayList<>(
+            Collections.nCopies(stubPaginationNumbersSize * stubSizeOfProductListOnPage * 2, new Product()));
+    private final List<Product> expectedListWithOneProduct = new ArrayList<>(List.of(expectedProduct));
     private final String expectedSoloJsonResponse = "{\"id\" : \"1000\"}";
     private final String expectedMultiJsonResponse = "[{\"id\" : \"1000\"}]";
 
@@ -61,34 +61,34 @@ class MakeupServiceIntegrationTest {
     private final Map<String, String> mapWithMixedParameters = new LinkedHashMap<>();
     private final Map<String, String> mapWithWrongParameters = new LinkedHashMap<>();
 
-    private final List<Item> pageItemsList = Collections.nCopies(stubPageItemListSize, new Item());
-    private final List<Item> listSmallerThanPaginationSize = new ArrayList<>(
-            Collections.nCopies(stubPaginationNumbersSize * stubPageItemListSize / 2, new Item()));
-    private final List<Item> listSmallerThanPageListSize = new ArrayList<>(
-            Collections.nCopies(stubPageItemListSize / 2, new Item()));
+    private final List<Product> productsListOnPage = Collections.nCopies(stubSizeOfProductListOnPage, new Product());
+    private final List<Product> listSmallerThanPaginationSize = new ArrayList<>(
+            Collections.nCopies(stubPaginationNumbersSize * stubSizeOfProductListOnPage / 2, new Product()));
+    private final List<Product> listSmallerThanPageListSize = new ArrayList<>(
+            Collections.nCopies(stubSizeOfProductListOnPage / 2, new Product()));
 
     private final int pageNumberMiddle = stubPaginationOffset * 2;
     private final int pageNumberSmallerThanOffset = stubPaginationOffset / 2;
-    private final int pageNumberCloseToMax = expectedList.size() / stubPageItemListSize - stubPaginationOffset;
+    private final int pageNumberCloseToMax = expectedList.size() / stubSizeOfProductListOnPage - stubPaginationOffset;
 
-    private final PageRequest pageRequestMiddleNumber = PageRequest.of(pageNumberMiddle - 1, stubPageItemListSize);
+    private final PageRequest pageRequestMiddleNumber = PageRequest.of(pageNumberMiddle - 1, stubSizeOfProductListOnPage);
     private final PageRequest pageRequestLowNumber = PageRequest.of(
-            pageNumberSmallerThanOffset - 1, stubPageItemListSize);
-    private final PageRequest pageRequestHighNumber = PageRequest.of(pageNumberCloseToMax - 1, stubPageItemListSize);
-    private final PageRequest pageRequestTooHighNumber = PageRequest.of(99999, stubPageItemListSize);
-    private final PageRequest pageRequestZeroNumber = PageRequest.of(0, stubPageItemListSize);
+            pageNumberSmallerThanOffset - 1, stubSizeOfProductListOnPage);
+    private final PageRequest pageRequestHighNumber = PageRequest.of(pageNumberCloseToMax - 1, stubSizeOfProductListOnPage);
+    private final PageRequest pageRequestTooHighNumber = PageRequest.of(99999, stubSizeOfProductListOnPage);
+    private final PageRequest pageRequestZeroNumber = PageRequest.of(0, stubSizeOfProductListOnPage);
 
-    private final Page<Item> expectedPage = new PageImpl<>(
-            pageItemsList, pageRequestMiddleNumber, expectedList.size());
-    private final Page<Item> pageWithLowNumber = new PageImpl<>(
-            pageItemsList, pageRequestLowNumber, expectedList.size());
-    private final Page<Item> pageWithHighNumber = new PageImpl<>(
-            pageItemsList, pageRequestHighNumber, expectedList.size());
-    private final Page<Item> pageWithTooHighNumber = new PageImpl<>(
+    private final Page<Product> expectedPage = new PageImpl<>(
+            productsListOnPage, pageRequestMiddleNumber, expectedList.size());
+    private final Page<Product> pageWithLowNumber = new PageImpl<>(
+            productsListOnPage, pageRequestLowNumber, expectedList.size());
+    private final Page<Product> pageWithHighNumber = new PageImpl<>(
+            productsListOnPage, pageRequestHighNumber, expectedList.size());
+    private final Page<Product> pageWithTooHighNumber = new PageImpl<>(
             Collections.emptyList(), pageRequestTooHighNumber, expectedList.size());
-    private final Page<Item> pageSmaller = new PageImpl<>(
-            pageItemsList, pageRequestLowNumber, listSmallerThanPaginationSize.size());
-    private final Page<Item> onePage = new PageImpl<>(
+    private final Page<Product> pageSmaller = new PageImpl<>(
+            productsListOnPage, pageRequestLowNumber, listSmallerThanPaginationSize.size());
+    private final Page<Product> onePage = new PageImpl<>(
             listSmallerThanPageListSize, pageRequestZeroNumber, listSmallerThanPageListSize.size());
 
     private final List<Integer> expectedNumbersFromOne = IntStream.rangeClosed(1, stubPaginationNumbersSize)
@@ -117,17 +117,15 @@ class MakeupServiceIntegrationTest {
     private AppProperties appProperties = new AppProperties();
 
     MakeupServiceIntegrationTest() {
-        // initialize fields that are injected from properties file
-        ReflectionTestUtils.setField(appProperties, "makeupApiUriForCollection", stubBaseUri.toString());
-        ReflectionTestUtils.setField(appProperties, "makeupApiUriForSingleObject", stubBaseUri.toString());
-        ReflectionTestUtils.setField(appProperties, "makeupApiSingleObjectUriSuffix", stubUriSuffix);
-        ReflectionTestUtils.setField(appProperties, "makeupApiValidParameters",
-                stubValidParameters.toArray(new String[0]));
-        ReflectionTestUtils.setField(appProperties, "paginationNumbersSize", stubPaginationNumbersSize);
-        ReflectionTestUtils.setField(appProperties, "paginationLeftOffset", stubPaginationOffset);
-        ReflectionTestUtils.setField(appProperties, "pageItemListSize", stubPageItemListSize);
+        appProperties.setMakeupApiUriForCollection(stubBaseUri.toString());
+        appProperties.setMakeupApiUriForSingleObject(stubBaseUri.toString());
+        appProperties.setMakeupApiSingleObjectUriSuffix(stubUriSuffix);
+        appProperties.setMakeupApiValidParameters(stubValidParameters.toArray(new String[0]));
+        appProperties.setPaginationNumbersSize(stubPaginationNumbersSize);
+        appProperties.setPaginationLeftOffset(stubPaginationOffset);
+        appProperties.setSizeOfProductListOnPage(stubSizeOfProductListOnPage);
 
-        // Putting here just to ensure proper order of entries. If wasn't tests may occasionally crush.
+        // ensuring order of entries that is needed to proper comparing in assertions statements.
         mapWithValidParameters.put(firstEntryKey, firstEntryValue);
         mapWithValidParameters.put(secondEntryKey, secondEntryValue);
 
@@ -146,123 +144,123 @@ class MakeupServiceIntegrationTest {
         makeupAPIConsumer = new MakeupAPIConsumer(restTemplate);
         paginationNumbersBuilder = new PaginationNumbersBuilder(appProperties);
         makeupService = new MakeupServiceImpl(makeupAPIConsumer, paginationNumbersBuilder, appProperties);
-        expectedItem.setId(1000L);
+        expectedProduct.setId(1000L);
     }
 
     @Test
-    void given_mapOfValidParameters_when_getProducts_return_listOfItems()
-            throws ProductNotFoundException, APIConnectionException {
+    void given_mapOfValidParameters_when_getProductCollection_return_productCollection()
+            throws ProductsNotFoundException {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithTwoParameters))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(expectedMultiJsonResponse, MediaType.APPLICATION_JSON));
 
-        List<Item> actualList = makeupService.getProducts(mapWithValidParameters);
+        List<Product> actualList = makeupService.getProductCollection(mapWithValidParameters);
 
-        assertEquals(expectedListWithOneItem, actualList);
+        assertEquals(expectedListWithOneProduct, actualList);
     }
 
     @Test
-    void given_mapOfMixedParameters_when_getProducts_return_listOfItems()
-            throws ProductNotFoundException, APIConnectionException {
+    void given_mapOfMixedParameters_when_getProductCollection_return_productCollection()
+            throws ProductsNotFoundException {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithTwoParameters))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(expectedMultiJsonResponse, MediaType.APPLICATION_JSON));
 
-        List<Item> actualList = makeupService.getProducts(mapWithMixedParameters);
+        List<Product> actualList = makeupService.getProductCollection(mapWithMixedParameters);
 
-        assertEquals(expectedListWithOneItem, actualList);
+        assertEquals(expectedListWithOneProduct, actualList);
     }
 
     @Test
-    void given_mapOfWrongParameters_when_getProducts_return_listOfItems()
-            throws ProductNotFoundException, APIConnectionException {
+    void given_mapOfWrongParameters_when_getProductCollection_return_productCollection()
+            throws ProductsNotFoundException {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(stubBaseUri))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(expectedMultiJsonResponse, MediaType.APPLICATION_JSON));
 
-        List<Item> actualList = makeupService.getProducts(mapWithWrongParameters);
+        List<Product> actualList = makeupService.getProductCollection(mapWithWrongParameters);
 
-        assertEquals(expectedListWithOneItem, actualList);
+        assertEquals(expectedListWithOneProduct, actualList);
     }
 
     @Test
-    void given_nullMapOfParameters_when_getProducts_return_listOfItems()
-            throws ProductNotFoundException, APIConnectionException {
+    void given_nullMapOfParameters_when_getProductCollection_return_productCollection()
+            throws ProductsNotFoundException {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(stubBaseUri))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(expectedMultiJsonResponse, MediaType.APPLICATION_JSON));
 
-        List<Item> actualList = makeupService.getProducts(null);
+        List<Product> actualList = makeupService.getProductCollection(null);
 
-        assertEquals(expectedListWithOneItem, actualList);
+        assertEquals(expectedListWithOneProduct, actualList);
     }
 
     @Test
-    void given_emptyMapOfParameters_when_getProducts_return_listOfItems()
-            throws ProductNotFoundException, APIConnectionException {
+    void given_emptyMapOfParameters_when_getProductCollection_return_productCollection()
+            throws ProductsNotFoundException {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(stubBaseUri))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(expectedMultiJsonResponse, MediaType.APPLICATION_JSON));
 
-        List<Item> actualList = makeupService.getProducts(new HashMap<>());
+        List<Product> actualList = makeupService.getProductCollection(new HashMap<>());
 
-        assertEquals(expectedListWithOneItem, actualList);
+        assertEquals(expectedListWithOneProduct, actualList);
     }
 
     @Test
-    void given_APIRespondWithServerSideError_when_getProducts_throw_APIConnectionException() {
+    void given_APIRespondWithServerSideError_when_getProductCollection_throw_APIConnectionException() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithTwoParameters))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.SERVICE_UNAVAILABLE));
 
-        assertThrows(APIConnectionException.class, () -> makeupService.getProducts(mapWithValidParameters));
+        assertThrows(APIConnectionException.class, () -> makeupService.getProductCollection(mapWithValidParameters));
     }
 
     @Test
-    void given_APIRespondWithClientSideError_when_getProducts_throw_APIConnectionException() {
+    void given_APIRespondWithClientSideError_when_getProductCollection_throw_APIConnectionException() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithTwoParameters))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(HttpStatus.BAD_REQUEST));
 
-        assertThrows(APIConnectionException.class, () -> makeupService.getProducts(mapWithValidParameters));
+        assertThrows(APIConnectionException.class, () -> makeupService.getProductCollection(mapWithValidParameters));
     }
 
     @Test
-    void given_responseBodyIsEmpty_when_getProducts_throw_ProductNotFoundException() {
+    void given_responseBodyIsEmpty_when_getProductCollection_throw_ProductsNotFoundException() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithTwoParameters))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess("", MediaType.APPLICATION_JSON));
 
-        assertThrows(ProductNotFoundException.class, () -> makeupService.getProducts(mapWithValidParameters));
+        assertThrows(ProductsNotFoundException.class, () -> makeupService.getProductCollection(mapWithValidParameters));
     }
 
     @Test
-    void given_responseBodyIsNull_when_getProducts_throw_ProductNotFoundException() {
+    void given_responseBodyIsNull_when_getProductCollection_throw_ProductsNotFoundException() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithTwoParameters))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess());
 
-        assertThrows(ProductNotFoundException.class, () -> makeupService.getProducts(mapWithValidParameters));
+        assertThrows(ProductsNotFoundException.class, () -> makeupService.getProductCollection(mapWithValidParameters));
     }
 
     @Test
-    void given_validId_when_getProduct_return_Item() throws ProductNotFoundException, APIConnectionException {
+    void given_validId_when_getProduct_return_Product() throws SingleProductNotFoundException {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithIdPath))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess(expectedSoloJsonResponse, MediaType.APPLICATION_JSON));
 
-        Item actualItem = makeupService.getProduct(exampleId);
+        Product actualProduct = makeupService.getProduct(exampleId);
 
-        assertEquals(expectedItem, actualItem);
+        assertEquals(expectedProduct, actualProduct);
     }
 
     @Test
-    void given_APIRespondWithOKStatusAndEmptyBody_when_getProduct_throw_ProductNotFoundException() {
+    void given_APIRespondWithOKStatusAndEmptyBody_when_getProduct_throw_SingleProductNotFoundException() {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(uriWithIdPath))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withSuccess("", MediaType.APPLICATION_JSON));
 
-        assertThrows(ProductNotFoundException.class, () -> makeupService.getProduct(exampleId));
+        assertThrows(SingleProductNotFoundException.class, () -> makeupService.getProduct(exampleId));
     }
 
     @Test

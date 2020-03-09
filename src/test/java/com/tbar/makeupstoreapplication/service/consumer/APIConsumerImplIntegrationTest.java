@@ -1,6 +1,6 @@
 package com.tbar.makeupstoreapplication.service.consumer;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Item;
+import com.tbar.makeupstoreapplication.service.consumer.model.Product;
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
 import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +33,9 @@ class APIConsumerImplIntegrationTest {
     private MockRestServiceServer mockRestServiceServer;
     private RestTemplate restTemplate;
     private MakeupAPIConsumer makeupAPIConsumer;
-    private Item expectedSingleObjectResponse;
-    private List<Item> expectedCollectionResponse;
-    private final Item expectedItem = new Item();
+    private Product expectedSingleObjectResponse;
+    private List<Product> expectedCollectionResponse;
+    private final Product expectedProduct = new Product();
     private final URI exampleUri = URI.create("www.example.com");
     private final Long exampleId = 1000L;
     private final String expectedSingleObjectJsonResponse = "{\"id\" : \"" + exampleId + "\"}";
@@ -46,23 +46,23 @@ class APIConsumerImplIntegrationTest {
         restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
         makeupAPIConsumer = new MakeupAPIConsumer(restTemplate);
-        expectedItem.setId(exampleId);
-        expectedSingleObjectResponse = expectedItem;
-        expectedCollectionResponse = new ArrayList<>(List.of(expectedItem));
+        expectedProduct.setId(exampleId);
+        expectedSingleObjectResponse = expectedProduct;
+        expectedCollectionResponse = new ArrayList<>(List.of(expectedProduct));
     }
 
     @Test
-    void given_successfulApiCall_when_requestSingleObject_return_item() throws APIConnectionException {
+    void given_successfulApiCall_when_requestSingleObject_return_product() {
         setupSuccessfulMockServerResponse(expectedSingleObjectJsonResponse);
-        Item actualResponse = makeupAPIConsumer.requestSingleObject(exampleUri);
+        Product actualResponse = makeupAPIConsumer.requestSingleObject(exampleUri);
         assertEquals(expectedSingleObjectResponse, actualResponse);
         mockRestServiceServer.verify();
     }
 
     @Test
-    void given_successfulApiCall_when_requestCollection_return_collectionOfItems() throws APIConnectionException {
+    void given_successfulApiCall_when_requestCollection_return_collectionOfProducts() {
         setupSuccessfulMockServerResponse(expectedCollectionJsonResponse);
-        List<Item> actualResponse = makeupAPIConsumer.requestCollection(exampleUri);
+        List<Product> actualResponse = makeupAPIConsumer.requestCollection(exampleUri);
         assertEquals(expectedCollectionResponse, actualResponse);
         mockRestServiceServer.verify();
     }
