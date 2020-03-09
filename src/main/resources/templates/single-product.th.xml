@@ -1,0 +1,66 @@
+<thlogic>
+    <!-- Head -->
+    <attr sel="#headTemplate"
+          th:replace="~{fragments/head :: headFragment}"/>
+
+    <!-- Top header -->
+    <attr sel="#topHeaderTemplate"
+          th:replace="~{fragments/top-header :: topHeaderFragment}"/>
+
+    <!-- Menu -->
+    <attr sel="#mainMenuTemplate"
+          th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
+
+    <!-- Breadcrumbs -->
+<!--    TODO Breadcrumby są bardzo źle zrobione, może da się łatwo wrzucić listę z przetłumaczonymi nazwami oraz z linkami?-->
+    <attr sel="#breadcrumbsTemplate"
+          th:replace="~{fragments/breadcrumbs :: breadcrumbsFragment(pageName=#{shop.name}, homeName=#{home.name})}"/>
+
+    <!-- Product -->
+    <attr sel="#varInit"
+          th:with="product = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).SINGLE_PRODUCT}__}"/>
+    <attr sel="#productSwitch"
+          th:switch="${product}"/>
+    <attr sel="#productNullCase"
+          th:case="null"/>
+    <attr sel="#exceptionSwitch"
+          th:switch="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).EXCEPTION}__}"/>
+    <attr sel="#singleProductNotFoundCase"
+          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).SINGLE_PRODUCT_NOT_FOUND_EXCEPTION}"
+          th:text="#{single.product.not.found.message}"/>
+    <attr sel="#apiConnectionExceptionCase"
+          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).API_CONNECTION_EXCEPTION}"
+          th:text="#{api.connection.exception.message}"/>
+    <attr sel="#otherExceptionCase"
+          th:case="*"
+          th:text="#{other.exception.message}"/>
+    <attr sel="#productDefaultCase"
+          th:case="*"/>
+    <attr sel="#productImage"
+          th:src="${product.getImageLink()}"
+          th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
+    <attr sel="#productName"
+          th:text="${product.getName()}"/>
+    <attr sel="#productPrice"
+          th:text="${(product.getPriceSign() ?: '') + (product.getPrice() ?: '')}"/>
+    <attr sel="#productDescription"
+          th:text="${product.getDescription()}"/>
+    <attr sel="#colorCondition"
+          th:if="${product.getProductColors().length != 0}"/>
+    <attr sel="#colorName"
+          th:text="|#{color.name}:|"/>
+    <attr sel="#colorForEach"
+          th:each="color : ${product.getProductColors()}"/>
+    <attr sel="#colorHex"
+          th:title="${color.getColorName()}"
+          th:style="'background-color: ' + ${color.getHexValue()} + ';'"/>
+
+    <!-- Footer -->
+    <attr sel="#footerTemplate"
+          th:replace="~{fragments/footer :: footerFragment}"/>
+
+    <!-- Scripts -->
+    <attr sel="#scriptTemplate"
+          th:replace="~{fragments/script :: scriptFragment}"/>
+
+</thlogic>
