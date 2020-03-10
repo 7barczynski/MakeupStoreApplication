@@ -1,26 +1,32 @@
 # Face Greases
 Makeup store web application
 
-This is simple application that presents, filters and sorts makeup products.
+This is simple application that presents and filters makeup products.
 
 Makeup products data comes from free [Makeup API](http://makeup-api.herokuapp.com/).
 
-Można uruchomić aplikację na 2 sposoby:
-1. Odpalając w IDE główną metodę klasy MakeupStoreApplication.java 
-2. W konsoli ("Command Propt") dotrzeć do pierwszego, głównego folderu aplikacji ("MakeupStoreApplication") i uruchomić zadanie 'bootRun' na pliku gradlew.bat (u mnie na Windows'ie wygląda to dosłownie: E:\Workspace\InteliJ IDEA\workspace\MakeupStoreApplication>gradlew.bat bootRun).
-Uruchomienie aplikacji wymaga zainsatlowanej Javy (Używam do projektu Javy 11, więc zalecam posiadać tę wersję).
+### Setup
+You can run application in two ways:
+1. by running main method in MakeupStoreApplication.java in your IDE,
+2. by reaching in the Command Prompt main directory of this application ("MakeupStoreAppliaction") and running task 'bootRun' on a 'gradlew.bat' file.
 
+Application needs Java to run. I use Java 11 and this is the version I recommend.   
+Also you have to be online to use application because almost every request to the server downloads data from external API.
 
-Gdy po uruchomieniu w przeglądarce wpsize się URL [localhost:8080](http://localhost:8080/) serwer powinien zwrócić widok strony głównej. Na tą chwilę dostępne są 4 widoki: Home, About, Shop i single-product.
-- About ("/about") - jest na razie niedokończony (ten plik README pełni jedną z jego funkcji). Znajdują się tu linki do mojego GitHub'a, LinkedIn'a (w niedalekiej przyszłości...) oraz ogólna informacja o aplikacji.
-- Home ("/") - strona główna na razie nie ma żadnych funkcji oprócz przekierowania zdjęciami do sklepu.
-- Shop ("/shop") - ten widok przedstawia produkty ściągnięte z zewnętrznego API wraz z filtrem, którego można użyć do następnych wyszukań. Gdy produktów jest więcej to poniżej listy będzie znajdowała się paginacja.
-- single-product ("/{id}") - widok przedstawia wybrany pojedynczy produkt. Przechodzi się do niego po kliknięciu w nazwę produktu w sklepie. Można wtedy zobaczyć dodatkowo opis produktu oraz dostępne kolory (jeżeli są).
+### How to 
+Application uses embeded Tomcat and its port is 8080. At the moment there are available four views:
+- Home ([localhost:8080](http://localhost:8080/)) - home page,
+- About ([localhost:8080/about](http://localhost:8080/about)) - there are some links to my social media,
+- Shop ([localhost:8080/shop](http://localhost:8080/shop)) - this view presents makeup products downloaded from external API and a filter which helps to make serching more specific. When there are more than 12 (default value) products to show there should be pagination on the bottom of the list,
+- Single product ([localhost:8080/shop/{id}](http://localhost:8080/shop/1)) - this view presents details about one product. You can reach this view by clicking an image of the desired product on a shop view.
 
-Aplikacja jest "wielojęzykowa". W każdym widoku oprócz About, w prawym górnym rogu znajduje się lista języków. Po zmianie języka strona się "odświeża" i wszystkie słowa oprócz nazw i opisów przedmiotów ściągniętych z API są tłumaczone na wybrany język. 
+You can also change the language of the application interface by choosing desired language from the list in the top right corner of the page. At the moment there are two languages - english and polish.
 
-Porady dla korzystania z "wyszukiwarki" produktów (Shop):
-- Gdy wejdzie się w niego poprzez czysty link (tzn."localhost:8080/shop") to API zwraca wszystkie produkty jakie ma w bazie. Niestety trwa to zdecydowanie dłużej od wyszukiwań bardziej doprecyzowanych, dlatego zalecam korzystać z filtra, bądź gotowych kategorii w rozwijalnej zakładce SHOP w pasku menu (pasek znajduje się pod logiem). 
+Little advice on searching in the shop view:
+- "pure", parameterless request (http://localhost:8080/shop) downloads all products from the external API. This last longer than more specific requests and thats why I recommend to use filter and categories from dropdown list on the main menu.
 
+If you encounter any problem I'm more than happy to contact you on this.
+
+Thank you for your time to read this! Hope the code is satisfying!
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
