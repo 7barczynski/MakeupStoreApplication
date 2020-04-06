@@ -12,7 +12,6 @@
           th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
 
     <!-- Breadcrumbs -->
-<!--    TODO Breadcrumby są bardzo źle zrobione, może da się łatwo wrzucić listę z przetłumaczonymi nazwami oraz z linkami?-->
     <attr sel="#breadcrumbsTemplate"
           th:replace="~{fragments/breadcrumbs :: breadcrumbsFragment(pageName=#{shop.name}, homeName=#{home.name})}"/>
 
