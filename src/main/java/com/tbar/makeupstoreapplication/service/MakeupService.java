@@ -1,6 +1,6 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Product;
+import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import org.springframework.data.domain.Page;

@@ -1,7 +1,7 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.service.consumer.MakeupAPIConsumer;
-import com.tbar.makeupstoreapplication.service.consumer.model.Product;
+import com.tbar.makeupstoreapplication.dao.MakeupAPIConsumer;
+import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
@@ -83,7 +83,7 @@ public class MakeupServiceImpl implements MakeupService {
     }
 
     private List<Product> makeRequestToApiForCollection(URI requestUri) {
-            return makeupApiConsumer.requestCollection(requestUri);
+            return makeupApiConsumer.requestCollection();
     }
 
     private void isResponseListEmpty(List<Product> responseList) throws ProductsNotFoundException {
@@ -125,7 +125,7 @@ public class MakeupServiceImpl implements MakeupService {
     }
 
     private Product makeRequestToApiForSingleObject(URI requestUri) {
-            return makeupApiConsumer.requestSingleObject(requestUri);
+            return null;
     }
 
     private void isResponseProductNull(Product responseProduct) throws SingleProductNotFoundException {

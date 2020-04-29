@@ -1,16 +1,19 @@
 package com.tbar.makeupstoreapplication.service.consumer;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Product;
+import com.tbar.makeupstoreapplication.dao.APIConsumer;
+import com.tbar.makeupstoreapplication.dao.MakeupAPIConsumer;
+import com.tbar.makeupstoreapplication.model.Product;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -27,37 +30,29 @@ class APIConsumerImplTest {
 
     @Mock
     private RestTemplate restTemplate;
-    @InjectMocks
-    private MakeupAPIConsumer makeupAPIConsumer;
+    private APIConsumer<Product> makeupAPIConsumer;
     private final List<Product> expectedCollectionResponse = new ArrayList<>(List.of(new Product()));
-    private final Product expectedSingleObjectResponse = new Product();
-    private final URI exampleUrl = URI.create("http://www.example.com");
+    private final URI exampleUri = URI.create("http://www.example.com");
+
+    @BeforeEach
+    void init() {
+        makeupAPIConsumer = new MakeupAPIConsumer(restTemplate);
+        ReflectionTestUtils.setField(makeupAPIConsumer, "makeupApiUri", exampleUri);
+    }
 
     @Test
     void given_uri_when_requestCollection_return_collectionOfProducts() {
         setupMockRestTemplateResponseForCollection();
-        List<Product> actualResponse = makeupAPIConsumer.requestCollection(exampleUrl);
+        List<Product> actualResponse = makeupAPIConsumer.requestCollection();
         assertEquals(expectedCollectionResponse, actualResponse);
-    }
-
-    @Test
-    void given_uri_when_requestSingleObject_return_product() {
-        setupMockRestTemplateResponseForSingleObject();
-        Product actualResponse = makeupAPIConsumer.requestSingleObject(exampleUrl);
-        assertEquals(expectedSingleObjectResponse, actualResponse);
     }
 
     private void setupMockRestTemplateResponseForCollection() {
         when(restTemplate.exchange(
-                eq(exampleUrl),
+                eq(exampleUri),
                 eq(HttpMethod.GET),
                 isNull(),
                 ArgumentMatchers.<ParameterizedTypeReference<List<Product>>>any()
         )).thenReturn(new ResponseEntity<>(expectedCollectionResponse, HttpStatus.OK));
-    }
-
-    private void setupMockRestTemplateResponseForSingleObject() {
-        when(restTemplate.getForEntity(eq(exampleUrl), eq(Product.class)))
-                .thenReturn(new ResponseEntity<>(expectedSingleObjectResponse, HttpStatus.OK));
     }
 }

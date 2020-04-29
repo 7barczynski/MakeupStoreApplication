@@ -1,6 +1,6 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.service.consumer.model.Product;
+import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

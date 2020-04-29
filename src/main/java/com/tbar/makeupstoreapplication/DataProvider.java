@@ -1,8 +1,8 @@
 package com.tbar.makeupstoreapplication;
 
-import com.tbar.makeupstoreapplication.service.MakeupService;
-import com.tbar.makeupstoreapplication.service.consumer.model.Product;
-import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
+import com.tbar.makeupstoreapplication.dao.APIConsumer;
+import com.tbar.makeupstoreapplication.model.Product;
+import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -17,19 +17,19 @@ import java.util.List;
 @Component
 public class DataProvider implements ApplicationRunner {
 
-    private MakeupService makeupService;
+    private APIConsumer<Product> makeupApiConsumer;
     private EntityManager entityManager;
     private List<Product> productsToSave;
 
     @Autowired
-    public DataProvider(MakeupService makeupService, EntityManager entityManager) {
-        this.makeupService = makeupService;
+    public DataProvider(APIConsumer<Product> makeupApiConsumer, EntityManager entityManager) {
+        this.makeupApiConsumer = makeupApiConsumer;
         this.entityManager = entityManager;
     }
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         log.info("Start downloading data from external MakeupAPI...");
         getData();
         log.info("Download completed.");
@@ -37,8 +37,8 @@ public class DataProvider implements ApplicationRunner {
         log.info("Makeup data has been saved to database.");
     }
 
-    private void getData() throws ProductsNotFoundException {
-        productsToSave = makeupService.getProductCollection(null);
+    private void getData() throws APIConnectionException {
+        productsToSave = makeupApiConsumer.requestCollection();
     }
 
     private void saveData() {

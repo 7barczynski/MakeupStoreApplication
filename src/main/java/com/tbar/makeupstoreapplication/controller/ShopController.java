@@ -1,7 +1,7 @@
 package com.tbar.makeupstoreapplication.controller;
 
 import com.tbar.makeupstoreapplication.service.MakeupService;
-import com.tbar.makeupstoreapplication.service.consumer.model.Product;
+import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppMappings;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
