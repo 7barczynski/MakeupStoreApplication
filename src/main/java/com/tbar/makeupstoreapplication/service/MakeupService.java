@@ -15,9 +15,6 @@ public interface MakeupService {
     Page<Product> getPaginatedProducts(@Nullable Map<String, String> requestParameters, int page)
             throws ProductsNotFoundException;
 
-    List<Product> getProductCollection(@Nullable Map<String, String> requestParameters)
-            throws ProductsNotFoundException;
-
     Product getProduct(@NonNull Long id) throws SingleProductNotFoundException;
 
     List<Integer> getPaginationNumbers(Page<Product> currentPage);

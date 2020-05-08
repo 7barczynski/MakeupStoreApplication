@@ -2,6 +2,7 @@ package com.tbar.makeupstoreapplication.service.consumer;
 
 import com.tbar.makeupstoreapplication.dao.MakeupAPIConsumer;
 import com.tbar.makeupstoreapplication.model.Product;
+import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
 import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,6 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
@@ -34,18 +34,19 @@ class APIConsumerImplIntegrationTest {
     private RestTemplateBuilder restTemplateBuilder;
     private MockRestServiceServer mockRestServiceServer;
     private MakeupAPIConsumer makeupAPIConsumer;
-    private final Product product = new Product();
+    private Product product = new Product();
     private List<Product> expectedResponse = new ArrayList<>(List.of(product));
-    private final URI exampleUri = URI.create("www.example.com");
-    private final Long exampleId = 1000L;
-    private final String expectedCollectionJsonResponse = "[{\"id\" : \"" + exampleId + "\"}]";
+    private URI exampleUri = URI.create("www.example.com");
+    private Long exampleId = 1000L;
+    private String expectedCollectionJsonResponse = "[{\"id\" : \"" + exampleId + "\"}]";
+    private AppProperties appProperties = new AppProperties();
 
     @BeforeEach
     void init() {
         RestTemplate restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
-        makeupAPIConsumer = new MakeupAPIConsumer(restTemplate);
-        ReflectionTestUtils.setField(makeupAPIConsumer, "makeupApiUri", exampleUri);
+        appProperties.setMakeupApiUriForAllProducts(exampleUri.toString());
+        makeupAPIConsumer = new MakeupAPIConsumer(restTemplate, appProperties);
         product.setId(exampleId);
     }
 

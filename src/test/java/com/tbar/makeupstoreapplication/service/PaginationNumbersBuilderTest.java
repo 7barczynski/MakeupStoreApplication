@@ -19,65 +19,28 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class PaginationNumbersBuilderTest {
 
-    private final int stubPaginationNumbersSize = 10;
-    private final int stubPaginationOffset = 4;
-    private final int stubSizeOfProductListOnPage = 12;
+    private int paginationNumbersSize = 10;
+    private int paginationOffset = 4;
+    private int sizeOfProductListOnPage = 12;
 
-    private final List<Product> expectedList = new ArrayList<>(
-            Collections.nCopies(stubPaginationNumbersSize * stubSizeOfProductListOnPage * 2, new Product()));
-    private final List<Product> productsListOnPage = Collections.nCopies(stubSizeOfProductListOnPage, new Product());
-    private final List<Product> listSmallerThanPaginationSize = new ArrayList<>(
-            Collections.nCopies(stubPaginationNumbersSize * stubSizeOfProductListOnPage / 2, new Product()));
-    private final List<Product> listSmallerThanPageListSize = new ArrayList<>(
-            Collections.nCopies(stubSizeOfProductListOnPage / 2, new Product()));
-
-    private final int pageNumberMiddle = stubPaginationOffset * 2;
-    private final int pageNumberSmallerThanOffset = stubPaginationOffset / 2;
-    private final int pageNumberCloseToMax = expectedList.size() / stubSizeOfProductListOnPage - stubPaginationOffset;
-
-    private final PageRequest pageRequestMiddleNumber = PageRequest.of(pageNumberMiddle - 1, stubSizeOfProductListOnPage);
-    private final PageRequest pageRequestLowNumber = PageRequest.of(
-            pageNumberSmallerThanOffset - 1, stubSizeOfProductListOnPage);
-    private final PageRequest pageRequestHighNumber = PageRequest.of(pageNumberCloseToMax - 1, stubSizeOfProductListOnPage);
-    private final PageRequest pageRequestTooHighNumber = PageRequest.of(99999, stubSizeOfProductListOnPage);
-    private final PageRequest pageRequestZeroNumber = PageRequest.of(0, stubSizeOfProductListOnPage);
-
-    private final Page<Product> expectedPage = new PageImpl<>(
-            productsListOnPage, pageRequestMiddleNumber, expectedList.size());
-    private final Page<Product> pageWithLowNumber = new PageImpl<>(
-            productsListOnPage, pageRequestLowNumber, expectedList.size());
-    private final Page<Product> pageWithHighNumber = new PageImpl<>(
-            productsListOnPage, pageRequestHighNumber, expectedList.size());
-    private final Page<Product> pageWithTooHighNumber = new PageImpl<>(
-            Collections.emptyList(), pageRequestTooHighNumber, expectedList.size());
-    private final Page<Product> pageSmaller = new PageImpl<>(
-            productsListOnPage, pageRequestLowNumber, listSmallerThanPaginationSize.size());
-    private final Page<Product> onePage = new PageImpl<>(
-            listSmallerThanPageListSize, pageRequestZeroNumber, listSmallerThanPageListSize.size());
-
-    private final List<Integer> expectedNumbersFromOne = IntStream.rangeClosed(1, stubPaginationNumbersSize)
-            .boxed()
-            .collect(Collectors.toList());
-    private final List<Integer> expectedNumbersFromOffset = IntStream.rangeClosed(
-            expectedPage.getNumber()+1- stubPaginationOffset,
-            expectedPage.getNumber() - stubPaginationOffset + stubPaginationNumbersSize)
-            .boxed()
-            .collect(Collectors.toList());
-    private final List<Integer> expectedNumbersCloseToEnd = IntStream.rangeClosed(
-            pageWithHighNumber.getTotalPages()+1- stubPaginationNumbersSize, pageWithHighNumber.getTotalPages())
-            .boxed()
-            .collect(Collectors.toList());
-    private final List<Integer> expectedNumbersSmallerThanSize = IntStream.rangeClosed(1, pageSmaller.getTotalPages())
-            .boxed()
-            .collect(Collectors.toList());
+    private List<Product> exampleListOfAllProducts = new ArrayList<>(
+            Collections.nCopies(paginationNumbersSize * sizeOfProductListOnPage * 2, new Product()));
+    private List<Product> regularSliceContent = Collections.nCopies(sizeOfProductListOnPage, new Product());
+    private List<Product> sliceContentSmallerThanPaginationSize = new ArrayList<>(
+            Collections.nCopies(paginationNumbersSize * sizeOfProductListOnPage / 2, new Product()));
+    private List<Product> sliceContentSmallerThanPageListSize = new ArrayList<>(
+            Collections.nCopies(sizeOfProductListOnPage / 2, new Product()));
 
     private AppProperties appProperties = new AppProperties();
     private PaginationNumbersBuilder paginationNumbersBuilder;
+    private Page<Product> examplePage;
+    private int examplePageNumber;
+    private List<Integer> expectedNumbers;
 
     PaginationNumbersBuilderTest() {
-        appProperties.setPaginationNumbersSize(stubPaginationNumbersSize);
-        appProperties.setPaginationLeftOffset(stubPaginationOffset);
-        appProperties.setSizeOfProductListOnPage(stubSizeOfProductListOnPage);
+        appProperties.setPaginationNumbersSize(paginationNumbersSize);
+        appProperties.setPaginationLeftOffset(paginationOffset);
+        appProperties.setSizeOfProductListOnPage(sizeOfProductListOnPage);
     }
 
     @BeforeEach
@@ -86,40 +49,69 @@ public class PaginationNumbersBuilderTest {
     }
 
     @Test
-    void given_currentPageLowerThanOffset_when_getPaginationNumbers_return_paginationNumbersFrom1() {
-        List<Integer> actualNumbers = paginationNumbersBuilder.build(pageWithLowNumber);
+    void given_currentPageLowerThanOffset_when_getPaginationNumbers_return_paginationNumbersFromOne() {
+        examplePageNumber = paginationOffset / 2;
+        examplePage = new PageImpl<>(regularSliceContent, PageRequest.of(
+                examplePageNumber - 1, sizeOfProductListOnPage), exampleListOfAllProducts.size());
+        expectedNumbers = getExpectedNumbers(1, paginationNumbersSize);
 
-        assertEquals(expectedNumbersFromOne, actualNumbers);
+        List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+        assertEquals(expectedNumbers, actualNumbers);
     }
 
-    @Test
-    void given_lessPagesThanPaginationSize_when_getPaginationNumbers_return_paginationNumbersFrom1() {
-        List<Integer> actualNumbers = paginationNumbersBuilder.build(pageSmaller);
 
-        assertEquals(expectedNumbersSmallerThanSize, actualNumbers);
+    @Test
+    void given_lessPagesThanPaginationSize_when_getPaginationNumbers_return_paginationNumbersFromOne() {
+        examplePageNumber = paginationOffset / 2;
+        examplePage = new PageImpl<>(sliceContentSmallerThanPaginationSize, PageRequest.of(
+                examplePageNumber - 1, sizeOfProductListOnPage), sliceContentSmallerThanPaginationSize.size());
+        expectedNumbers = getExpectedNumbers(1, examplePage.getTotalPages());
+
+        List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+        assertEquals(expectedNumbers, actualNumbers);
     }
 
     @Test
     void given_pageNumberCloseToTotalPages_when_getPaginationNumbers_return_paginationNumbersToTheTotalPages() {
-        List<Integer> actualNumbers = paginationNumbersBuilder.build(pageWithHighNumber);
+        examplePageNumber = exampleListOfAllProducts.size() / sizeOfProductListOnPage - 1;
+        examplePage = new PageImpl<>(regularSliceContent, PageRequest.of(
+                examplePageNumber, sizeOfProductListOnPage), exampleListOfAllProducts.size());
+        expectedNumbers = getExpectedNumbers(examplePage.getTotalPages() - paginationNumbersSize + 1,
+                exampleListOfAllProducts.size() / sizeOfProductListOnPage);
 
-        assertEquals(expectedNumbersCloseToEnd, actualNumbers);
+        List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+        assertEquals(expectedNumbers, actualNumbers);
     }
 
     @Test
     void given_pageNumberInTheMiddleOfList_when_getPaginationNumbers_return_paginationNumbersWithOffset() {
-        List<Integer> actualNumbers = paginationNumbersBuilder.build(expectedPage);
+        examplePageNumber = paginationOffset * 2;
+        examplePage = new PageImpl<>(regularSliceContent, PageRequest.of(
+                examplePageNumber, sizeOfProductListOnPage), exampleListOfAllProducts.size());
+        int tempFrom = examplePageNumber - paginationOffset + 1;
+        expectedNumbers = getExpectedNumbers(tempFrom, tempFrom + paginationNumbersSize - 1);
 
-        assertEquals(expectedNumbersFromOffset, actualNumbers);
+        List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+        assertEquals(expectedNumbers, actualNumbers);
     }
 
     @Test
     void given_onePage_when_getPagniationNumbers_return_null() {
-        assertNull(paginationNumbersBuilder.build(onePage));
+        examplePage = new PageImpl<>(sliceContentSmallerThanPageListSize,
+                PageRequest.of(0, sizeOfProductListOnPage), sliceContentSmallerThanPageListSize.size());
+
+        assertNull(paginationNumbersBuilder.build(examplePage));
     }
 
     @Test
     void given_pageNumberHigherThanTotalPages_when_getPaginationNumbers_return_null() {
-        assertNull(paginationNumbersBuilder.build(pageWithTooHighNumber));
+        examplePage = new PageImpl<>(Collections.emptyList(),
+                PageRequest.of(99999, sizeOfProductListOnPage), exampleListOfAllProducts.size());
+
+        assertNull(paginationNumbersBuilder.build(examplePage));
+    }
+
+    private List<Integer> getExpectedNumbers(int from, int to) {
+        return IntStream.rangeClosed(from, to).boxed().collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
 package com.tbar.makeupstoreapplication.service;
 
+import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -13,13 +13,11 @@ import java.util.stream.IntStream;
 import static com.tbar.makeupstoreapplication.service.PaginationNumbersBuilder.CurrentPagePositionCase.*;
 
 @Component
-@Slf4j
 public class PaginationNumbersBuilder {
 
     private int paginationNumbersSize;
     private int paginationLeftOffset;
     private int totalPages;
-    private int number;
     private int currentPageMinusOffset;
     private int totalPagesMinusSize;
     private int offsetNumberPlusSize;
@@ -38,7 +36,7 @@ public class PaginationNumbersBuilder {
         paginationLeftOffset = appProperties.getPaginationLeftOffset();
     }
 
-    public List<Integer> build(Page currentPage) {
+    public List<Integer> build(Page<Product> currentPage) {
         if (isPaginationNeeded(currentPage)) {
             setupVariables(currentPage);
             return buildList();
@@ -46,17 +44,17 @@ public class PaginationNumbersBuilder {
         return null;
     }
 
-    private void setupVariables(Page currentPage) {
+    private boolean isPaginationNeeded(Page<Product> currentPage) {
+        return currentPage != null && currentPage.getTotalPages() > 1
+                && currentPage.getNumber() < currentPage.getTotalPages();
+    }
+
+    private void setupVariables(Page<Product> currentPage) {
+        int number = currentPage.getNumber();
         totalPages = currentPage.getTotalPages();
-        number = currentPage.getNumber();
         currentPageMinusOffset = number - paginationLeftOffset + 1;
         totalPagesMinusSize = totalPages - paginationNumbersSize + 1;
         offsetNumberPlusSize = currentPageMinusOffset + paginationNumbersSize - 1;
-    }
-
-    private boolean isPaginationNeeded(Page currentPage) {
-        return currentPage != null && currentPage.getTotalPages() > 1
-                && currentPage.getNumber() < currentPage.getTotalPages();
     }
 
     private List<Integer> buildList() {
