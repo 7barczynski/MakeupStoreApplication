@@ -4,7 +4,6 @@ import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ public class MakeupAPIConsumer implements APIConsumer<Product> {
     private final RestTemplate restTemplate;
     private final URI makeupApiUriForAllProducts;
 
-    @Autowired
     public MakeupAPIConsumer(RestTemplate restTemplate, AppProperties appProperties) {
         this.restTemplate = restTemplate;
         this.makeupApiUriForAllProducts = URI.create(appProperties.getMakeupApiUriForAllProducts());

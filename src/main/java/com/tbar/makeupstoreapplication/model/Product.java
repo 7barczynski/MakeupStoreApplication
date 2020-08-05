@@ -19,7 +19,7 @@ public class Product {
     private Long id;
     private String brand;
     private String name;
-    private String price;
+    private Double price;
     @JsonAlias(value = "price_sign")
     private String priceSign;
     private String currency;

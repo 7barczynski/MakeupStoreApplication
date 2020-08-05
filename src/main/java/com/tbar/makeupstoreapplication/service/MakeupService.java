@@ -4,18 +4,16 @@ import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
-import java.util.Map;
 
 public interface MakeupService {
 
-    Page<Product> getPaginatedProducts(@Nullable Map<String, String> requestParameters, int page)
-            throws ProductsNotFoundException;
+    Page<Product> findProducts(Specification<Product> specification, Pageable pageable) throws ProductsNotFoundException;
 
-    Product getProduct(@NonNull Long id) throws SingleProductNotFoundException;
+    Product findProduct(Long id) throws SingleProductNotFoundException;
 
     List<Integer> getPaginationNumbers(Page<Product> currentPage);
 }

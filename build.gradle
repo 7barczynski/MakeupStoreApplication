@@ -6,6 +6,7 @@ plugins {
 
 group = 'com.tbar'
 version = '0.0.1-SNAPSHOT'
+//noinspection GroovyUnusedAssignment
 sourceCompatibility = '11'
 
 configurations {
@@ -30,6 +31,7 @@ dependencies {
 	implementation 'com.google.code.findbugs:jsr305:3.0.2'
 	compileOnly 'org.projectlombok:lombok'
 	runtime 'com.h2database:h2:1.4.200'
+	implementation 'net.kaczmarzyk:specification-arg-resolver:2.2.1'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

@@ -1,13 +1,12 @@
 package com.tbar.makeupstoreapplication.controller;
 
-import com.tbar.makeupstoreapplication.service.MakeupService;
 import com.tbar.makeupstoreapplication.model.Product;
+import com.tbar.makeupstoreapplication.service.MakeupService;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import com.tbar.makeupstoreapplication.utility.ViewNames;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,20 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@Slf4j
+@RequiredArgsConstructor
 @RequestMapping(ViewNames.SHOP + "/{id}")
 public class SingleProductController {
 
     private final MakeupService makeupService;
 
-    @Autowired
-    public SingleProductController(MakeupService makeupService) {
-        this.makeupService = makeupService;
-    }
-
     @GetMapping
     public String singleProductPage(Model model, @PathVariable("id") long id) throws SingleProductNotFoundException {
-        Product product = makeupService.getProduct(id);
+        Product product = makeupService.findProduct(id);
         addAttributesToSingleProductModel(model, product);
         return ViewNames.SINGLE_PRODUCT;
     }

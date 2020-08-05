@@ -3,8 +3,8 @@ package com.tbar.makeupstoreapplication;
 import com.tbar.makeupstoreapplication.dao.APIConsumer;
 import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -14,18 +14,13 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class DataProvider implements ApplicationRunner {
 
-    private APIConsumer<Product> makeupApiConsumer;
-    private EntityManager entityManager;
+    private final APIConsumer<Product> makeupApiConsumer;
+    private final EntityManager entityManager;
     private List<Product> productsToSave;
-
-    @Autowired
-    public DataProvider(APIConsumer<Product> makeupApiConsumer, EntityManager entityManager) {
-        this.makeupApiConsumer = makeupApiConsumer;
-        this.entityManager = entityManager;
-    }
 
     @Override
     @Transactional

@@ -1,10 +1,10 @@
 package com.tbar.makeupstoreapplication.errorHandlers;
 
+import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.utility.errorhandlers.MakeupAPIErrorHandler;
 import com.tbar.makeupstoreapplication.utility.exceptions.APIConnectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
@@ -21,29 +21,27 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RestClientTest
 class MakeupAPIErrorHandlerTest {
 
-    @Autowired
-    private RestTemplateBuilder restTemplateBuilder;
     private MockRestServiceServer mockRestServiceServer;
     private RestTemplate restTemplate;
     private final String exampleUrl = "http://www.example.com";
 
     @BeforeEach
     void init() {
-        restTemplate = restTemplateBuilder.errorHandler(new MakeupAPIErrorHandler()).build();
+        restTemplate = new RestTemplateBuilder().errorHandler(new MakeupAPIErrorHandler()).build();
         mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
 
     @Test
     void given_httpRequest_when_serverSideError_throw_APICallException() {
         setupMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
-        assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, null));
+        assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, Product.class));
         mockRestServiceServer.verify();
     }
 
     @Test
     void given_httpRequest_when_clientSideError_throw_APICallException() {
         setupMockServerResponse(HttpStatus.BAD_REQUEST);
-        assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, null));
+        assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, Product.class));
         mockRestServiceServer.verify();
     }
 

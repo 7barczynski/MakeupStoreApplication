@@ -1,110 +1,109 @@
 package com.tbar.makeupstoreapplication.service;
 
-import com.tbar.makeupstoreapplication.dao.ProductDAOImpl;
 import com.tbar.makeupstoreapplication.model.Product;
+import com.tbar.makeupstoreapplication.repository.ProductRepository;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class MakeupServiceImplTest {
 
     @Mock
-    private ProductDAOImpl productDaoMock;
+    private ProductRepository productRepository;
     @Mock
     private PaginationNumbersBuilder paginationNumbersBuilderMock;
-    @Mock
-    private ProductPageCreator productPageCreatorMock;
-    @Mock
-    private DAOMapCreator daoMapCreatorMock;
     private MakeupService makeupService;
-    private int sizeOfProductListOnPage = 12;
-    private Product expectedProduct = new Product();
-    private List<Product> expectedList = List.of(expectedProduct);
-    private Map<String, String> parametersMap = new HashMap<>();
-    private List<Product> products = new ArrayList<>(List.of(expectedProduct));
-    private int page = 0;
-    private Long id = 0L;
-    private PageRequest pageRequest = PageRequest.of(page, sizeOfProductListOnPage);
-    private Page<Product> expectedPage = new PageImpl<>(products,
-            pageRequest, expectedList.size());
-    private List<Integer> expectedPaginationNumbers = List.of(1, 2, 3);
 
     @BeforeEach
     void initialize() {
-        makeupService = new MakeupServiceImpl(productDaoMock, productPageCreatorMock,
-                daoMapCreatorMock, paginationNumbersBuilderMock);
+        makeupService = new MakeupServiceImpl(productRepository, paginationNumbersBuilderMock);
     }
 
     @Test
-    void given_mapOfParametersAndPage_when_getPaginatedProducts_return_pageOfProducts() throws ProductsNotFoundException {
-        when(daoMapCreatorMock.createMap(parametersMap)).thenReturn(parametersMap);
-        when(productDaoMock.getProducts(parametersMap)).thenReturn(products);
-        when(productPageCreatorMock.createProductPage(products, page)).thenReturn(expectedPage);
+    void given_validInput_when_findProducts_then_returnPageOfProducts() throws ProductsNotFoundException {
+        Page<Product> expectedPage = new PageImpl<>(Collections.nCopies(12, new Product()));
+        when(productRepository.findAll(ArgumentMatchers.<Specification<Product>>any(), any(Pageable.class))).
+                thenReturn(expectedPage);
 
-        Page<Product> actualPage = makeupService.getPaginatedProducts(parametersMap, page);
-        assertEquals(expectedPage, actualPage);
+        Specification<Product> specification = Specification.where(
+                (root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
+        Pageable pageable = PageRequest.of(0, 12);
+        Page<Product> actualPage = makeupService.findProducts(specification, pageable);
+
+        Assertions.assertEquals(expectedPage, actualPage);
     }
 
     @Test
-    void given_nullMapOfParametersAndPage_when_getPaginatedProducts_return_pageOfProducts() throws ProductsNotFoundException {
-        when(daoMapCreatorMock.createMap(null)).thenReturn(parametersMap);
-        when(productDaoMock.getProducts(parametersMap)).thenReturn(products);
-        when(productPageCreatorMock.createProductPage(products, page)).thenReturn(expectedPage);
+    void given_nullFromSearchingRepository_when_findProducts_then_throwProductsNotFoundException() {
+        when(productRepository.findAll(ArgumentMatchers.<Specification<Product>>any(), any(Pageable.class)))
+                .thenReturn(null);
 
-        Page<Product> actualPage = makeupService.getPaginatedProducts(null, page);
-        assertEquals(expectedPage, actualPage);
+        Specification<Product> specification = Specification.where(
+                (root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
+        Pageable pageable = PageRequest.of(0, 12);
+
+        assertThrows(ProductsNotFoundException.class, () -> makeupService.findProducts(specification, pageable));
+        verify(productRepository).findAll(ArgumentMatchers.<Specification<Product>>any(), any(Pageable.class));
     }
 
     @Test
-    void given_noProductsToGet_when_getPaginatedProducts_throw_ProductsNotFoundException() {
-        when(daoMapCreatorMock.createMap(parametersMap)).thenReturn(parametersMap);
-        when(productDaoMock.getProducts(parametersMap)).thenReturn(Collections.emptyList());
+    void given_emptyContentFromSearchingRepository_when_findProducts_then_throwProductsNotFoundException() {
+        when(productRepository.findAll(ArgumentMatchers.<Specification<Product>>any(), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(Collections.emptyList()));
 
-        Assertions.assertThrows(ProductsNotFoundException.class,
-                () -> makeupService.getPaginatedProducts(parametersMap, page));
+        Specification<Product> specification = Specification.where(
+                (root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
+        Pageable pageable = PageRequest.of(0, 12);
+
+        assertThrows(ProductsNotFoundException.class, () -> makeupService.findProducts(specification, pageable));
+        verify(productRepository).findAll(ArgumentMatchers.<Specification<Product>>any(), any(Pageable.class));
     }
 
     @Test
-    void given_nullProducts_when_getPaginatedProducts_throw_ProductsNotFoundException() {
-        when(daoMapCreatorMock.createMap(parametersMap)).thenReturn(parametersMap);
-        when(productDaoMock.getProducts(parametersMap)).thenReturn(null);
+    void given_validInput_when_findProduct_then_returnProduct() throws SingleProductNotFoundException {
+        Product expectedProduct = new Product();
+        when(productRepository.findById(eq(3L))).thenReturn(Optional.of(expectedProduct));
 
-        Assertions.assertThrows(ProductsNotFoundException.class,
-                () -> makeupService.getPaginatedProducts(parametersMap, page));
+        Product actualProduct = makeupService.findProduct(3L);
+
+        Assertions.assertEquals(expectedProduct, actualProduct);
     }
 
     @Test
-    void given_id_when_getProduct_return_product() throws SingleProductNotFoundException {
-        when(productDaoMock.getProduct(id)).thenReturn(expectedProduct);
+    void given_emptyOptionalFromSearchingRepository_when_findProduct_then_throwSingleProductNotFoundException() {
+        when(productRepository.findById(eq(3L))).thenReturn(Optional.empty());
 
-        Product actualProduct = makeupService.getProduct(id);
-        assertEquals(expectedProduct, actualProduct);
-    }
-
-    @Test
-    void given_nullProduct_when_getProduct_throw_SingleProductNotFoundException() {
-        when(productDaoMock.getProduct(id)).thenReturn(null);
-
-        assertThrows(SingleProductNotFoundException.class, () -> makeupService.getProduct(id));
+        assertThrows(SingleProductNotFoundException.class, () -> makeupService.findProduct(3L));
+        verify(productRepository).findById(eq(3L));
     }
 
     @Test
     void given_page_when_getPaginationNumbers_return_listOfPaginationNumbers() {
+        List<Product> products = Collections.nCopies(12, new Product());
+        PageRequest pageRequest = PageRequest.of(0, 12);
+        PageImpl<Product> expectedPage = new PageImpl<>(products, pageRequest, products.size());
+
+        List<Integer> expectedPaginationNumbers = List.of(1, 2, 3);
         when(paginationNumbersBuilderMock.build(expectedPage)).thenReturn(expectedPaginationNumbers);
 
         List<Integer> actualPaginationNumbers = makeupService.getPaginationNumbers(expectedPage);

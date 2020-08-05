@@ -16,6 +16,7 @@ import java.util.Scanner;
 @Slf4j
 @Component
 public class MakeupAPIErrorHandler implements ResponseErrorHandler {
+
     @Override
     public boolean hasError(ClientHttpResponse response) throws IOException {
         return response.getStatusCode().isError();
@@ -28,6 +29,7 @@ public class MakeupAPIErrorHandler implements ResponseErrorHandler {
         throw new APIConnectionException(responseAsString);
     }
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public void handleError(URI url, HttpMethod method, ClientHttpResponse response) throws IOException {
         String responseAsString = toString(response.getStatusCode(), response.getBody());

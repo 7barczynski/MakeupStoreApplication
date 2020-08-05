@@ -5,11 +5,11 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-@Component(value = "AppProperties")
+@Component("AppProperties")
 @ConfigurationProperties(prefix = "properties")
 @Getter
 @Setter
-public final class AppProperties {
+public class AppProperties {
 
     private String applicationName;
     private String makeupApiUriForAllProducts;
