@@ -32,14 +32,14 @@ class MakeupAPIErrorHandlerTest {
     }
 
     @Test
-    void given_httpRequest_when_serverSideError_throw_APICallException() {
+    void when_serverSideError_throw_APICallException() {
         setupMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
         assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, Product.class));
         mockRestServiceServer.verify();
     }
 
     @Test
-    void given_httpRequest_when_clientSideError_throw_APICallException() {
+    void when_clientSideError_throw_APICallException() {
         setupMockServerResponse(HttpStatus.BAD_REQUEST);
         assertThrows(APIConnectionException.class,() -> restTemplate.getForEntity(exampleUrl, Product.class));
         mockRestServiceServer.verify();

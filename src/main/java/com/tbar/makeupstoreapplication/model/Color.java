@@ -3,6 +3,7 @@ package com.tbar.makeupstoreapplication.model;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Color {
 
     @Id
     @GeneratedValue
+    @EqualsAndHashCode.Exclude
     private int id;
     @JsonAlias(value = "hex_value")
     private String hexValue;

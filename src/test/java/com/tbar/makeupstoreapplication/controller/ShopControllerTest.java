@@ -6,9 +6,7 @@ import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
-import net.kaczmarzyk.spring.data.jpa.domain.Conjunction;
-import net.kaczmarzyk.spring.data.jpa.domain.EmptyResultOnTypeMismatch;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.web.WebRequestQueryContext;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.OnTypeMismatch;
@@ -27,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.persistence.criteria.JoinType;
 import java.util.Collections;
 import java.util.List;
 
@@ -114,14 +113,27 @@ class ShopControllerTest {
     @Test
     void when_requestToShopPage_then_evaluatesSpecificationParameter() throws Exception {
         Specification<Product> expectedSpecification = new Conjunction<>(
-                new EmptyResultOnTypeMismatch<>(
-                        new Equal<>(
-                                new WebRequestQueryContext(nativeWebRequestMock), "productType", new String[]{"lipstick"},
-                                Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT))));
+                new Join<>(
+                        new WebRequestQueryContext(nativeWebRequestMock),
+                        "productTags", "pt", JoinType.INNER, true),
+                new Conjunction<>(
+                        new EmptyResultOnTypeMismatch<>(
+                                new EqualIgnoreCase<>(
+                                        new WebRequestQueryContext(nativeWebRequestMock),
+                                        "productType", new String[]{"lipstick"},
+                                        Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT))),
+                        new EmptyResultOnTypeMismatch<>(
+                                new In<>(
+                                        new WebRequestQueryContext(nativeWebRequestMock),
+                                        "pt.name", new String[]{"Natural"},
+                                        Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT)))
+                )
+        );
 
         mockMvc.perform(get("/shop")
                 .contentType(MediaType.TEXT_HTML)
-                .param("productType", "lipstick"))
+                .param("product_type", "lipstick")
+                .param("product_tags", "Natural"))
                 .andExpect(status().isOk());
 
         verify(makeupService).findProducts(specificationCaptor.capture(), any(Pageable.class));
@@ -131,7 +143,7 @@ class ShopControllerTest {
     }
 
     @Test
-    void given_nothingFoundInDB_when_shopPage_then_returnExceptionCaseInModel() throws Exception {
+    void given_nothingFoundInDB_when_requestToShopPage_then_returnExceptionCaseInModel() throws Exception {
         when(makeupService.findProducts(any(), any(Pageable.class)))
                 .thenThrow(ProductsNotFoundException.class);
 

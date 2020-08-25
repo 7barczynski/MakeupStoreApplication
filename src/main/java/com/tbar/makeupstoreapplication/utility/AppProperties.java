@@ -2,6 +2,7 @@ package com.tbar.makeupstoreapplication.utility;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ public class AppProperties {
     private String[] applicationLanguagesList;
     private int paginationNumbersSize;
     private int paginationLeftOffset;
+    @Value("${spring.data.web.pageable.default-page-size}")
     private int sizeOfProductListOnPage;
     private String phoneNumber;
     private String githubUrl;

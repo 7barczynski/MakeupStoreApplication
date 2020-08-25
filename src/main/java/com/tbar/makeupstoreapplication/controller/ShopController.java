@@ -8,11 +8,12 @@ import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import com.tbar.makeupstoreapplication.utility.ViewNames;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
 import lombok.RequiredArgsConstructor;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
 import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.domain.In;
 import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
@@ -32,15 +33,17 @@ public class ShopController {
     private final MakeupService makeupService;
 
     @GetMapping
-    public String shopPage(Model model, @And({
-            @Spec(path = "productType", spec = Equal.class),
-            @Spec(path = "productCategory", spec = Equal.class),
-            @Spec(path = "brand", spec = Equal.class),
-            @Spec(path = "productTags", spec = In.class),
-            @Spec(path = "priceGreaterThan", spec = GreaterThanOrEqual.class),
-            @Spec(path = "priceLessThan", spec = LessThanOrEqual.class),
-            @Spec(path = "ratingGreaterThan", spec = GreaterThanOrEqual.class),
-            @Spec(path = "ratingLessThan", spec = LessThanOrEqual.class)
+    public String shopPage(Model model,
+        @Join(path = "productTags", alias = "pt")
+        @And({
+            @Spec(path = "productType", params = "product_type", spec = EqualIgnoreCase.class),
+            @Spec(path = "category", params = "product_category", spec = EqualIgnoreCase.class),
+            @Spec(path = "brand", spec = EqualIgnoreCase.class),
+            @Spec(path = "pt.name", params = "product_tags", spec = In.class),
+            @Spec(path = "price", params = "price_greater_than", spec = GreaterThanOrEqual.class),
+            @Spec(path = "price", params = "price_less_than", spec = LessThanOrEqual.class),
+            @Spec(path = "rating", params = "rating_greater_than", spec = GreaterThanOrEqual.class),
+            @Spec(path = "rating", params = "rating_less_than", spec = LessThanOrEqual.class)
     }) Specification<Product> productSpecification, Pageable pageable) throws ProductsNotFoundException {
         Page<Product> pageOfProducts = makeupService.findProducts(productSpecification, pageable);
         addAttributesToShopModel(model, pageOfProducts);

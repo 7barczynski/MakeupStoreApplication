@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -26,10 +27,13 @@ public class Product {
     @JsonAlias(value = "image_link")
     @Column(length = 500)
     private String imageLink;
+    @ToString.Exclude
     @JsonAlias(value="product_link")
     private String productLink;
     @JsonAlias(value = "website_link")
+    @ToString.Exclude
     private String websiteLink;
+    @ToString.Exclude
     @Column(length = 10000)
     private String description;
     private Double rating;
@@ -37,23 +41,23 @@ public class Product {
     @JsonAlias(value = "product_type")
     private String productType;
     @JsonAlias(value = "tag_list")
-    @ElementCollection
-    private List<String> tagList;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "PRODUCT_ID")
+    private Set<ProductTag> productTags;
+    @ToString.Exclude
     @JsonAlias(value = "created_at")
     private String createdAt;
+    @ToString.Exclude
     @JsonAlias(value = "updated_at")
     private String updatedAt;
+    @ToString.Exclude
     @JsonAlias(value = "product_api_url")
     private String productApiUrl;
+    @ToString.Exclude
     @JsonAlias(value = "api_featured_image")
     private String apiFeaturedImage;
     @JsonAlias(value = "product_colors")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "PRODUCT_ID")
-    private List<Color> productColors;
-
-    @Override
-    public String toString() {
-        return String.format("[ID:%d; Name:%s;Price:%s]", getId(), getName(), getPrice());
-    }
+    private Set<Color> productColors;
 }

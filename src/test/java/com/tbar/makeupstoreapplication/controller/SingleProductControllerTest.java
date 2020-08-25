@@ -32,7 +32,7 @@ class SingleProductControllerTest {
     private MakeupService makeupService;
 
     @Test
-    void when_requestToSingleProduct_then_return200OK() throws Exception {
+    void when_requestToSingleProductPage_then_return200OK() throws Exception {
         when(makeupService.findProduct(eq(3L)))
                 .thenReturn(null);
 
@@ -42,7 +42,7 @@ class SingleProductControllerTest {
     }
 
     @Test
-    void when_requestToSingleProduct_then_callOnceMakeupService() throws Exception {
+    void when_requestToSingleProductPage_then_callOnceMakeupService() throws Exception {
         when(makeupService.findProduct(eq(3L)))
                 .thenReturn(null);
 
@@ -54,7 +54,7 @@ class SingleProductControllerTest {
     }
 
     @Test
-    void when_requestToSingleProduct_then_addProductToModel() throws Exception {
+    void when_requestToSingleProductPage_then_addProductToModel() throws Exception {
         Product expectedProduct = new Product();
         when(makeupService.findProduct(eq(3L))).thenReturn(expectedProduct);
 
@@ -68,7 +68,7 @@ class SingleProductControllerTest {
     }
 
     @Test
-    void given_nothingFoundInDB_when_shopPage_then_returnExceptionCaseInModel() throws Exception {
+    void given_nothingFoundInDB_when_requestToSingleProductPage_then_returnExceptionCaseInModel() throws Exception {
         when(makeupService.findProduct(anyLong()))
                 .thenThrow(SingleProductNotFoundException.class);
 

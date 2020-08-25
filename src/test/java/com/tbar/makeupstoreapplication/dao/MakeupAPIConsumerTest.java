@@ -41,7 +41,7 @@ class MakeupAPIConsumerTest {
     }
 
     @Test
-    void given_uri_when_requestCollection_return_collectionOfProducts() {
+    void when_requestCollection_return_collectionOfProducts() {
         List<Product> expectedResponse = new ArrayList<>(Collections.nCopies(100, new Product()));
         setupMockRestTemplateResponseForCollection(expectedResponse);
 
