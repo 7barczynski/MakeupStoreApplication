@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.context.request.NativeWebRequest;
 
@@ -54,10 +52,10 @@ class ProductRepositoryTest {
         Specification<Product> specification = new Conjunction<>(
                 createSpecEqual("brand", "pure anada"));
 
-        Page<Product> actualProducts = productRepository.findAll(specification, PageRequest.of(0, 12));
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, PageRequest.of(0, 12));
 
-        assertEquals(2, actualProducts.getContent().size());
-        assertEquals(expectedListOfProducts, actualProducts.getContent());
+        assertEquals(2, actualPageOfProducts.getContent().size());
+        assertEquals(expectedListOfProducts, actualPageOfProducts.getContent());
     }
     @Disabled // TODO help needed to work out what is wrong with this test
     @Test
@@ -82,10 +80,10 @@ class ProductRepositoryTest {
         Specification<Product> specification = new Conjunction<>(createJoin("productTags", "pt"),
                 new Conjunction<>(createSpecIn("pt.name", new String[]{"ProperTag"})));
 
-        Page<Product> actualProducts = productRepository.findAll(specification, PageRequest.of(0, 12));
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, PageRequest.of(0, 12));
 
-        assertEquals(2, actualProducts.getContent().size());
-        assertEquals(expectedProducts, actualProducts);
+        assertEquals(2, actualPageOfProducts.getContent().size());
+        assertEquals(expectedProducts, actualPageOfProducts);
     }
 
     @Disabled // TODO help needed to work out what is wrong with this test
@@ -112,10 +110,75 @@ class ProductRepositoryTest {
         Specification<Product> specification = new Conjunction<>(createJoin("productTags", "pt"),
                 new Conjunction<>(createSpecIn("pt.name", new String[]{"Proper Tag", "AnotherProperTag"})));
 
-        Page<Product> actualProducts = productRepository.findAll(specification, PageRequest.of(0, 12));
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, PageRequest.of(0, 12));
 
-        assertEquals(2, actualProducts.getContent().size());
-        assertEquals(expectedProducts, actualProducts);
+        assertEquals(2, actualPageOfProducts.getContent().size());
+        assertEquals(expectedProducts, actualPageOfProducts);
+    }
+
+    @Test
+    void given_pageParameter_when_findAll_returnGivenPage() {
+        List<Product> productsToSave = Collections.nCopies(15, new Product());
+        long tempId = 1L;
+        for (Product product : productsToSave) {
+            product.setId(tempId++);
+            productRepository.save(product);
+        }
+
+        Specification<Product> specification = new Conjunction<>();
+        Pageable pageable = PageRequest.of(1, 12);
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, pageable);
+
+        assertEquals(3, actualPageOfProducts.getContent().size());
+        assertEquals(1, actualPageOfProducts.getNumber());
+    }
+
+    @Test
+    void given_sizeParameter_when_findAll_returnPageContentWithTheRightSize() {
+        List<Product> productsToSave = Collections.nCopies(25, new Product());
+        long tempId = 1L;
+        for (Product product : productsToSave) {
+            product.setId(tempId++);
+            productRepository.save(product);
+        }
+
+        Specification<Product> specification = new Conjunction<>();
+        Pageable pageable = PageRequest.of(0, 21);
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, pageable);
+
+        assertEquals(21, actualPageOfProducts.getContent().size());
+    }
+
+    @Test
+    void given_sortParameter_when_findAll_returnSortedPageContent() {
+        Product product1 = new Product();
+        product1.setId(1L);
+        product1.setName("Zzzzzzzz");
+
+        Product product2 = new Product();
+        product2.setId(2L);
+        product2.setName("123123123");
+
+        Product product3 = new Product();
+        product3.setId(3L);
+        product3.setName("Cccccccc");
+
+        Product product4 = new Product();
+        product4.setId(4L);
+        product4.setName("Abcdefghijklmnoprs");
+
+        productRepository.save(product1);
+        productRepository.save(product2);
+        productRepository.save(product3);
+        productRepository.save(product4);
+
+        List<Product> expectedProducts = List.of(product2, product4, product3, product1);
+
+        Specification<Product> specification = new Conjunction<>();
+        Pageable pageable = PageRequest.of(0, 12, Sort.by("name").ascending());
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, pageable);
+
+        assertEquals(expectedProducts, actualPageOfProducts.getContent());
     }
 
     @Test

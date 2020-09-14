@@ -99,7 +99,7 @@ class MakeupStoreApplicationTests {
     }
 
     @Test
-    void given_oneProductTagInARequest_should_returnProductsThatHaveGotNotOnlyTheGivenTag() throws Exception {
+    void given_oneProductTagInARequest_should_returnProductsThatMightGotNotOnlyTheGivenTag() throws Exception {
         ProductTag expectedTag = new ProductTag("Natural");
 
         MvcResult mvcResult = mockMvc.perform(
@@ -142,6 +142,25 @@ class MakeupStoreApplicationTests {
                 actualTagsForFirstProduct.contains(expectedTag2)); // this product has got 1 tag
         assertTrue(actualTagsForSecondProduct.contains(expectedTag1) &&
                 actualTagsForSecondProduct.contains(expectedTag2)); // this product has got all 2 tags
+    }
+
+    @Test
+    void given_pageableParameters_return_pageWithGivenParameters() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(
+                get(("/shop?brand=nyx&page=3&size=30&sort=price,desc"))
+                        .contentType(MediaType.TEXT_HTML))
+                .andReturn();
+
+        //noinspection unchecked
+        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
+                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
+        List<Product> actualPageContent = actualPageOfProducts.getContent();
+
+        assertEquals(3, actualPageOfProducts.getNumber());
+        assertEquals(30, actualPageOfProducts.getSize());
+        for (int i = 0; i < actualPageContent.size() - 1; i++) {
+            assertTrue(actualPageContent.get(i).getPrice() >= actualPageContent.get(i+1).getPrice());
+        }
     }
 
     @Disabled // TODO this test needs changes in th.xml files to eradicate an exception
