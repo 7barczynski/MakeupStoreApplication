@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,32 +25,39 @@ class HomeControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private AppProperties appProperties;
+    private MvcResult mvcResult;
 
     @Test
     void when_requestToHomePage_then_return200OK() throws Exception {
-        mockMvc.perform(get("/").contentType(MediaType.TEXT_HTML)).andExpect(status().isOk());
+        performGetRequest("/").andExpect(status().isOk());
     }
 
     @Test
     void when_requestToAboutPage_then_return200OK() throws Exception {
-        mockMvc.perform(get("/about").contentType(MediaType.TEXT_HTML)).andExpect(status().isOk());
+        performGetRequest("/about").andExpect(status().isOk());
     }
 
     @Test
     void when_requestToHomePage_then_returnHomeView() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/").contentType(MediaType.TEXT_HTML)).andReturn();
+        mvcResult = performGetRequest("/").andReturn();
 
-        //noinspection ConstantConditions
-        String actualViewName = mvcResult.getModelAndView().getViewName();
+        String actualViewName = getViewNameFromModel();
         assertEquals(ViewNames.HOME, actualViewName);
     }
 
     @Test
     void when_requestToAboutPage_then_returnAboutView() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/about").contentType(MediaType.TEXT_HTML)).andReturn();
+        mvcResult = performGetRequest("/about").andReturn();
 
-        //noinspection ConstantConditions
-        String actualViewName = mvcResult.getModelAndView().getViewName();
+        String actualViewName = getViewNameFromModel();
         assertEquals(ViewNames.ABOUT, actualViewName);
+    }
+
+    private ResultActions performGetRequest(String s) throws Exception {
+        return mockMvc.perform(get(s).contentType(MediaType.TEXT_HTML));
+    }
+
+    private String getViewNameFromModel() {
+        return Objects.requireNonNull(mvcResult.getModelAndView()).getViewName();
     }
 }
