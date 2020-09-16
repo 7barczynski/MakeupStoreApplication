@@ -47,10 +47,8 @@ class MakeupAPIConsumerIntegrationTest {
     @Test
     void given_successfulApiCall_when_requestCollection_return_collectionOfProducts() {
         long exampleId = 1000L;
-        String expectedJsonResponse = "[{\"id\" : \"" + exampleId + "\"}]";
-        Product product = new Product();
-        product.setId(exampleId);
-        List<Product> expectedResponse = new ArrayList<>(List.of(product));
+        List<Product> expectedResponse = createListForResponse(exampleId);
+        String expectedJsonResponse = createJsonResponse(exampleId);
 
 
         setupSuccessfulMockServerResponse(expectedJsonResponse);
@@ -83,5 +81,20 @@ class MakeupAPIConsumerIntegrationTest {
         mockRestServiceServer.expect(ExpectedCount.once(), requestTo(exampleUri))
                 .andExpect(method(HttpMethod.GET))
                 .andRespond(MockRestResponseCreators.withStatus(httpStatus));
+    }
+
+    private ArrayList<Product> createListForResponse(long exampleId) {
+        Product exampleProduct = createProductWithId(exampleId);
+        return new ArrayList<>(List.of(exampleProduct));
+    }
+
+    private Product createProductWithId(long exampleId) {
+        Product product = new Product();
+        product.setId(exampleId);
+        return product;
+    }
+
+    private String createJsonResponse(long exampleId) {
+        return "[{\"id\" : \"" + exampleId + "\"}]";
     }
 }

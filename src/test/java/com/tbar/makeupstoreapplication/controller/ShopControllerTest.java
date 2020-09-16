@@ -118,6 +118,10 @@ class ShopControllerTest {
                 getActualPageFromModel(AttributeNames.EXCEPTION));
     }
 
+    private void mockServiceResponse(Pageable requestPageable, Page<Product> pageToReturn) throws ProductsNotFoundException {
+        when(makeupService.findProducts(any(), eq(requestPageable))).thenReturn(pageToReturn);
+    }
+
     private void mockServiceProductsNotFoundExceptionResponse() throws ProductsNotFoundException {
         when(makeupService.findProducts(any(), any(Pageable.class)))
                 .thenThrow(ProductsNotFoundException.class);
@@ -126,20 +130,6 @@ class ShopControllerTest {
     private ResultActions performGetRequest() throws Exception {
         return mockMvc.perform(get("/shop")
                 .contentType(MediaType.TEXT_HTML));
-    }
-
-    private Page<Product> createPageWithContent(int pageNumber, int size) {
-        List<Product> pageContent = Collections.nCopies(size, new Product());
-        Pageable pageable = PageRequest.of(pageNumber, size);
-        return new PageImpl<>(pageContent, pageable, pageContent.size());
-    }
-
-    private void mockServiceResponse(Pageable pageable, Page<Product> expectedProductsPage) throws ProductsNotFoundException {
-        when(makeupService.findProducts(any(), eq(pageable))).thenReturn(expectedProductsPage);
-    }
-
-    private Object getActualPageFromModel(String attributeName) {
-        return Objects.requireNonNull(mvcResult.getModelAndView()).getModel().get(attributeName);
     }
 
     private ResultActions performGetRequestWithParameters(String p1, String v1, String p2, String v2) throws Exception {
@@ -152,17 +142,17 @@ class ShopControllerTest {
     private ResultActions performGetRequestWithParameters(String p1, String v1, String p2, String v2,
                                                           String p3, String v3, String p4, String v4) throws Exception {
         return mockMvc.perform(get("/shop")
+                .contentType(MediaType.TEXT_HTML)
                 .param(p1, v1)
                 .param(p2, v2)
                 .param(p3, v3)
                 .param(p4, v4));
     }
 
-    private Pageable captorPageableFromRequest() throws ProductsNotFoundException {
-        ArgumentCaptor<Pageable> pageableCaptor =
-                ArgumentCaptor.forClass(Pageable.class);
-        verify(makeupService).findProducts(any(), pageableCaptor.capture());
-        return pageableCaptor.getValue();
+    private Page<Product> createPageWithContent(int pageNumber, int size) {
+        List<Product> pageContent = Collections.nCopies(size, new Product());
+        Pageable pageable = PageRequest.of(pageNumber, size);
+        return new PageImpl<>(pageContent, pageable, pageContent.size());
     }
 
     private Specification<Product> createExpectedSpecification(String productTypeValue, String productTagsValue) {
@@ -185,8 +175,19 @@ class ShopControllerTest {
         );
     }
 
+    private Pageable captorPageableFromRequest() throws ProductsNotFoundException {
+        ArgumentCaptor<Pageable> pageableCaptor =
+                ArgumentCaptor.forClass(Pageable.class);
+        verify(makeupService).findProducts(any(), pageableCaptor.capture());
+        return pageableCaptor.getValue();
+    }
+
     private Specification<Product> captorSpecificationFromRequest() throws ProductsNotFoundException {
         verify(makeupService).findProducts(specificationArgumentCaptor.capture(), any(Pageable.class));
         return specificationArgumentCaptor.getValue();
+    }
+
+    private Object getActualPageFromModel(String attributeName) {
+        return Objects.requireNonNull(mvcResult.getModelAndView()).getModel().get(attributeName);
     }
 }

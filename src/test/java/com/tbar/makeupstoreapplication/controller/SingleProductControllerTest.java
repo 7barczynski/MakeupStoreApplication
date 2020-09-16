@@ -79,12 +79,12 @@ class SingleProductControllerTest {
                 .thenReturn(productToReturn);
     }
 
-    private Object getActualProductFromModel(String attributeName) {
-        return Objects.requireNonNull(mvcResult.getModelAndView()).getModel().get(attributeName);
-    }
-
     private void mockServiceSingleProductNotFoundExceptionResponse() throws SingleProductNotFoundException {
         when(makeupService.findProduct(anyLong()))
                 .thenThrow(SingleProductNotFoundException.class);
+    }
+
+    private Object getActualProductFromModel(String attributeName) {
+        return Objects.requireNonNull(mvcResult.getModelAndView()).getModel().get(attributeName);
     }
 }

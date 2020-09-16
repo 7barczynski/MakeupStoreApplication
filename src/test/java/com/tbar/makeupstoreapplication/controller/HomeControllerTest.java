@@ -53,8 +53,8 @@ class HomeControllerTest {
         assertEquals(ViewNames.ABOUT, actualViewName);
     }
 
-    private ResultActions performGetRequest(String s) throws Exception {
-        return mockMvc.perform(get(s).contentType(MediaType.TEXT_HTML));
+    private ResultActions performGetRequest(String url) throws Exception {
+        return mockMvc.perform(get(url).contentType(MediaType.TEXT_HTML));
     }
 
     private String getViewNameFromModel() {

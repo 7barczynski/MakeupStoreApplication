@@ -42,11 +42,15 @@ class MakeupAPIConsumerTest {
 
     @Test
     void when_requestCollection_return_collectionOfProducts() {
-        List<Product> expectedResponse = new ArrayList<>(Collections.nCopies(100, new Product()));
+        List<Product> expectedResponse = createListForResponse();
         setupMockRestTemplateResponseForCollection(expectedResponse);
 
         List<Product> actualResponse = makeupAPIConsumer.requestCollection();
         assertEquals(expectedResponse, actualResponse);
+    }
+
+    private ArrayList<Product> createListForResponse() {
+        return new ArrayList<>(Collections.nCopies(100, new Product()));
     }
 
     private void setupMockRestTemplateResponseForCollection(List<Product> listToResponse) {
