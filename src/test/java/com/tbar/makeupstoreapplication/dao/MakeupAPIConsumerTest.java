@@ -41,7 +41,7 @@ class MakeupAPIConsumerTest {
     }
 
     @Test
-    void when_requestCollection_return_collectionOfProducts() {
+    void when_requestCollection_then_returnCollectionOfProducts() {
         List<Product> expectedResponse = createListForResponse();
         setupMockRestTemplateResponseForCollection(expectedResponse);
 

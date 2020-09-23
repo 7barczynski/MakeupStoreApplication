@@ -83,7 +83,7 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void given_pageParameter_when_findAll_returnGivenPage() {
+    void given_pageParameter_when_findAll_then_returnGivenPage() {
         createAndSaveNthProducts(15);
 
         Specification<Product> specification = new Conjunction<>();
@@ -96,7 +96,7 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void given_sizeParameter_when_findAll_returnPageContentWithTheRightSize() {
+    void given_sizeParameter_when_findAll_then_returnPageContentWithTheRightSize() {
         createAndSaveNthProducts(25);
 
         Specification<Product> specification = new Conjunction<>();
@@ -107,7 +107,7 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void given_sortParameter_when_findAll_returnSortedPageContent() {
+    void given_sortParameter_when_findAll_then_returnSortedPageContent() {
         Product product1 = createProductWithName(1L, "Zzzzzzzz");
         Product product2 = createProductWithName(2L, "123123123");
         Product product3 = createProductWithName(3L, "Cccccccc");

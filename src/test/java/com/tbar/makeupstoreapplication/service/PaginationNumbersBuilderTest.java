@@ -19,19 +19,19 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class PaginationNumbersBuilderTest {
 
-    private int paginationNumbersSize = 10;
-    private int paginationOffset = 4;
-    private int sizeOfProductListOnPage = 12;
+    private final int paginationNumbersSize = 10;
+    private final int paginationOffset = 4;
+    private final int sizeOfProductListOnPage = 12;
 
-    private List<Product> exampleListOfAllProducts = new ArrayList<>(
+    private final List<Product> exampleListOfAllProducts = new ArrayList<>(
             Collections.nCopies(paginationNumbersSize * sizeOfProductListOnPage * 2, new Product()));
-    private List<Product> regularSliceContent = Collections.nCopies(sizeOfProductListOnPage, new Product());
-    private List<Product> sliceContentSmallerThanPaginationSize = new ArrayList<>(
+    private final List<Product> regularSliceContent = Collections.nCopies(sizeOfProductListOnPage, new Product());
+    private final List<Product> sliceContentSmallerThanPaginationSize = new ArrayList<>(
             Collections.nCopies(paginationNumbersSize * sizeOfProductListOnPage / 2, new Product()));
-    private List<Product> sliceContentSmallerThanPageListSize = new ArrayList<>(
+    private final List<Product> sliceContentSmallerThanPageListSize = new ArrayList<>(
             Collections.nCopies(sizeOfProductListOnPage / 2, new Product()));
 
-    private AppProperties appProperties = new AppProperties();
+    private final AppProperties appProperties = new AppProperties();
     private PaginationNumbersBuilder paginationNumbersBuilder;
     private Page<Product> examplePage;
     private int examplePageNumber;
@@ -49,54 +49,53 @@ public class PaginationNumbersBuilderTest {
     }
 
     @Test
-    void given_currentPageLowerThanOffset_when_getPaginationNumbers_return_paginationNumbersFromOne() {
+    void given_currentPageLowerThanOffset_when_getPaginationNumbers_then_returnPaginationNumbersFromOne() {
         examplePageNumber = paginationOffset / 2;
         examplePage = new PageImpl<>(regularSliceContent, PageRequest.of(
                 examplePageNumber - 1, sizeOfProductListOnPage), exampleListOfAllProducts.size());
         expectedNumbers = getExpectedNumbers(1, paginationNumbersSize);
-
         List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+
         assertEquals(expectedNumbers, actualNumbers);
     }
 
-
     @Test
-    void given_lessPagesThanPaginationSize_when_getPaginationNumbers_return_paginationNumbersFromOne() {
+    void given_lessPagesThanPaginationSize_when_getPaginationNumbers_then_returnPaginationNumbersFromOne() {
         examplePageNumber = paginationOffset / 2;
         examplePage = new PageImpl<>(sliceContentSmallerThanPaginationSize, PageRequest.of(
                 examplePageNumber - 1, sizeOfProductListOnPage), sliceContentSmallerThanPaginationSize.size());
         expectedNumbers = getExpectedNumbers(1, examplePage.getTotalPages());
-
         List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+
         assertEquals(expectedNumbers, actualNumbers);
     }
 
     @Test
-    void given_pageNumberCloseToTotalPages_when_getPaginationNumbers_return_paginationNumbersToTheTotalPages() {
+    void given_pageNumberCloseToTotalPages_when_getPaginationNumbers_then_returnPaginationNumbersToTheTotalPages() {
         examplePageNumber = exampleListOfAllProducts.size() / sizeOfProductListOnPage - 1;
         examplePage = new PageImpl<>(regularSliceContent, PageRequest.of(
                 examplePageNumber, sizeOfProductListOnPage), exampleListOfAllProducts.size());
         expectedNumbers = getExpectedNumbers(examplePage.getTotalPages() - paginationNumbersSize + 1,
                 exampleListOfAllProducts.size() / sizeOfProductListOnPage);
-
         List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+
         assertEquals(expectedNumbers, actualNumbers);
     }
 
     @Test
-    void given_pageNumberInTheMiddleOfList_when_getPaginationNumbers_return_paginationNumbersWithOffset() {
+    void given_pageNumberInTheMiddleOfList_when_getPaginationNumbers_then_returnPaginationNumbersWithOffset() {
         examplePageNumber = paginationOffset * 2;
         examplePage = new PageImpl<>(regularSliceContent, PageRequest.of(
                 examplePageNumber, sizeOfProductListOnPage), exampleListOfAllProducts.size());
         int tempFrom = examplePageNumber - paginationOffset + 1;
         expectedNumbers = getExpectedNumbers(tempFrom, tempFrom + paginationNumbersSize - 1);
-
         List<Integer> actualNumbers = paginationNumbersBuilder.build(examplePage);
+
         assertEquals(expectedNumbers, actualNumbers);
     }
 
     @Test
-    void given_onePage_when_getPagniationNumbers_return_null() {
+    void given_onePage_when_getPagniationNumbers_then_returnNull() {
         examplePage = new PageImpl<>(sliceContentSmallerThanPageListSize,
                 PageRequest.of(0, sizeOfProductListOnPage), sliceContentSmallerThanPageListSize.size());
 
@@ -104,7 +103,7 @@ public class PaginationNumbersBuilderTest {
     }
 
     @Test
-    void given_pageNumberHigherThanTotalPages_when_getPaginationNumbers_return_null() {
+    void given_pageNumberHigherThanTotalPages_when_getPaginationNumbers_then_returnNull() {
         examplePage = new PageImpl<>(Collections.emptyList(),
                 PageRequest.of(99999, sizeOfProductListOnPage), exampleListOfAllProducts.size());
 

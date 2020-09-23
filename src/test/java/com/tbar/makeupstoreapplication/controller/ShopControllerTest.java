@@ -75,7 +75,7 @@ class ShopControllerTest {
                 "page", "0",
                 "size", "12").andReturn();
 
-        Object actualPage = getActualPageFromModel(AttributeNames.PRODUCTS_LIST_ON_PAGE);
+        Object actualPage = getObjectFromModel(AttributeNames.PRODUCTS_LIST_ON_PAGE);
         assertEquals(expectedProductsPage, actualPage);
     }
 
@@ -115,7 +115,7 @@ class ShopControllerTest {
         mvcResult = performGetRequest().andReturn();
 
         assertEquals(ExceptionHandlerUtilities.ExceptionCase.PRODUCTS_NOT_FOUND_EXCEPTION,
-                getActualPageFromModel(AttributeNames.EXCEPTION));
+                getObjectFromModel(AttributeNames.EXCEPTION));
     }
 
     private void mockServiceResponse(Pageable requestPageable, Page<Product> pageToReturn) throws ProductsNotFoundException {
@@ -187,7 +187,7 @@ class ShopControllerTest {
         return specificationArgumentCaptor.getValue();
     }
 
-    private Object getActualPageFromModel(String attributeName) {
+    private Object getObjectFromModel(String attributeName) {
         return Objects.requireNonNull(mvcResult.getModelAndView()).getModel().get(attributeName);
     }
 }

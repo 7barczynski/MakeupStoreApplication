@@ -5,6 +5,7 @@ import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.model.ProductTag;
 import com.tbar.makeupstoreapplication.repository.ProductRepository;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
+import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,33 +33,22 @@ class MakeupStoreApplicationTests {
 
     @Autowired
     private ProductRepository productRepository;
+    private MvcResult mvcResult;
 
     @Test
-    void when_userRequestShopPage_return_allProductsFromDatabase() throws Exception {
+    void when_userRequestShopPage_then_returnAllProductsFromDatabase() throws Exception {
         int expectedProductsListSize = productRepository.findAll().size();
 
-        MvcResult mvcResult = mockMvc.perform(get("/shop")
-                .contentType(MediaType.TEXT_HTML))
-                .andReturn();
-
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
-        long actualProductsListSize = actualPageOfProducts.getTotalElements();
+        mvcResult = performGetRequest("/shop");
+        long actualProductsListSize = getPageOfProductsFromModel().getTotalElements();
 
         assertEquals(expectedProductsListSize, actualProductsListSize);
     }
 
     @Test
-    void when_userRequestBrandInShopPage_return_allProductsFromThisBrand() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/shop?brand=orly")
-                .contentType(MediaType.TEXT_HTML))
-                .andReturn();
-
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
-        List<Product> actualListOfProducts = actualPageOfProducts.getContent();
+    void when_userRequestBrandInShopPage_then_returnAllProductsFromThisBrand() throws Exception {
+        mvcResult = performGetRequest("/shop?brand=orly");
+        List<Product> actualListOfProducts = getPageOfProductsFromModel().getContent();
 
         assertEquals(4, actualListOfProducts.size());
         for (Product product : actualListOfProducts) {
@@ -67,50 +57,32 @@ class MakeupStoreApplicationTests {
     }
 
     @Test
-    void when_userRequestShopPage_return_pageWith12Products() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get("/shop")
-                .contentType(MediaType.TEXT_HTML))
-                .andReturn();
-
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
+    void when_userRequestShopPage_then_returnPageWith12Products() throws Exception {
+        mvcResult = performGetRequest("/shop");
+        Page<Product> actualPageOfProducts = getPageOfProductsFromModel();
 
         assertEquals(12, actualPageOfProducts.getNumberOfElements());
     }
 
     @Test
-    void when_userMakeComplicatedRequest_return_properProduct() throws Exception {
+    void given_complicatedRequest_when_requestForShopPage_then_returnProperProduct() throws Exception {
         Product expectedProduct = expectedRealProduct();
 
-        MvcResult mvcResult = mockMvc.perform(
-                get("/shop?brand=zorah&rating_less_than=4&product_tags=Vegan&product_type=eyeliner" +
-                        "&product_category=liquid&price_greater_than=23&rating_greater_than=3&price_less_than=25")
-                        .contentType(MediaType.TEXT_HTML))
-                .andReturn();
+        mvcResult = performGetRequest(String.format("/shop?brand=%s&product_category=%s&product_type=%s" +
+                "&product_tags=Vegan&rating_greater_than=3&rating_less_than=4&price_greater_than=23&price_less_than=25",
+                expectedProduct.getBrand(), expectedProduct.getCategory(), expectedProduct.getProductType()));
+        Product actualProduct = getPageOfProductsFromModel().getContent().get(0);
 
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
-        Product actualProduct = actualPageOfProducts.getContent().get(0);
-
-        assertEquals(1, actualPageOfProducts.getContent().size());
+        assertEquals(1, getPageOfProductsFromModel().getContent().size());
         assertEquals(expectedProduct, actualProduct);
     }
 
     @Test
-    void given_oneProductTagInARequest_should_returnProductsThatMightGotNotOnlyTheGivenTag() throws Exception {
+    void given_oneProductTagInARequest_when_requestShopPage_then_returnProductsThatMightGotNotOnlyTheGivenTag() throws Exception {
         ProductTag expectedTag = new ProductTag("Natural");
 
-        MvcResult mvcResult = mockMvc.perform(
-                get("/shop?brand=zorah&product_tags=" + expectedTag.getName())
-                        .contentType(MediaType.TEXT_HTML))
-                .andReturn();
-
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
-        List<Product> actualPageContent = actualPageOfProducts.getContent();
+        mvcResult = performGetRequest("/shop?brand=zorah&product_tags=" + expectedTag.getName());
+        List<Product> actualPageContent = getPageOfProductsFromModel().getContent();
 
         assertEquals(2, actualPageContent.size());
         assertTrue(actualPageContent.get(0).getProductTags().contains(expectedTag));
@@ -120,20 +92,13 @@ class MakeupStoreApplicationTests {
     }
 
     @Test
-    void given_twoProductTagsInARequest_should_returnProductsWithAtLeastOneOfThemInTheirProductTagsSet() throws Exception {
+    void given_twoProductTagsInARequest_when_requestShopPage_then_returnProductsWithAtLeastOneOfThemInTheirProductTagsSet() throws Exception {
         ProductTag expectedTag1 = new ProductTag("Vegan");
         ProductTag expectedTag2 = new ProductTag("Natural");
 
-        MvcResult mvcResult = mockMvc.perform(
-                get(String.format("/shop?brand=zorah&product_tags=%s&product_tags=%s",
-                        expectedTag1.getName(), expectedTag2.getName()))
-                        .contentType(MediaType.TEXT_HTML))
-                .andReturn();
-
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
-        List<Product> actualPageContent = actualPageOfProducts.getContent();
+        mvcResult = performGetRequest(String.format("/shop?brand=zorah&product_tags=%s&product_tags=%s",
+                expectedTag1.getName(), expectedTag2.getName()));
+        List<Product> actualPageContent = getPageOfProductsFromModel().getContent();
         Set<ProductTag> actualTagsForFirstProduct = actualPageContent.get(0).getProductTags();
         Set<ProductTag> actualTagsForSecondProduct = actualPageContent.get(1).getProductTags();
 
@@ -145,19 +110,12 @@ class MakeupStoreApplicationTests {
     }
 
     @Test
-    void given_pageableParameters_return_pageWithGivenParameters() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(
-                get(("/shop?brand=nyx&page=3&size=30&sort=price,desc"))
-                        .contentType(MediaType.TEXT_HTML))
-                .andReturn();
+    void given_pageableParameters_when_requestShopPage_then_returnPageWithGivenParameters() throws Exception {
+        mvcResult = performGetRequest("/shop?brand=nyx&page=3&size=30&sort=price,desc");
+        List<Product> actualPageContent = getPageOfProductsFromModel().getContent();
 
-        //noinspection unchecked
-        Page<Product> actualPageOfProducts = (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
-        List<Product> actualPageContent = actualPageOfProducts.getContent();
-
-        assertEquals(3, actualPageOfProducts.getNumber());
-        assertEquals(30, actualPageOfProducts.getSize());
+        assertEquals(3, getPageOfProductsFromModel().getNumber());
+        assertEquals(30, getPageOfProductsFromModel().getSize());
         for (int i = 0; i < actualPageContent.size() - 1; i++) {
             assertTrue(actualPageContent.get(i).getPrice() >= actualPageContent.get(i+1).getPrice());
         }
@@ -165,18 +123,51 @@ class MakeupStoreApplicationTests {
 
     @Disabled // TODO this test needs changes in th.xml files to eradicate an exception
     @Test
-    void should_returnSingleProductWhenRequestingId() throws Exception {
+    void when_requestForSingleProduct_then_returnSingleProduct() throws Exception {
         Product expectedProduct = expectedRealProduct();
 
-        MvcResult mvcResult = mockMvc.perform(
-                get("/shop/191")
-                        .contentType(MediaType.TEXT_HTML))
-                .andReturn();
-
-        Product actualProduct = (Product) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
-                .get(AttributeNames.SINGLE_PRODUCT);
+        mvcResult = performGetRequest("/shop/191");
+        Product actualProduct = getSingleProductFromModel();
 
         assertEquals(expectedProduct, actualProduct);
+    }
+
+    @Test
+    void given_wrongRequestParameters_when_requestingShopPage_then_returnResponseWithProductsNotFoundExceptionCode() throws Exception {
+        mvcResult = performGetRequest("/shop?brand=something");
+        ExceptionHandlerUtilities.ExceptionCase actualExceptionCase = getExceptionFromModel();
+
+        assertEquals(ExceptionHandlerUtilities.ExceptionCase.PRODUCTS_NOT_FOUND_EXCEPTION, actualExceptionCase);
+    }
+
+    @Test
+    void given_wrongId_when_requestingSingleProduct_then_returnResponseWithSingleProductNotFoundExceptionCode() throws Exception {
+        mvcResult = performGetRequest("/shop/1231231");
+        ExceptionHandlerUtilities.ExceptionCase actualExceptionCase = getExceptionFromModel();
+
+        assertEquals(ExceptionHandlerUtilities.ExceptionCase.SINGLE_PRODUCT_NOT_FOUND_EXCEPTION, actualExceptionCase);
+    }
+
+    private MvcResult performGetRequest(String url) throws Exception {
+        return mockMvc.perform(get(url)
+                .contentType(MediaType.TEXT_HTML))
+                .andReturn();
+    }
+
+    private Page<Product> getPageOfProductsFromModel() {
+        //noinspection unchecked
+        return (Page<Product>) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
+                .get(AttributeNames.PRODUCTS_LIST_ON_PAGE);
+    }
+
+    private Product getSingleProductFromModel() {
+        return (Product) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
+                .get(AttributeNames.SINGLE_PRODUCT);
+    }
+
+    private ExceptionHandlerUtilities.ExceptionCase getExceptionFromModel() {
+        return (ExceptionHandlerUtilities.ExceptionCase) Objects.requireNonNull(mvcResult.getModelAndView())
+                .getModel().get(AttributeNames.EXCEPTION);
     }
 
     private Product expectedRealProduct() {

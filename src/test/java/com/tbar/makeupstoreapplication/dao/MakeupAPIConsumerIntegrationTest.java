@@ -45,7 +45,7 @@ class MakeupAPIConsumerIntegrationTest {
     }
 
     @Test
-    void given_successfulApiCall_when_requestCollection_return_collectionOfProducts() {
+    void given_successfulApiCall_when_requestCollection_then_returnCollectionOfProducts() {
         long exampleId = 1000L;
         List<Product> expectedResponse = createListForResponse(exampleId);
         String expectedJsonResponse = createJsonResponse(exampleId);
@@ -58,14 +58,14 @@ class MakeupAPIConsumerIntegrationTest {
     }
 
     @Test
-    void given_apiCallServerError_when_requestCollection_throw_APIConnectionException() {
+    void given_apiCallServerError_when_requestCollection_then_throwAPIConnectionException() {
         setupErrorMockServerResponse(HttpStatus.SERVICE_UNAVAILABLE);
         assertThrows(APIConnectionException.class, () -> makeupAPIConsumer.requestCollection());
         mockRestServiceServer.verify();
     }
 
     @Test
-    void given_apiCallClientError_when_requestCollection_throw_APIConnectionException() {
+    void given_apiCallClientError_when_requestCollection_then_throwAPIConnectionException() {
         setupErrorMockServerResponse(HttpStatus.BAD_REQUEST);
         assertThrows(APIConnectionException.class, () -> makeupAPIConsumer.requestCollection());
         mockRestServiceServer.verify();
