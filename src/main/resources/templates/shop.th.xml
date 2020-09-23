@@ -75,9 +75,6 @@
     <attr sel="#productsNotFoundCase"
           th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).PRODUCTS_NOT_FOUND_EXCEPTION}"
           th:text="#{products.not.found.message}"/>
-    <attr sel="#apiConnectionExceptionCase"
-          th:case="${T(com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities.ExceptionCase).API_CONNECTION_EXCEPTION}"
-          th:text="#{api.connection.exception.message}"/>
     <attr sel="#otherExceptionCase"
           th:case="*"
           th:text="#{other.exception.message}"/>
