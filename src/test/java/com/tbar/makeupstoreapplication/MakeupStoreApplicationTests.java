@@ -6,7 +6,6 @@ import com.tbar.makeupstoreapplication.model.ProductTag;
 import com.tbar.makeupstoreapplication.repository.ProductRepository;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -121,7 +120,6 @@ class MakeupStoreApplicationTests {
         }
     }
 
-    @Disabled // TODO this test needs changes in th.xml files to eradicate an exception
     @Test
     void when_requestForSingleProduct_then_returnSingleProduct() throws Exception {
         Product expectedProduct = expectedRealProduct();

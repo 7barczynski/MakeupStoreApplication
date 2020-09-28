@@ -42,7 +42,7 @@
     <attr sel="#productDescription"
           th:text="${product.getDescription()}"/>
     <attr sel="#colorCondition"
-          th:if="${product.getProductColors().length != 0}"/>
+          th:if="${!product.getProductColors().isEmpty()}"/>
     <attr sel="#colorName"
           th:text="|#{color.name}:|"/>
     <attr sel="#colorForEach"

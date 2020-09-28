@@ -81,7 +81,7 @@ class MakeupServiceImplTest {
 
     @Test
     void given_emptyOptionalFromSearchingRepository_when_findProduct_then_throwSingleProductNotFoundException() {
-        mockProductRepositoryFindById(0L, Optional.empty());
+        mockProductRepositoryFindById(3L, Optional.empty());
 
         assertThrows(SingleProductNotFoundException.class, () -> makeupService.findProduct(3L));
         verify(productRepository).findById(eq(3L));

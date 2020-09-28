@@ -46,7 +46,7 @@ class ProductRepositoryTest {
         assertEquals(expectedListOfProducts, actualPageOfProducts.getContent());
     }
 
-    @Disabled // TODO help needed to work out what is wrong with this test
+    @Disabled("help needed to work out what is wrong with this test")
     @Test
     void given_specificationWithProductTags_when_findAll_then_findAllProperItems() {
         Product product1 = createProductWithTags(1L, "ProperTag", "OtherTag");
@@ -64,7 +64,7 @@ class ProductRepositoryTest {
         assertEquals(expectedProducts, actualPageOfProducts);
     }
 
-    @Disabled // TODO help needed to work out what is wrong with this test
+    @Disabled("help needed to work out what is wrong with this test")
     @Test
     void given_specificationWithManyProductTags_when_findAll_then_findAllProperItems() {
         Product product1 = createProductWithTags(1L, "ProperTag", "ProperTag2", "OtherTag");
