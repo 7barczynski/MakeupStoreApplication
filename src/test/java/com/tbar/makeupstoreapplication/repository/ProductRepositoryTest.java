@@ -2,7 +2,11 @@ package com.tbar.makeupstoreapplication.repository;
 
 import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.model.ProductTag;
-import net.kaczmarzyk.spring.data.jpa.domain.*;
+import net.kaczmarzyk.spring.data.jpa.domain.Conjunction;
+import net.kaczmarzyk.spring.data.jpa.domain.EmptyResultOnTypeMismatch;
+import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
+import net.kaczmarzyk.spring.data.jpa.domain.In;
+import net.kaczmarzyk.spring.data.jpa.domain.Join;
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.web.WebRequestQueryContext;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.OnTypeMismatch;
@@ -80,6 +84,20 @@ class ProductRepositoryTest {
 
         assertEquals(2, actualPageOfProducts.getContent().size());
         assertEquals(expectedProducts, actualPageOfProducts);
+    }
+
+    @Disabled("help needed to work out what is wrong with this test")
+    @Test
+    void shouldFindProductWithTag() {
+        Product expectedProduct = createProductWithTags(1L, "ProperTag");
+        productRepository.save(expectedProduct);
+
+        Specification<Product> specification = createSpecWithTag("ProperTag");
+        Pageable pageable = PageRequest.of(0, 12);
+
+        Page<Product> actualPageOfProducts = productRepository.findAll(specification, pageable);
+
+        assertEquals(expectedProduct, actualPageOfProducts.getContent().get(0));
     }
 
     @Test
