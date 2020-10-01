@@ -12,6 +12,31 @@
         th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).HOME}__}"
         th:text="#{about.enter.app}"/>
 
+    <!-- Part with welcome and how to message -->
+    <attr sel="#welcomeMessage"
+          th:text="#{about.welcome.main.message}"/>
+    <attr sel="#welcomeMsg1stPart"
+          th:text="#{about.welcome.message.first.part}"/>
+    <attr sel="#welcomeMsg2ndPart"
+          th:text="#{about.welcome.message.second.part}"/>
+    <attr sel="#welcomeMsg3rdPart"
+          th:text="#{about.welcome.message.third.part}"/>
+    <attr sel="#makeupApiLink"
+          th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
+    <attr sel="#aviatoLink"
+          th:href="@{__${@AppProperties.getAviatoUrl()}__}"/>
+    <attr sel="#howToMsg1stPart"
+          th:text="#{about.howto.message.first.part}"/>
+    <attr sel="#howToMsg2ndPart"
+          th:text="#{about.howto.message.second.part}"/>
+    <attr sel="#howToMsg3rdPart"
+          th:text="#{about.howto.message.third.part}"/>
+    <attr sel="#howToMsg4thPart"
+          th:text="#{about.howto.message.fourth.part}"/>
+    <attr sel="#shopLink"
+          th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"
+          th:text="#{about.howto.shop.view}"/>
+
     <!-- Part with self-promotion links and icons -->
     <attr sel="#myGitHub"
         th:href="@{__${@AppProperties.getGithubUrl()}__}"/>

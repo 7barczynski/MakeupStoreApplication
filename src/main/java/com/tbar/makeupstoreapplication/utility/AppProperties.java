@@ -22,6 +22,8 @@ public class AppProperties {
     @Value("${spring.data.web.pageable.default-page-size}")
     private int sizeOfProductListOnPage;
     private String phoneNumber;
+    private String makeupApiUrl;
+    private String aviatoUrl;
     private String githubUrl;
     private String linkedinUrl;
     private String githubImageUrl;
