@@ -248,11 +248,21 @@
 
         // if there is already "locale=**" in url replace the part after "="
         if (url.includes("locale=")) {
-            replacedUrl = url.replace(/locale=[^&]+/, LOCALE + selectedValue);
+            replacedUrl = url.replace(/locale=[^&#]+/, LOCALE + selectedValue);
             location.replace(replacedUrl);
-        // if there isn't "locale=**" in url but it has some parameter(s) with "?" sign
+        // if there isn't "locale=**" in url but it has other parameters (?)
         } else if (url.includes("?")) {
-            location.replace(url + "&" + LOCALE + selectedValue);
+            urlFragment = ""
+            if (url.includes("#")) {
+                urlFragment = url.substring(url.indexOf("#"), url.length);
+                url = url.substring(0, url.indexOf("#"));
+            }
+            location.replace(url + "&" + LOCALE + selectedValue + urlFragment);
+        // if there is no query parameters but a fragment (#)
+        } else if (url.includes("#")) {
+            urlFragment = url.substring(url.indexOf("#"), url.length);
+            urlWithoutFragment = url.substring(0, url.indexOf("#"));
+            location.replace(urlWithoutFragment + "?" + LOCALE + selectedValue + urlFragment);
         // if the url hasn't got any parameters
         } else location.replace(url + "?" + LOCALE + selectedValue);
     }

@@ -56,4 +56,8 @@
     <attr sel="#footerTemplate"
         th:replace="~{fragments/footer :: footerFragment}"/>
 
+    <!-- Scripts -->
+    <attr sel="#scriptTemplate"
+          th:replace="~{fragments/script :: scriptFragment}"/>
+
 </thlogic>

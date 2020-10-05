@@ -37,14 +37,17 @@
 			<div class="col-md-12">
 				<div class="jumbotron text-center">
 					<h1 id="welcomeMessage">Welcome to my first web application!</h1>
-					<p><em id="appName"></em><span id="welcomeMsg1stPart"> 1st msg part </span>
-						<a id="makeupApiLink">Makeup API</a><span id="welcomeMsg2ndPart"> 2nd part of message </span>
-						<a id="aviatoLink">Aviato e-commerce template</a><span id="welcomeMsg3rdPart"> third part of message</span></p>
-					<p><span id="howToMsg1stPart">1st msg part </span><a id="shopLink">shop view</a>
-						<span id="howToMsg2ndPart">2nd part of message </span></p>
-					<p><span id="howToMsg3rdPart">3rd part of message </span>
-						<em>SWITCHER</em>
-						<span id="howToMsg4thPart">4th part of message</span></p>
+					<p><em id="appName"></em><span id="welcomeMsg1stPart"> 1st welcome msg part </span>
+						<a id="makeupApiLink" target="_blank">Makeup API</a><span id="welcomeMsg2ndPart"> 2nd welcome msg part </span>
+						<a id="aviatoLink" target="_blank">Aviato e-commerce template</a><span id="welcomeMsg3rdPart"> 3rd welcome msg part</span></p>
+					<p><span id="howToMsg1stPart">1st howTo msg part </span><a id="shopLink" target="_blank">shop view</a>
+						<span id="howToMsg2ndPart">2nd howTo msg part </span></p>
+					<p><span id="howToMsg3rdPart">3rd howTo msg part </span>
+						<select id="languageSwitcher" onchange="changeLanguage()">
+							<option id="en" value="en">EN</option>
+							<option id="pl" value="pl">PL</option>
+						</select>
+					<span id="howToMsg4thPart">4th howTo msg part</span></p>
 				</div>
 			</div>
 		</div>
@@ -57,7 +60,7 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="template-item text-center">
-					<a id="myGitHub">
+					<a id="myGitHub" target="_blank">
 						<img id ="gitHubImage" class="img-responsive" alt="gitHub image" src=""/>
 					</a>
 					<h4>GitHub</h4>
@@ -80,11 +83,11 @@
 	</div>
 </section>
 
-
 <footer id="footerTemplate"></footer>
 
-
 <script src="plugins/smooth-scroll/dist/js/smooth-scroll.min.js"></script>
+
+<div id="scriptTemplate"></div>
 
 <script>
 	var scroll = new SmoothScroll('a[href*="#"]');

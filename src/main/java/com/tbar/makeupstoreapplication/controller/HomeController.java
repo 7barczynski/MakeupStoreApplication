@@ -13,13 +13,18 @@ public class HomeController {
 
     @GetMapping
     public String homePage(Model model) {
-        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+        addCurrentLanguageToModel(model);
         return ViewNames.HOME;
     }
 
     @GetMapping("/" + AppMappings.ABOUT)
-    public String aboutPage() {
+    public String aboutPage(Model model) {
+        addCurrentLanguageToModel(model);
         return ViewNames.ABOUT;
+    }
+
+    private void addCurrentLanguageToModel(Model model) {
+        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
     }
 }
 
