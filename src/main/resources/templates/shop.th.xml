@@ -48,7 +48,7 @@
           th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"/>
     <attr sel="#tagsForEach"
           th:each="tag : ${@AppProperties.getProductTagsList()}"
-          th:text="#{__${tag}__.name}"
+          th:text="#{__${#strings.toLowerCase(tag)}__.name}"
           th:attr="value=${tag}"/>
     <attr sel="#priceName"
           th:text="#{price.name}"/>
