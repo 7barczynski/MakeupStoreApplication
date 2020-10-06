@@ -26,7 +26,10 @@ public class AppProperties {
     private String aviatoUrl;
     private String githubUrl;
     private String linkedinUrl;
+    private String mailUrl;
     private String githubImageUrl;
+    private String linkedinImageUrl;
+    private String mailImageUrl;
     private String topHeaderLogoUrl;
     private String menuShopImageUrl;
     private String eyesImageUrl;

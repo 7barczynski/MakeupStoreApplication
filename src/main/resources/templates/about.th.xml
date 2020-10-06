@@ -44,6 +44,18 @@
         th:src="@{__${@AppProperties.getGithubImageUrl()}__}"/>
     <attr sel="#myGitHubText"
         th:text="#{about.github.message}"/>
+    <attr sel="#myLinkedIn"
+          th:href="@{__${@AppProperties.getLinkedinUrl()}__}"/>
+    <attr sel="#linkedInImage"
+          th:src="@{__${@AppProperties.getLinkedinImageUrl()}__}"/>
+    <attr sel="#myLinkedInText"
+          th:text="#{about.linkedin.message}"/>
+    <attr sel="#myMail"
+          th:href="@{__${@AppProperties.getMailUrl()}__}"/>
+    <attr sel="#mailImage"
+          th:src="@{__${@AppProperties.getMailImageUrl()}__}"/>
+    <attr sel="#myMailText"
+          th:text="#{about.mail.message}"/>
 
     <!-- Part with contact proposal -->
     <attr sel="#linkedinMessage"
