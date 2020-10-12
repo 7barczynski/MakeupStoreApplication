@@ -92,6 +92,7 @@
   border-radius: 5px;
   -webkit-transition: .3s all;
   transition: .3s all;
+  height: 250px;
 }
 
 .template-item h4 {
@@ -217,4 +218,8 @@ footer p {
 footer a {
   color: #fff;
   font-weight: bold;
+}
+
+#about p, #selfPromotion p {
+    font-weight: 300;
 }

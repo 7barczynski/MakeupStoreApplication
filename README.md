@@ -14,7 +14,7 @@ Application needs Java to run. I use Java 11 and this is the version I recommend
 ### How to 
 Application uses embeded Tomcat and its port is 8080. At the moment there are available four views:
 - Home ([localhost:8080](http://localhost:8080/)) - home page,
-- About ([localhost:8080/about](http://localhost:8080/about)) - there are some links to my social media,
+- About ([localhost:8080/about](http://localhost:8080/about)) - there are some links to my social media and a few words about an application itself,
 - Shop ([localhost:8080/shop](http://localhost:8080/shop)) - this view presents makeup products, and a filter which helps to make more specific search. If there are more than 12 (default value) products to show there will be pagination on the bottom of the list,
 - Single product ([localhost:8080/shop/{id}](http://localhost:8080/shop/1)) - this view presents details about one product. You can reach this view by clicking an image of the desired product on a shop view.
 

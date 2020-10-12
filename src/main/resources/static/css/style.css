@@ -589,6 +589,10 @@ a, a:focus, a:hover {
   display: inline-block;
 }
 
+.single-product-details p {
+    font-weight: 300;
+}
+
 .page-404 {
   padding: 100px 0;
   text-align: center;
@@ -648,4 +652,8 @@ footer p {
   color: #000;
   font-weight: 400;
   margin-bottom: 0;
+}
+
+#productDescription {
+    margin-bottom: 30px;
 }

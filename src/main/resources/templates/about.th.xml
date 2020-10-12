@@ -12,6 +12,31 @@
         th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).HOME}__}"
         th:text="#{about.enter.app}"/>
 
+    <!-- Part with welcome and how to message -->
+    <attr sel="#welcomeMessage"
+          th:text="#{about.welcome.main.message}"/>
+    <attr sel="#welcomeMsg1stPart"
+          th:text="#{about.welcome.message.first.part}"/>
+    <attr sel="#welcomeMsg2ndPart"
+          th:text="#{about.welcome.message.second.part}"/>
+    <attr sel="#welcomeMsg3rdPart"
+          th:text="#{about.welcome.message.third.part}"/>
+    <attr sel="#makeupApiLink"
+          th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
+    <attr sel="#aviatoLink"
+          th:href="@{__${@AppProperties.getAviatoUrl()}__}"/>
+    <attr sel="#howToMsg1stPart"
+          th:text="#{about.howto.message.first.part}"/>
+    <attr sel="#howToMsg2ndPart"
+          th:text="#{about.howto.message.second.part}"/>
+    <attr sel="#howToMsg3rdPart"
+          th:text="#{about.howto.message.third.part}"/>
+    <attr sel="#howToMsg4thPart"
+          th:text="#{about.howto.message.fourth.part}"/>
+    <attr sel="#shopLink"
+          th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"
+          th:text="#{about.howto.shop.view}"/>
+
     <!-- Part with self-promotion links and icons -->
     <attr sel="#myGitHub"
         th:href="@{__${@AppProperties.getGithubUrl()}__}"/>
@@ -19,16 +44,25 @@
         th:src="@{__${@AppProperties.getGithubImageUrl()}__}"/>
     <attr sel="#myGitHubText"
         th:text="#{about.github.message}"/>
-
-    <!-- Part with contact proposal -->
-    <attr sel="#linkedinMessage"
-        th:text="#{linkedin.message}"/>
-    <attr sel="#linkedinButton"
-        th:href="@{__${@AppProperties.getLinkedinUrl()}__}"
-        th:text="#{linkedin.button.message}"/>
+    <attr sel="#myLinkedIn"
+          th:href="@{__${@AppProperties.getLinkedinUrl()}__}"/>
+    <attr sel="#linkedInImage"
+          th:src="@{__${@AppProperties.getLinkedinImageUrl()}__}"/>
+    <attr sel="#myLinkedInText"
+          th:text="#{about.linkedin.message}"/>
+    <attr sel="#myMail"
+          th:href="@{__${@AppProperties.getMailUrl()}__}"/>
+    <attr sel="#mailImage"
+          th:src="@{__${@AppProperties.getMailImageUrl()}__}"/>
+    <attr sel="#myMailText"
+          th:text="#{about.mail.message}"/>
 
     <!-- Footer -->
     <attr sel="#footerTemplate"
         th:replace="~{fragments/footer :: footerFragment}"/>
+
+    <!-- Scripts -->
+    <attr sel="#scriptTemplate"
+          th:replace="~{fragments/script :: scriptFragment}"/>
 
 </thlogic>

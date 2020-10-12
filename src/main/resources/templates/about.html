@@ -19,14 +19,38 @@
 <section class="hero-area overly">
 	<div class="block">
 		<h1 id="appName">Face Greases</h1>
-		<p id="mainMessage">Makeup store web application created with<br/>Spring Boot, Thymeleaf and external REST API</p>
+		<p id="mainMessage">Makeup store web application created with<br/>Spring Boot, Hibernate and HTML with Thymeleaf</p>
 		<a id="goToIndex" class="btn btn-main mt-30">Enter</a>
 		<div id="mouse-scroll">
-			<a data-scroll href="#selfPromotion">
+			<a data-scroll href="#about">
 				<div class="mouse">
 					<div class="mouse-in"></div>
 				</div>
 			</a>
+		</div>
+	</div>
+</section>
+
+<section class="about" id="about">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="jumbotron text-center">
+					<h1 id="welcomeMessage">Welcome to my first web application!</h1>
+					<p><em id="appName"></em><span id="welcomeMsg1stPart"> 1st welcome msg part </span>
+						<a id="makeupApiLink" target="_blank">Makeup&nbsp;API</a><span id="welcomeMsg2ndPart"> 2nd welcome msg part </span>
+						<a id="aviatoLink" target="_blank">Aviato&nbsp;e-commerce&nbsp;template</a><span id="welcomeMsg3rdPart"> 3rd welcome msg part</span></p>
+					<p><span id="howToMsg1stPart">1st howTo msg part </span><a id="shopLink" target="_blank">shop view</a>
+						<span id="howToMsg2ndPart">2nd howTo msg part </span></p>
+					<p><span id="howToMsg3rdPart">3rd howTo msg part </span>
+						<select id="languageSwitcher" onchange="changeLanguage()">
+							<option id="en" value="en">EN</option>
+							<option id="pl" value="pl">PL</option>
+						</select>
+						<span id="howToMsg4thPart">4th howTo msg part</span>
+					</p>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
@@ -37,34 +61,40 @@
 		<div class="row">
 			<div class="col-md-4">
 				<div class="template-item text-center">
-					<a id="myGitHub">
+					<a id="myGitHub" target="_blank">
 						<img id ="gitHubImage" class="img-responsive" alt="gitHub image" src=""/>
 					</a>
 					<h4>GitHub</h4>
 					<p id="myGitHubText">Direct link to my account on GitHub</p>
 				</div>
 			</div>
-		</div>
-	</div>
-</section>
-
-<!-- LinkedIn -->
-<section class="call-to-action">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<h2 id="linkedinMessage">Is my skill worth a job?<br/>I'm more than happy to contact you!</h2>
-				<a id="linkedinButton" target="_blank" class="btn btn-buy-button">Go to my LinkedIn Profile</a>
+			<div class="col-md-4">
+				<div class="template-item text-center">
+					<a id="myLinkedIn" target="_blank">
+						<img id ="linkedInImage" class="img-responsive" alt="linkedIn image" src=""/>
+					</a>
+					<h4>LinkedIn</h4>
+					<p id="myLinkedInText">Direct link to my account on LinkedIn</p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="template-item text-center">
+					<a id="myMail" target="_blank">
+						<img id ="mailImage" class="img-responsive" alt="mail image" src=""/>
+					</a>
+					<h4>Mail</h4>
+					<p id="myMailText">Write me a mail!</p>
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
 
-
 <footer id="footerTemplate"></footer>
 
-
 <script src="plugins/smooth-scroll/dist/js/smooth-scroll.min.js"></script>
+
+<div id="scriptTemplate"></div>
 
 <script>
 	var scroll = new SmoothScroll('a[href*="#"]');
