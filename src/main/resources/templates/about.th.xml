@@ -57,13 +57,6 @@
     <attr sel="#myMailText"
           th:text="#{about.mail.message}"/>
 
-    <!-- Part with contact proposal -->
-    <attr sel="#linkedinMessage"
-        th:text="#{linkedin.message}"/>
-    <attr sel="#linkedinButton"
-        th:href="@{__${@AppProperties.getLinkedinUrl()}__}"
-        th:text="#{linkedin.button.message}"/>
-
     <!-- Footer -->
     <attr sel="#footerTemplate"
         th:replace="~{fragments/footer :: footerFragment}"/>
