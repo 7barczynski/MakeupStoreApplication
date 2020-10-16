@@ -1,8 +1,4 @@
 <thlogic>
-    <!-- Head -->
-<!--    <attr sel="#headTemplate"-->
-<!--          th:replace="~{fragments/head :: headFragment}"/>-->
-
     <!-- Part with slider image and main message -->
     <attr sel="#appName"
         th:text="${@AppProperties.getApplicationName()}"/>

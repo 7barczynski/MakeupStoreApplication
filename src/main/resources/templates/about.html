@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--suppress XmlDuplicatedId -->
 <html lang="en">
-<head id="headTemplate">
+<head>
 	<meta charset="UTF-8"/>
 	<title id="appName">Face Greases</title>
 	<link rel="stylesheet" href="plugins/bootstrap/css/bootstrap.min.css"/>
@@ -31,6 +31,7 @@
 	</div>
 </section>
 
+<!-- About -->
 <section class="about" id="about">
 	<div class="container">
 		<div class="row">
@@ -43,7 +44,7 @@
 					<p><span id="howToMsg1stPart">1st howTo msg part </span><a id="shopLink" target="_blank">shop view</a>
 						<span id="howToMsg2ndPart">2nd howTo msg part </span></p>
 					<p><span id="howToMsg3rdPart">3rd howTo msg part </span>
-						<select id="languageSwitcher" onchange="changeLanguage()">
+						<select id="languageSwitcher" class="form-control" onchange="changeLanguage()">
 							<option id="en" value="en">EN</option>
 							<option id="pl" value="pl">PL</option>
 						</select>

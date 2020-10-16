@@ -223,3 +223,10 @@ footer a {
 #about p, #selfPromotion p {
     font-weight: 300;
 }
+
+#languageSwitcher {
+    width: initial;
+    display: inline;
+    padding: 6px 6px;
+    font-size: 16px;
+}
