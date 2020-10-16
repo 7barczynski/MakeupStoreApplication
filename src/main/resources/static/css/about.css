@@ -230,3 +230,7 @@ footer a {
     padding: 6px 6px;
     font-size: 16px;
 }
+
+#aboutMainMessage {
+    margin-bottom: 40px;
+}

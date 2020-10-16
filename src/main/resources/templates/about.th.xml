@@ -2,21 +2,21 @@
     <!-- Part with slider image and main message -->
     <attr sel="#appName"
         th:text="${@AppProperties.getApplicationName()}"/>
-    <attr sel="#mainMessage"
-        th:text="#{about.main.message}"/>
+    <attr sel="#aboutWelcomeMessage"
+        th:text="#{about.welcome.message}"/>
     <attr sel="#goToIndex"
         th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).HOME}__}"
         th:text="#{about.enter.app}"/>
 
-    <!-- Part with welcome and how to message -->
-    <attr sel="#welcomeMessage"
-          th:text="#{about.welcome.main.message}"/>
-    <attr sel="#welcomeMsg1stPart"
-          th:text="#{about.welcome.message.first.part}"/>
-    <attr sel="#welcomeMsg2ndPart"
-          th:text="#{about.welcome.message.second.part}"/>
-    <attr sel="#welcomeMsg3rdPart"
-          th:text="#{about.welcome.message.third.part}"/>
+    <!-- Part with about and how to message -->
+    <attr sel="#aboutMainMessage"
+          th:text="#{about.main.message}"/>
+    <attr sel="#aboutMsg1stPart"
+          th:text="#{about.message.first.part}"/>
+    <attr sel="#aboutMsg2ndPart"
+          th:text="#{about.message.second.part}"/>
+    <attr sel="#aboutMsg3rdPart"
+          th:text="#{about.message.third.part}"/>
     <attr sel="#makeupApiLink"
           th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
     <attr sel="#aviatoLink"
