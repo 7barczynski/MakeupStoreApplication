@@ -1,7 +1,7 @@
 <thlogic>
     <!-- Head -->
     <attr sel="#headTemplate"
-          th:replace="~{fragments/head :: headFragment}"/>
+          th:replace="~{newfragments/head :: headFragment}"/>
 
     <!-- Top header -->
     <attr sel="#topHeaderTemplate"
