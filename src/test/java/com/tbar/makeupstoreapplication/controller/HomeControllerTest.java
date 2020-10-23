@@ -50,7 +50,7 @@ class HomeControllerTest {
         mvcResult = performGetRequest("/about").andReturn();
 
         String actualViewName = getViewNameFromModel();
-        assertEquals(ViewNames.ABOUT, actualViewName);
+        assertEquals(ViewNames.CONTACT, actualViewName);
     }
 
     private ResultActions performGetRequest(String url) throws Exception {

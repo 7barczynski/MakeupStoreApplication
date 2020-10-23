@@ -17,10 +17,10 @@ public class HomeController {
         return ViewNames.HOME;
     }
 
-    @GetMapping("/" + AppMappings.ABOUT)
-    public String aboutPage(Model model) {
+    @GetMapping("/" + AppMappings.CONTACT)
+    public String contactPage(Model model) {
         addCurrentLanguageToModel(model);
-        return ViewNames.ABOUT;
+        return ViewNames.CONTACT;
     }
 
     private void addCurrentLanguageToModel(Model model) {
