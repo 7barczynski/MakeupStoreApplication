@@ -1,23 +1,37 @@
     /*
-    * This function disable empty inputs in a form to clear URL from unused parameters.
+    * This function disable empty elements in a form to clear URL from unused parameters.
     * It is used on filter panel in shop view.
     */
     function disableEmptyInputs(form) {
-      var controls = form.elements;
-      for (var i=0; i<controls.length; i++) {
-        controls[i].disabled = controls[i].value == "" || controls[i].value == "-";
-      }
+        var elements = form.elements;
+        disableEmptyElements(elements);
+    }
+
+    function disableEmptyElements(elements) {
+        for (var i=0; i<elements.length; i++) {
+            elements[i].disabled = elements[i].value == "" || elements[i].value == "-";
+        }
     }
 
     /*
     * This function is used in locale switcher on the navigation bar.
     */
     function changeLocale() {
+        newUrl = setOrAddLocaleParamInCurrentUrl();
+        replaceLocationAndHistoryState(newUrl);
+    }
+
+    function setOrAddLocaleParamInCurrentUrl() {
         var localeSwitcherValue = document.getElementById("localeSwitcher").value;
         var searchParams = new URLSearchParams(location.search);
 
         searchParams.set("locale", localeSwitcherValue);
 
-        window.history.replaceState({}, '', `${location.pathname}?${searchParams}`);
-        location.replace(`${location.pathname}?${searchParams}`);
+        return `${location.pathname}?${searchParams}`;
     }
+
+    function replaceLocationAndHistoryState(url) {
+        window.history.replaceState({}, '', url);
+        location.replace(url);
+    }
+
