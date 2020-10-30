@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--suppress XmlDuplicatedId -->
+<html lang="en">
+<nav class="navbar navbar-expand-sm navbar-light bg-light" id="navbar">
+  <!--Title-->
+  <a class="navbar-brand" id="homeLinkWithoutTxt" href="#">
+    <img id="logoImage" src="/imagesFinal/logo.png" width="150" height="50" alt="logo" loading="lazy">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <!--Collapse-->
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <!--Home-->
+      <li class="nav-item">
+        <a class="nav-link" id="homeLink" href="#">Home</a>
+      </li>
+      <!--Shop-->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="shopLink" href="#" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">Shop</a>
+        <div class="dropdown-menu" aria-labelledby="shopLink">
+          <!--Face-->
+          <a class="dropdown-item" id="faceLink" href="#">Face</a>
+          <!--Eyes-->
+          <a class="dropdown-item" id="eyesLink" href="#">Eyes</a>
+          <!--Lips-->
+          <a class="dropdown-item" id="lipsLink" href="#">Lips</a>
+          <!--Nails-->
+          <a class="dropdown-item" id="nailsLink" href="#">Nails</a>
+        </div>
+      </li>
+      <!--Contact-->
+      <li class="nav-item">
+        <a class="nav-link" id="contactLink" href="#">Contact</a>
+      </li>
+    </ul>
+    <!--Language switcher-->
+    <div class="nav-item">
+      <select id="localeSwitcher" class="form-control" onchange="changeLocale()">
+        <option id="localeSwitcherOption">EN</option>
+      </select>
+    </div>
+  </div>
+</nav>
+</html>

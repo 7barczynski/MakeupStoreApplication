@@ -1,66 +1,34 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"><![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"><![endif]-->
-<!--[if gt IE 8]><!-->
 <!--suppress XmlDuplicatedId -->
-<html class="no-js"> <!--<![endif]-->
+<html>
 <head id="headTemplate"></head>
-
 <body>
 
-<!-- Top Header -->
-<!--<section id="topHeaderTemplate"></section>-->
+<!-- Navbar template -->
+<section id="navbarTemplate"></section>
 
-<!-- Main Menu -->
-<section id="mainMenuTemplate"></section>
-
-<!-- Product categories -->
-<section class="product-category section">
-  <div class="container">
-    <div id="varInit" class="row">
-      <div class="col-md-12">
-        <div class="title text-center">
-          <h2 id="productCategoriesHead">Product Categories</h2>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <!-- Eyes -->
-        <div class="category-box">
-          <a id="eyesCategoryLink">
-            <img src="" id="eyesCategoryImage"/>
-            <div class="content">
-              <h3 id="eyesName">Eyes</h3>
-              <p id="viewProductsName">View products</p>
-            </div>
-          </a>
-        </div>
-        <!-- Lips -->
-        <div class="category-box">
-          <a id="lipsCategoryLink">
-            <img src="" id="lipsCategoryImage"/>
-            <div class="content">
-              <h3 id="lipsName">Lips</h3>
-              <p id="viewProductsName">View products</p>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <!-- Face -->
-        <div class="category-box category-box-2">
-          <a id="faceCategoryLink">
-            <img src="" id="faceCategoryImage"/>
-            <div class="content">
-              <h3 id="faceName">Face</h3>
-              <p id="viewProductsName">View products</p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+<!-- Top Jumbotron -->
+<div class="jumbotron jumbotron-fluid top-jumbotron-background d-flex">
+  <div class="container text-center align-self-center">
+    <h1 class="display-1 d-none d-md-block mb-3 font-weight-bolder" id="appTitle">Face Greases</h1>
+    <h1 class="display-4 d-md-none mb-2 font-weight-bolder" id="appTitle">Face Greases</h1>
+    <p class="lead mb-4" id="topJumbotronMessage" style="white-space: pre;">Web application that<br/>searches for makeup products</p>
+    <a class="btn btn-light btn-lg mb-4" id="shopLinkInTopJumbotron" href="/shop" role="button">Try it!</a>
+    <p><a class="btn btn-light btn-lg" id="aboutFragmentGoToButton" href="#about" role="button">Read about it...</a></p>
   </div>
-</section>
+</div>
+
+<!-- About -->
+<div class="container" id="about">
+  <div class="jumbotron text-center">
+    <h1 id="aboutTopMessage">A few words about an app...</h1>
+    <p><em id="appTitle"></em><span id="aboutMsg1stPart"> 1st about msg part </span>
+      <a id="makeupApiLink" target="_blank">Makeup&nbsp;API</a><span id="aboutMsg2ndPart"> 2nd about msg part </span>
+    <p><span id="howToMsg1stPart">1st howTo msg part </span><a id="shopLink" target="_blank">shop view</a>
+      <span id="howToMsg2ndPart">2nd howTo msg part </span></p>
+    <p id="howToMsg3rdPart">3rd howTo msg part</p>
+  </div>
+</div>
 
 <footer id="footerTemplate"></footer>
 

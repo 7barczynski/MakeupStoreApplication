@@ -7,9 +7,9 @@
     <attr sel="#topHeaderTemplate"
           th:replace="~{fragments/top-header :: topHeaderFragment}"/>
 
-    <!-- Menu -->
-    <attr sel="#mainMenuTemplate"
-          th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
+    <!-- Navbar -->
+    <attr sel="#navbarTemplate"
+          th:replace="~{fragments/navbar :: navbarFragment}"/>
 
     <!-- Breadcrumbs -->
     <attr sel="#breadcrumbsTemplate"

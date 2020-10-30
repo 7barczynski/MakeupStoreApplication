@@ -1,49 +1,41 @@
 <thlogic>
     <!-- Head -->
     <attr sel="#headTemplate"
-          th:replace="~{fragments/head :: headFragment}"/>
+        th:replace="~{fragments/head :: headFragment}"/>
 
-    <!-- Top header -->
-    <attr sel="#topHeaderTemplate"
-          th:replace="~{fragments/top-header :: topHeaderFragment}"/>
+    <!--Top Jumbotron-->
+    <attr sel="#appTitle"
+        th:text="${@environment.getProperty('applicationTitle')}"/>
+    <attr sel="#topJumbotronMessage"
+        th:text="#{home.top.jumbotron.message}"/>
+    <attr sel="#shopLinkInTopJumbotron"
+        th:href="@{${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}}"
+        th:text="#{home.top.jumbotron.link.message}"/>
+    <attr sel="#aboutFragmentGoToButton"
+          th:text="#{home.top.jumbotron.about.goto.message}"/>
 
-    <!-- Menu -->
-    <attr sel="#mainMenuTemplate"
-          th:replace="~{fragments/main-menu :: mainMenuFragment}"/>
+    <!-- Navbar -->
+    <attr sel="#navbarTemplate"
+          th:replace="~{fragments/navbar :: navbarFragment}"/>
 
-    <!-- Products categories -->
-    <attr sel="#varInit"
-          th:with="shopMapping=${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP},
-                    product_type=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
-    <attr sel="#productCategoriesHead"
-          th:text="#{product.categories.name}"/>
-    <attr sel="#viewProductsName"
-          th:text="#{view.products.name}"/>
-
-    <attr sel="#eyesCategoryLink"
-          th:href="@{__${shopMapping}__(__${product_type}__ = eyeshadow)}"/>
-    <attr sel="#eyesCategoryImage"
-          th:src="@{__${@AppProperties.getEyesImageUrl()}__}"/>
-    <attr sel="#eyesName"
-          th:text="#{eyes.name}"/>
-
-    <attr sel="#lipsCategoryImage"
-          th:src="@{__${@AppProperties.getLipsImageUrl()}__}"/>
-    <attr sel="#lipsCategoryLink"
-          th:href="@{__${shopMapping}__(__${product_type}__ = lipstick)}"/>
-    <attr sel="#lipsName"
-          th:text="#{lips.name}"/>
-
-    <attr sel="#faceCategoryImage"
-          th:src="@{__${@AppProperties.getFaceImageUrl()}__}"/>
-    <attr sel="#faceCategoryLink"
-          th:href="@{__${shopMapping}__(__${product_type}__ = foundation)}"/>
-    <attr sel="#faceName"
-          th:text="#{face.name}"/>
-
-    <!-- Trendy Products -->
-    <attr sel="#trendyProducts"
-          th:text="#{trendy.products}"/>
+    <!-- About -->
+    <attr sel="#aboutTopMessage"
+          th:text="#{home.about.top.message}"/>
+    <attr sel="#aboutMsg1stPart"
+          th:text="#{home.about.message.first.part}"/>
+    <attr sel="#makeupApiLink"
+          th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
+    <attr sel="#aboutMsg2ndPart"
+          th:text="#{home.about.message.second.part}"/>
+    <attr sel="#howToMsg1stPart"
+          th:text="#{home.about.howto.message.first.part}"/>
+    <attr sel="#shopLink"
+          th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"
+          th:text="#{home.about.howto.shop.view}"/>
+    <attr sel="#howToMsg2ndPart"
+          th:text="#{home.about.howto.message.second.part}"/>
+    <attr sel="#howToMsg3rdPart"
+          th:text="#{home.about.howto.message.third.part}"/>
 
     <attr sel="#footerTemplate"
           th:replace="~{fragments/footer :: footerFragment}"/>
