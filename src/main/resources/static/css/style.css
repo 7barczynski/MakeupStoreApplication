@@ -8,3 +8,13 @@ html {
     height: 92vh;
     margin-bottom: 0;
 }
+
+#localeSwitcherInHowTo {
+    width: initial;
+    display: inline;
+}
+
+.tech-stack-icons img {
+    width: 64px;
+    height: 64px;
+}

@@ -19,14 +19,10 @@
           th:replace="~{fragments/navbar :: navbarFragment}"/>
 
     <!-- About -->
-    <attr sel="#aboutTopMessage"
-          th:text="#{home.about.top.message}"/>
-    <attr sel="#aboutMsg1stPart"
-          th:text="#{home.about.message.first.part}"/>
-    <attr sel="#makeupApiLink"
-          th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
-    <attr sel="#aboutMsg2ndPart"
-          th:text="#{home.about.message.second.part}"/>
+    <attr sel="#techStackName"
+          th:text="#{home.about.tech.stack.name}"/>
+    <attr sel="#howToName"
+          th:text="#{home.about.how.to.name}"/>
     <attr sel="#howToMsg1stPart"
           th:text="#{home.about.howto.message.first.part}"/>
     <attr sel="#shopLink"
@@ -36,6 +32,19 @@
           th:text="#{home.about.howto.message.second.part}"/>
     <attr sel="#howToMsg3rdPart"
           th:text="#{home.about.howto.message.third.part}"/>
+    <attr sel="#howToMsg4thPart"
+          th:text="#{home.about.howto.message.fourth.part}"/>
+    <attr sel="#makeupDataMsg"
+          th:text="#{home.makeup.data.message}"/>
+    <attr sel="#makeupApiLink"
+          th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
+
+    <attr sel="#localeSwitcherOption"
+          th:with="currentLocale = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).CURRENT_LANGUAGE}__}"
+          th:each="language : ${#strings.listSplit(@environment.getProperty('applicationLanguagesList'), ',')}"
+          th:text="${#strings.toUpperCase(language)}"
+          th:value="${language}"
+          th:selected="${#strings.equals(language, currentLocale)}"/>
 
     <attr sel="#footerTemplate"
           th:replace="~{fragments/footer :: footerFragment}"/>

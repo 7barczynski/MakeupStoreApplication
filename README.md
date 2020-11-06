@@ -23,5 +23,8 @@ You can also change the language of the application interface by choosing desire
 If you encounter any problem I'm more than happy to contact you on this.
 
 Thank you for your time to read this! Hope the code is clear and simple to you!
+
+## Attribution
+Icons made by [Freepik](https://www.flaticon.com/authors/freepik) and [Dave Gandy](https://www.flaticon.com/authors/dave-gandy) from [www.flaticon.com](https://www.flaticon.com/)
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

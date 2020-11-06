@@ -16,13 +16,13 @@
     /*
     * This function is used in locale switcher on the navigation bar.
     */
-    function changeLocale() {
-        newUrl = setOrAddLocaleParamInCurrentUrl();
+    function changeLocale(switcherId) {
+        newUrl = setOrAddLocaleParamInCurrentUrl(switcherId);
         replaceLocationAndHistoryState(newUrl);
     }
 
-    function setOrAddLocaleParamInCurrentUrl() {
-        var localeSwitcherValue = document.getElementById("localeSwitcher").value;
+    function setOrAddLocaleParamInCurrentUrl(switcherId) {
+        var localeSwitcherValue = document.getElementById(switcherId).value;
         var searchParams = new URLSearchParams(location.search);
 
         searchParams.set("locale", localeSwitcherValue);

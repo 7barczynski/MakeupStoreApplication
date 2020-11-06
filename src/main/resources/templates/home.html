@@ -19,14 +19,95 @@
 </div>
 
 <!-- About -->
-<div class="container" id="about">
-  <div class="jumbotron text-center">
-    <h1 id="aboutTopMessage">A few words about an app...</h1>
-    <p><em id="appTitle"></em><span id="aboutMsg1stPart"> 1st about msg part </span>
-      <a id="makeupApiLink" target="_blank">Makeup&nbsp;API</a><span id="aboutMsg2ndPart"> 2nd about msg part </span>
-    <p><span id="howToMsg1stPart">1st howTo msg part </span><a id="shopLink" target="_blank">shop view</a>
-      <span id="howToMsg2ndPart">2nd howTo msg part </span></p>
-    <p id="howToMsg3rdPart">3rd howTo msg part</p>
+<div class="jumbotron jumbotron-fluid" id="about">
+  <div class="d-none d-lg-flex row mb-0 mx-3 mx-md-4 mx-lg-5">
+    <div class="d-none d-xl-block col-xl-1"></div>
+    <div class="col-xs-12 col-lg-5 col-xl-4">
+      <h1 class="text-center overflow-hidden" id="techStackName">Tech stack</h1>
+    </div>
+    <div class="d-none d-xl-block col-xl-1"></div>
+    <div class="col-xs-12 col-lg-7 col-xl-6 d-flex align-items-end">
+      <h1 class="w-100 text-center" id="howToName">How to</h1>
+    </div>
+  </div>
+  <div class="row mx-3 mx-md-4 mx-lg-5">
+    <div class="d-none d-xl-block col-xl-1"></div>
+    <div class="col-xs-12 col-lg-5 col-xl-4 mb-5 mb-lg-auto">
+      <h1 class="d-lg-none text-center overflow-hidden" id="techStackName">Tech stack</h1>
+      <div class="p-2 border border-dark rounded-lg">
+        <!--Tech stack icons-->
+        <div class="tech-stack-icons text-center">
+          <figure class="figure p-2">
+            <img id="javaImage" class="figure-img" src="/imagesFinal/home/logos/java-logo.svg" alt="Java">
+            <figcaption class="figure-caption text-center">Java</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="springImage" class="figure-img" src="/imagesFinal/home/logos/spring-logo.svg" alt="Spring Boot">
+            <figcaption class="figure-caption text-center">Spring Boot</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="hibernateImage" class="figure-img" src="/imagesFinal/home/logos/hibernate-logo.svg" alt="Hibernate">
+            <figcaption class="figure-caption text-center">Hibernate</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="databaseImage" class="figure-img" src="/imagesFinal/home/logos/db-logo.svg" alt="Database">
+            <figcaption class="figure-caption text-center">H2 DB</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="thymeleafImage" class="figure-img" src="/imagesFinal/home/logos/thymeleaf-logo.png" alt="Thyemelaf">
+            <figcaption class="figure-caption text-center">Thymeleaf</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="htmlImage" class="figure-img" src="/imagesFinal/home/logos/html-logo.svg" alt="Html">
+            <figcaption class="figure-caption text-center">HTML</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="cssImage" class="figure-img" src="/imagesFinal/home/logos/css-logo.svg" alt="Css">
+            <figcaption class="figure-caption text-center">CSS</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="javascriptImage" class="figure-img" src="/imagesFinal/home/logos/javascript-logo.svg" alt="JavaScript">
+            <figcaption class="figure-caption text-center">JavaScript</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="bootstrapImage" class="figure-img" src="/imagesFinal/home/logos/bootstrap-logo.svg" alt="Bootstrap">
+            <figcaption class="figure-caption text-center">Bootstrap</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="gradleImage" class="figure-img" src="/imagesFinal/home/logos/gradle-logo.svg" alt="Gradle">
+            <figcaption class="figure-caption text-center">Gradle</figcaption>
+          </figure>
+          <figure class="figure p-2">
+            <img id="gitImage" class="figure-img" src="/imagesFinal/home/logos/git-logo.png" alt="Git">
+            <figcaption class="figure-caption text-center">Git</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-xl-block col-xl-1"></div>
+
+    <div class="col-xs-12 col-lg-7 col-xl-6">
+      <h1 class="d-lg-none w-100 text-center" id="howToName">How to</h1>
+      <div class="p-2 border border-dark rounded-lg text-center">
+        <!--About message-->
+        <p>
+          <span id="howToMsg1stPart">1st howTo msg part </span>
+          <a id="shopLink" target="_blank">shop view</a>
+          <span id="howToMsg2ndPart">2nd howTo msg part </span>
+        </p>
+        <p>
+          <span id="howToMsg3rdPart">3rd howTo msg part</span>
+          <select class="form-control" id="localeSwitcherInHowTo" onchange="changeLocale('localeSwitcherInHowTo')">
+            <option id="localeSwitcherOption">EN</option>
+          </select>
+          <span id="howToMsg4thPart">4th howTo msg part</span>
+        </p>
+        <p>
+          <span id="makeupDataMsg">All data comes from</span>
+          <a id="makeupApiLink" target="_blank">Makeup&nbsp;API.</a>
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 
