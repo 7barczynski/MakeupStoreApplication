@@ -21,6 +21,29 @@
     <!-- About -->
     <attr sel="#techStackName"
           th:text="#{home.about.tech.stack.name}"/>
+    <attr sel="#javaLogo"
+          th:src="@{__${@environment.getProperty('javaLogoUrl')}__}"/>
+    <attr sel="#springLogo"
+          th:src="@{__${@environment.getProperty('springLogoUrl')}__}"/>
+    <attr sel="#hibernateLogo"
+          th:src="@{__${@environment.getProperty('hibernateLogoUrl')}__}"/>
+    <attr sel="#databaseLogo"
+          th:src="@{__${@environment.getProperty('databaseLogoUrl')}__}"/>
+    <attr sel="#thymeleafLogo"
+          th:src="@{__${@environment.getProperty('thymeleafLogoUrl')}__}"/>
+    <attr sel="#htmlLogo"
+          th:src="@{__${@environment.getProperty('htmlLogoUrl')}__}"/>
+    <attr sel="#cssLogo"
+          th:src="@{__${@environment.getProperty('cssLogoUrl')}__}"/>
+    <attr sel="#javascriptLogo"
+          th:src="@{__${@environment.getProperty('javascriptLogoUrl')}__}"/>
+    <attr sel="#bootstrapLogo"
+          th:src="@{__${@environment.getProperty('bootstrapLogoUrl')}__}"/>
+    <attr sel="#gradleLogo"
+          th:src="@{__${@environment.getProperty('gradleLogoUrl')}__}"/>
+    <attr sel="#gitLogo"
+          th:src="@{__${@environment.getProperty('gitLogoUrl')}__}"/>
+
     <attr sel="#howToName"
           th:text="#{home.about.how.to.name}"/>
     <attr sel="#howToMsg1stPart"
@@ -35,9 +58,16 @@
     <attr sel="#howToMsg4thPart"
           th:text="#{home.about.howto.message.fourth.part}"/>
     <attr sel="#makeupDataMsg"
-          th:text="#{home.makeup.data.message}"/>
+          th:text="#{home.about.makeup.data.message}"/>
     <attr sel="#makeupApiLink"
-          th:href="@{__${@AppProperties.getMakeupApiUrl()}__}"/>
+          th:href="@{__${@environment.getProperty('makeupApiLink')}__}"/>
+    <attr sel="#projectCodeMsg1stPart"
+          th:text="#{home.about.project.code.message.first.part}"/>
+    <attr sel="#projectCodeMsg2ndPart"
+          th:text="#{home.about.project.code.message.second.part}"/>
+    <attr sel="#gitHubProjectLink"
+          th:href="@{__${@environment.getProperty('gitHubProjectLink')}__}"
+          th:text="#{home.about.project.code.github.name}"/>
 
     <attr sel="#localeSwitcherOption"
           th:with="currentLocale = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).CURRENT_LANGUAGE}__}"
