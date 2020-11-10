@@ -76,9 +76,27 @@
           th:value="${language}"
           th:selected="${#strings.equals(language, currentLocale)}"/>
 
-    <!--Footer-->
-    <attr sel="#footerTemplate"
-          th:replace="~{fragments/footer :: footerFragment}"/>
+    <!--Contact-->
+    <attr sel="#contactMessage"
+          th:text="#{home.contact.message}"/>
+    <attr sel="#githubLink"
+          th:href="@{__${@environment.getProperty('githubLink')}__}"/>
+    <attr sel="#githubImage"
+          th:src="@{__${@environment.getProperty('githubLogoUrl')}__}"/>
+    <attr sel="#githubLinkText"
+          th:text="${@environment.getProperty('githubAccountName')}"/>
+    <attr sel="#linkedinLink"
+          th:href="@{__${@environment.getProperty('linkedinLink')}__}"/>
+    <attr sel="#linkedinImage"
+          th:src="@{__${@environment.getProperty('linkedinLogoUrl')}__}"/>
+    <attr sel="#linkedinLinkText"
+          th:text="${@environment.getProperty('linkedinAccountName')}"/>
+    <attr sel="#mailLink"
+          th:href="@{__${@environment.getProperty('mailLink')}__}"/>
+    <attr sel="#mailImage"
+          th:src="@{__${@environment.getProperty('gmailLogoUrl')}__}"/>
+    <attr sel="#mailLinkText"
+          th:text="${@environment.getProperty('mailName')}"/>
 
     <!-- Scripts -->
     <attr sel="#scriptTemplate"

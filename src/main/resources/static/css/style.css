@@ -19,6 +19,16 @@ html {
     height: 64px;
 }
 
-.contact-links img {
+.footer-contact-links img {
     height: 40px;
+}
+
+.home-contact-links img {
+    height: 50px;
+}
+
+@media (min-width: 576px) {
+    .home-contact-links img {
+        height: 30px;
+    }
 }
