@@ -1,6 +1,5 @@
 package com.tbar.makeupstoreapplication.controller;
 
-import com.tbar.makeupstoreapplication.utility.AppMappings;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ViewNames;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -15,12 +14,6 @@ public class HomeController {
     public String homePage(Model model) {
         addCurrentLanguageToModel(model);
         return ViewNames.HOME;
-    }
-
-    @GetMapping("/" + AppMappings.CONTACT)
-    public String contactPage(Model model) {
-        addCurrentLanguageToModel(model);
-        return ViewNames.CONTACT;
     }
 
     private void addCurrentLanguageToModel(Model model) {

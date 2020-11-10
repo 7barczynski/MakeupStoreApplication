@@ -33,24 +33,11 @@ class HomeControllerTest {
     }
 
     @Test
-    void when_requestToAboutPage_then_return200OK() throws Exception {
-        performGetRequest("/about").andExpect(status().isOk());
-    }
-
-    @Test
     void when_requestToHomePage_then_returnHomeView() throws Exception {
         mvcResult = performGetRequest("/").andReturn();
 
         String actualViewName = getViewNameFromModel();
         assertEquals(ViewNames.HOME, actualViewName);
-    }
-
-    @Test
-    void when_requestToAboutPage_then_returnAboutView() throws Exception {
-        mvcResult = performGetRequest("/about").andReturn();
-
-        String actualViewName = getViewNameFromModel();
-        assertEquals(ViewNames.CONTACT, actualViewName);
     }
 
     private ResultActions performGetRequest(String url) throws Exception {

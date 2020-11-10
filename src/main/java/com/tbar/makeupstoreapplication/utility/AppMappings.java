@@ -4,7 +4,6 @@ package com.tbar.makeupstoreapplication.utility;
 public final class AppMappings {
 
     public static final String HOME = "/";
-    public static final String CONTACT = "contact";
     public static final String SHOP = "shop";
     public static final String QUERY_PARAM_PAGE = "page";
     public static final String QUERY_PARAM_PRODUCT_TYPE = "product_type";

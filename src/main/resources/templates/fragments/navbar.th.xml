@@ -30,10 +30,6 @@
         th:href="@{/__${shopMapping}__(__${product_type}__ = nail_polish)}"
         th:text="#{nails.name}"/>
 
-  <attr sel="#contactLink"
-        th:href="@{/__${T(com.tbar.makeupstoreapplication.utility.AppMappings).CONTACT}__}"
-        th:text="#{contact.name}"/>
-
   <attr sel="#localeSwitcherOption"
         th:with="currentLocale = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).CURRENT_LANGUAGE}__}"
         th:each="language : ${#strings.listSplit(@environment.getProperty('applicationLanguagesList'), ',')}"

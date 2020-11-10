@@ -18,3 +18,7 @@ html {
     width: 64px;
     height: 64px;
 }
+
+.contact-links img {
+    height: 40px;
+}

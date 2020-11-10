@@ -65,8 +65,8 @@
           th:text="#{home.about.project.code.message.first.part}"/>
     <attr sel="#projectCodeMsg2ndPart"
           th:text="#{home.about.project.code.message.second.part}"/>
-    <attr sel="#gitHubProjectLink"
-          th:href="@{__${@environment.getProperty('gitHubProjectLink')}__}"
+    <attr sel="#githubProjectLink"
+          th:href="@{__${@environment.getProperty('githubProjectLink')}__}"
           th:text="#{home.about.project.code.github.name}"/>
 
     <attr sel="#localeSwitcherOption"
@@ -76,6 +76,7 @@
           th:value="${language}"
           th:selected="${#strings.equals(language, currentLocale)}"/>
 
+    <!--Footer-->
     <attr sel="#footerTemplate"
           th:replace="~{fragments/footer :: footerFragment}"/>
 
