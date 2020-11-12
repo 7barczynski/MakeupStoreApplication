@@ -8,6 +8,8 @@
         th:replace="~{fragments/navbar :: navbarFragment}"/>
 
     <!-- Filter -->
+    <attr sel="#filterName"
+          th:text="#{filter.name}"/>
     <attr sel="#filter"
           th:attr="action=@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#typeName"
@@ -54,8 +56,8 @@
           th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_GREATER_THAN}"/>
     <attr sel="#ratingLess"
           th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_LESS_THAN}"/>
-    <attr sel="#filterName"
-          th:text="#{filter.name}"/>
+    <attr sel="#filteringName"
+          th:text="#{filtering.name}"/>
 
     <!-- Product List -->
     <attr sel="#productListSwitch"

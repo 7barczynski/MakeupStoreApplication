@@ -8,8 +8,13 @@
 
 <div class="container mt-5">
 	<div class="row">
+		<!--Collapse button-->
+		<button class="d-md-none btn btn-info mb-5 w-75 mx-auto" id="filterName" type="button" data-toggle="collapse"
+						data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+			Filter
+		</button>
 		<!-- Filter -->
-		<div class="col-md-3">
+		<div class="col-md-3 collapse" id="collapseFilter">
 			<form id="filter" onsubmit="disableEmptyInputs(this)">
 				<div class="form-group">
 					<label id="typeName" for="typeList">Type</label>
@@ -53,7 +58,7 @@
 				<div class="form-group">
 					<input type="number" class="form-control" id="ratingLess" placeholder="Max">
 				</div>
-				<button id="filterName" type="submit" class="btn btn-primary">Filter</button>
+				<button id="filteringName" type="submit" class="btn btn-primary">Filter</button>
 			</form>
 		</div>
 		<!-- Product list -->
@@ -96,6 +101,12 @@
 <footer id="footerTemplate"></footer>
 
 <div id="scriptTemplate"></div>
+
+<script>
+	var mediaWidth = window.matchMedia("(min-width: 768px)");
+	toggleFilterVisibilityOnWidthBreakpoint(mediaWidth);
+	mediaWidth.addListener(toggleFilterVisibilityOnWidthBreakpoint);
+</script>
 
 </body>
 </html>

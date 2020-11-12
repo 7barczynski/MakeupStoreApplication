@@ -1,6 +1,5 @@
     /*
-    * This function disable empty elements in a form to clear URL from unused parameters.
-    * It is used on filter panel in shop view.
+    * This function is used on filter panel in shop view.
     */
     function disableEmptyInputs(form) {
         var elements = form.elements;
@@ -35,3 +34,30 @@
         location.replace(url);
     }
 
+    /*
+    * This function is used only in shop view
+    */
+    function toggleFilterVisibilityOnWidthBreakpoint(mediaWidth) {
+        var filter = document.getElementById("collapseFilter");
+        if (mediaWidth.matches) {
+            showIfHidden(filter);
+        } else {
+            hideIfPresent(filter);
+        }
+    }
+
+    function showIfHidden(element) {
+        if (isHidden(element)) {
+            element.classList.add("show");
+        }
+    }
+
+    function isHidden(element) {
+        return !element.classList.contains("show");
+     }
+
+     function hideIfPresent(element) {
+        if (!isHidden(element)) {
+            element.classList.remove("show");
+        }
+     }
