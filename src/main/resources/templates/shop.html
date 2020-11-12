@@ -1,111 +1,97 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> 
-<html class="no-js"> <!--<![endif]-->
+<html>
 <head id="headTemplate"></head>
-
-<body id="body">
-
-<!-- Top Header -->
-<!--<section id="topHeaderTemplate"></section>-->
+<body>
 
 <!-- Navbar -->
 <section id="navbarTemplate"></section>
 
-<!-- Breadcrumbs -->
-<section id="breadcrumbsTemplate"></section>
-
-<!-- Products -->
-<section class="products section">
-	<div class="container">
-		<div class="row">
-			<!-- Filter -->
-			<div class="col-md-3">
-				<form id="filter" onsubmit="disableEmptyInputs(this)">
-					<div class="form-group">
-						<label id="typeName" for="typeList">Type</label>
-						<select class="form-control" id="typeList">
-							<option>-</option>
-							<option id="typeForEach"></option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label id="categoryName" for="categoryList">Category</label>
-						<select class="form-control" id="categoryList">
-							<option>-</option>
-							<option id="categoryForEach"></option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label id="brandName" for="brandList">Brand</label>
-						<select class="form-control" id="brandList">
-							<option>-</option>
-							<option id="brandForEach"></option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label id="tagsName" for="tagsList">Tags</label>
-						<select multiple class="form-control" id="tagsList">
-							<option>-</option>
-							<option id="tagsForEach"></option>
-						</select>
-					</div>
-					<div class="form-group">
-		 				<label id="priceName">Price</label>
-						<input type="number" class="form-control" id="priceGreater" placeholder="Min">
-					</div>
-					<div class="form-group">
-						<input type="number" class="form-control" id="priceLess" placeholder="Max">
-					</div>
-					<div class="form-group">
-						<label id="ratingName">Rating</label>
-						<input type="number" class="form-control" id="ratingGreater" placeholder="Min">
-					</div>
-					<div class="form-group">
-						<input type="number" class="form-control" id="ratingLess" placeholder="Max">
-					</div>
-					<button id="filterName" type="submit" class="btn btn-default">Filter</button>
-				</form>
-			</div>
-			<!-- Product list -->
-			<div class="col-md-9">
-				<div id="productListSwitch" class="row">
-					<div id="productsNullCase">
-						<div class="alert-part">
-							<div id="exceptionSwitch" class="alert alert-warning alert-common" role="alert">
-								<i class="tf-ion-alert-circled"></i>
-								<span id="productsNotFoundCase">Products have not been found.</span>
-								<span id="otherExceptionCase">Something went wrong... Please try again.</span>
-							</div>
-						</div>
-					</div>
-					<div id="productsDefaultCase">
-						<div id="productsForEach">
-							<div id="productTemplate"></div>
+<div class="container mt-5">
+	<div class="row">
+		<!-- Filter -->
+		<div class="col-md-3">
+			<form id="filter" onsubmit="disableEmptyInputs(this)">
+				<div class="form-group">
+					<label id="typeName" for="typeList">Type</label>
+					<select class="form-control" id="typeList">
+						<option>-</option>
+						<option id="typeForEach"></option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label id="categoryName" for="categoryList">Category</label>
+					<select class="form-control" id="categoryList">
+						<option>-</option>
+						<option id="categoryForEach"></option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label id="brandName" for="brandList">Brand</label>
+					<select class="form-control" id="brandList">
+						<option>-</option>
+						<option id="brandForEach"></option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label id="tagsName" for="tagsList">Tags</label>
+					<select multiple class="form-control" id="tagsList">
+						<option>-</option>
+						<option id="tagsForEach"></option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label id="priceName">Price</label>
+					<input type="number" class="form-control" id="priceGreater" placeholder="Min">
+				</div>
+				<div class="form-group">
+					<input type="number" class="form-control" id="priceLess" placeholder="Max">
+				</div>
+				<div class="form-group">
+					<label id="ratingName">Rating</label>
+					<input type="number" class="form-control" id="ratingGreater" placeholder="Min">
+				</div>
+				<div class="form-group">
+					<input type="number" class="form-control" id="ratingLess" placeholder="Max">
+				</div>
+				<button id="filterName" type="submit" class="btn btn-primary">Filter</button>
+			</form>
+		</div>
+		<!-- Product list -->
+		<div class="col-md-9">
+			<div id="productListSwitch" class="row">
+				<div id="productsNullCase">
+					<div class="alert-part">
+						<div id="exceptionSwitch" class="alert alert-warning alert-common" role="alert">
+							<i class="tf-ion-alert-circled"></i>
+							<span id="productsNotFoundCase">Products have not been found.</span>
+							<span id="otherExceptionCase">Something went wrong... Please try again.</span>
 						</div>
 					</div>
 				</div>
-				<div class="text-center">
-					<div id="paginationCondition" class="pagination">
-						<span id="previousIconCondition">
-							<a id="previousLink" aria-label="Previous">
-								<span aria-hidden="true">&laquo;</span>
-							</a>
-						</span>
-							<a id="paginationList"></a>
-						<span id="nextIconCondition">
-							<a id="nextLink" aria-label="Next">
-								<span aria-hidden="true">&raquo;</span>
-							</a>
-						</span>
+				<div id="productsDefaultCase">
+					<div id="productsForEach">
+						<div id="productTemplate"></div>
 					</div>
+				</div>
+			</div>
+			<div class="text-center">
+				<div id="paginationCondition" class="pagination">
+					<span id="previousIconCondition">
+						<a id="previousLink" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</span>
+						<a id="paginationList"></a>
+					<span id="nextIconCondition">
+						<a id="nextLink" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+						</a>
+					</span>
 				</div>
 			</div>
 		</div>
 	</div>
-</section>
+</div>
 
 <footer id="footerTemplate"></footer>
 

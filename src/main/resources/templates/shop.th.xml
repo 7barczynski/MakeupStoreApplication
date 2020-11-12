@@ -3,17 +3,9 @@
     <attr sel="#headTemplate"
         th:replace="~{fragments/head :: headFragment}"/>
 
-    <!-- Top header -->
-    <attr sel="#topHeaderTemplate"
-        th:replace="~{fragments/top-header :: topHeaderFragment}"/>
-
     <!-- Navbar -->
     <attr sel="#navbarTemplate"
         th:replace="~{fragments/navbar :: navbarFragment}"/>
-
-    <!-- Breadcrumbs -->
-    <attr sel="#breadcrumbsTemplate"
-          th:replace="~{fragments/breadcrumbs :: breadcrumbsFragment(pageName=#{shop.name}, homeName=#{home.name})}"/>
 
     <!-- Filter -->
     <attr sel="#filter"

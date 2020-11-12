@@ -2,8 +2,13 @@ html {
   scroll-behavior: smooth;
 }
 
+#logoImage {
+    width: 150px;
+    height: 50px;
+}
+
 .top-jumbotron-background {
-    background: url("../imagesFinal/home/home-hero-img.jpg") fixed center no-repeat;
+    background: url("../images/home/home-hero-img.jpg") fixed center no-repeat;
     background-size: cover;
     height: 92vh;
     margin-bottom: 0;
