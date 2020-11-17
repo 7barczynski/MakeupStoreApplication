@@ -34,7 +34,7 @@
           th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"/>
     <attr sel="#brandForEach"
           th:each="brand : ${@AppProperties.getBrandList()}"
-          th:text="${#strings.capitalize(brand)}"
+          th:text="${#strings.capitalizeWords(brand)}"
           th:attr="value=${brand}"/>
     <attr sel="#tagsName"
           th:text="#{tags.name}"/>

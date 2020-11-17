@@ -9,6 +9,10 @@
     <attr sel="#productName"
           th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"
           th:text="${product.getName()}"/>
+    <attr sel="#brandName"
+          th:text="${#strings.capitalizeWords(product.getBrand()) ?: 'undefined'}"/>
     <attr sel="#productPrice"
-          th:text="${(product.getPriceSign() ?: '') + (product.getPrice() ?: '')}"/>
+          th:text="${(product.getPriceSign() ?: '$') + (product.getPrice() ?: '0.0')}"/>
+    <attr sel="#productRating"
+          th:text="${(product.getRating() ?: '0.0')}"/>
 </thlogic>
