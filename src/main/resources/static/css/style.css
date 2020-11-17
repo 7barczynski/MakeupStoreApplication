@@ -37,3 +37,7 @@ html {
         height: 30px;
     }
 }
+
+#productSingleLink img {
+    max-height: 200px;
+}

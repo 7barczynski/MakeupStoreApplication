@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,8 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+// disabled while working on presentation layer in shop view and using temporary db in-file.
+//@Component
 public class DataProvider implements ApplicationRunner {
 
     private final APIConsumer<Product> makeupApiConsumer;

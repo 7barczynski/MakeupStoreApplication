@@ -6,15 +6,14 @@
 <!-- Navbar -->
 <section id="navbarTemplate"></section>
 
-<div class="container mt-5">
+<div class="container-fluid w-75 my-5">
 	<div class="row">
 		<!--Collapse button-->
 		<button class="d-md-none btn btn-info mb-5 w-75 mx-auto" id="filterName" type="button" data-toggle="collapse"
-						data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
-			Filter
+						data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">Filter
 		</button>
 		<!-- Filter -->
-		<div class="col-md-3 collapse" id="collapseFilter">
+		<div class="col-md-3 col-lg-2 collapse" id="collapseFilter">
 			<form id="filter" onsubmit="disableEmptyInputs(this)">
 				<div class="form-group">
 					<label id="typeName" for="typeList">Type</label>
@@ -62,19 +61,16 @@
 			</form>
 		</div>
 		<!-- Product list -->
-		<div class="col-md-9">
-			<div id="productListSwitch" class="row">
-				<div id="productsNullCase">
-					<div class="alert-part">
-						<div id="exceptionSwitch" class="alert alert-warning alert-common" role="alert">
-							<i class="tf-ion-alert-circled"></i>
-							<span id="productsNotFoundCase">Products have not been found.</span>
-							<span id="otherExceptionCase">Something went wrong... Please try again.</span>
-						</div>
+		<div class="col-md-9 col-lg-10">
+			<div id="productListSwitch" class="row my-4">
+				<div class="d-flex w-100 justify-content-center" id="productsNullCase">
+					<div class="alert alert-warning" id="exceptionSwitch" role="alert">
+						<span id="productsNotFoundCase">Products have not been found.</span>
+						<span id="otherExceptionCase">Something went wrong... Please try again.</span>
 					</div>
 				</div>
-				<div id="productsDefaultCase">
-					<div id="productsForEach">
+				<div class="row" id="productsDefaultCase">
+					<div class="col-sm-6 col-lg-4" id="productsForEach">
 						<div id="productTemplate"></div>
 					</div>
 				</div>

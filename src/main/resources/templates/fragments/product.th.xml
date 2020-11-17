@@ -5,7 +5,7 @@
           th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"/>
     <attr sel="#productImage"
           th:src="${product.getImageLink()}"
-          th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
+          th:onerror="|this.src='__${@environment.getProperty('noPhotoImageUrl')}__'|"/>
     <attr sel="#productName"
           th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"
           th:text="${product.getName()}"/>
