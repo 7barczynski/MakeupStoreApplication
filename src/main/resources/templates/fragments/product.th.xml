@@ -4,13 +4,13 @@
     <attr sel="#productSingleLink"
           th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"/>
     <attr sel="#productImage"
-          th:src="${product.getImageLink()}"
+          th:src="${product.getApiFeaturedImage()}"
           th:onerror="|this.src='__${@environment.getProperty('noPhotoImageUrl')}__'|"/>
     <attr sel="#productName"
           th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__/__${product.getId()}__}"
           th:text="${product.getName()}"/>
     <attr sel="#brandName"
-          th:text="${#strings.capitalizeWords(product.getBrand()) ?: 'undefined'}"/>
+          th:text="${product.getBrand() ?: ' '}"/>
     <attr sel="#productPrice"
           th:text="${(product.getPriceSign() ?: '$') + (product.getPrice() ?: '0.0')}"/>
     <attr sel="#productRating"

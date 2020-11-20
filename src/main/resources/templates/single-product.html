@@ -1,59 +1,55 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> 
-<html class="no-js"> <!--<![endif]-->
+<html>
 <head id="headTemplate"></head>
-
-<body id="body">
-
-<!-- Top Header -->
-<section id="topHeaderTemplate"></section>
+<body>
 
 <!-- Navbar -->
 <section id="navbarTemplate"></section>
 
-<!-- Breadcrumbs -->
-<section id="breadcrumbsTemplate"></section>
-
-<section id="varInit" class="single-product">
-	<div id="productSwitch" class="container">
-		<div id="productNullCase">
-			<div class="alert-part">
-				<div id="exceptionSwitch" class="alert alert-warning alert-common" role="alert">
-					<i class="tf-ion-alert-circled"></i>
-					<span id="singleProductNotFoundCase">Unfortunately, product has not beed found.</span>
-					<span id="otherExceptionCase">Something went wrong... Please try again.</span>
-				</div>
-			</div>
-		</div>
-		<div id="productDefaultCase" class="row mt-20">
-			<div class="col-md-5">
-				<img id="productImage" class="img-responsive" src="" alt="product image">
-			</div>
-			<div class="col-md-7">
-				<div class="single-product-details">
-					<h2 id="productName">Product Name</h2>
-					<p id="productPrice" class="product-price">$99.99</p>
-
-					<p id="productDescription" class="product-description mt-20">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur? Eveniet consequatur ipsum dicta recusandae.
-					</p>
-					<div id="colorCondition">
-						<div class="color-swatches">
-							<span id="colorName">Color:</span>
-							<ul>
-								<li id="colorForEach">
-									<a id="colorHex" href="#" ></a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<!--Single product-->
+<section class="single-product-section d-flex align-items-center mt-5" id="varInit">
+  <div class="container" id="productSwitch">
+    <!--Exception case-->
+    <div class="d-flex w-100 justify-content-center" id="productNullCase">
+      <div class="alert alert-warning" id="exceptionSwitch" role="alert">
+        <span id="singleProductNotFoundCase">Unfortunately, product has not beed found.</span>
+        <span id="otherExceptionCase">Something went wrong... Please try again.</span>
+      </div>
+    </div>
+    <div id="productDefaultCase" class="row">
+      <div class="col-md-5 d-flex">
+        <img class="align-self-center h-100 mx-auto" id="productImage" alt="product image">
+      </div>
+      <div class="col-md-7">
+        <div>
+          <h4 id="productName">Product Name</h4>
+          <hr class="my-3"/>
+          <div class="row mb-4">
+            <span class="col-4 col-sm-5 font-italic border-right border-black" id="brandName">Brand</span>
+            <span class="col-4 col-sm-3 font-weight-light border-right border-black" id="typeName">Type</span>
+            <span class="col-4 col-sm-4 font-weight-light" id="categoryName">Category</span>
+          </div>
+          <p><strong id="priceName">Price:</strong> <span id="productPrice"></span></p>
+          <p class="mb-5"><strong id="ratingName">Rating:</strong> <span id="productRating"></span></p>
+          <p id="productDescription">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut
+            deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur?
+            Eveniet consequatur ipsum dicta recusandae.
+          </p>
+          <div id="colorCondition">
+            <div class="color-swatches">
+              <span id="colorName">Color:</span>
+              <ul>
+                <li id="colorForEach">
+                  <a id="colorHex" href="#" ></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- Footer -->

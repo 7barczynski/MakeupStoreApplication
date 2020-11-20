@@ -63,12 +63,14 @@
 		<!-- Product list -->
 		<div class="col-md-9 col-lg-10">
 			<div id="productListSwitch" class="row my-4">
+				<!--Exception case-->
 				<div class="d-flex w-100 justify-content-center" id="productsNullCase">
 					<div class="alert alert-warning" id="exceptionSwitch" role="alert">
 						<span id="productsNotFoundCase">Products have not been found.</span>
 						<span id="otherExceptionCase">Something went wrong... Please try again.</span>
 					</div>
 				</div>
+				<!--Default case-->
 				<div class="row w-100 mx-0" id="productsDefaultCase">
 					<div class="col-sm-6 col-lg-4" id="productsForEach">
 						<div id="productTemplate"></div>

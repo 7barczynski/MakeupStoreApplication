@@ -3,17 +3,9 @@
     <attr sel="#headTemplate"
           th:replace="~{fragments/head :: headFragment}"/>
 
-    <!-- Top header -->
-    <attr sel="#topHeaderTemplate"
-          th:replace="~{fragments/top-header :: topHeaderFragment}"/>
-
     <!-- Navbar -->
     <attr sel="#navbarTemplate"
           th:replace="~{fragments/navbar :: navbarFragment}"/>
-
-    <!-- Breadcrumbs -->
-    <attr sel="#breadcrumbsTemplate"
-          th:replace="~{fragments/breadcrumbs :: breadcrumbsFragment(pageName=#{shop.name}, homeName=#{home.name})}"/>
 
     <!-- Product -->
     <attr sel="#varInit"
@@ -33,12 +25,25 @@
     <attr sel="#productDefaultCase"
           th:case="*"/>
     <attr sel="#productImage"
-          th:src="${product.getImageLink()}"
-          th:onerror="|this.src='__${@AppProperties.getNoPhotoImageUrl()}__'|"/>
+          th:src="${product.getApiFeaturedImage()}"
+          th:onerror="|this.src='__${@environment.getProperty('noPhotoImageUrl')}__'|"/>
     <attr sel="#productName"
           th:text="${product.getName()}"/>
+    <attr sel="#brandName"
+          th:text="${product.getBrand()} ? ${#strings.capitalizeWords(product.getBrand())} : '__#{undefined.brand.name}__'"/>
+    <attr sel="#typeName"
+          th:text="${product.getProductType()} ? #{__${product.getProductType()}__.name} : '__#{undefined.type.name}__'"/>
+    <attr sel="#categoryName"
+          th:text="${product.getCategory()} ? #{__${product.getCategory()}__.name} : '__#{undefined.category.name}__'"/>
+    <attr sel="#priceName"
+          th:text="${#strings.capitalize('__#{price.name}__') + ':'}"/>
     <attr sel="#productPrice"
-          th:text="${(product.getPriceSign() ?: '') + (product.getPrice() ?: '')}"/>
+          th:text="${product.getPrice() != null && product.getPrice() != 0
+           ? (product.getPriceSign() ?: '$') + product.getPrice() : '__#{undefined.name}__'}"/>
+    <attr sel="#ratingName"
+          th:text="${#strings.capitalize('__#{rating.name}__') + ':'}"/>
+    <attr sel="#productRating"
+          th:text="${(product.getRating() ?: '__#{undefined.name}__')}"/>
     <attr sel="#productDescription"
           th:text="${product.getDescription()}"/>
     <attr sel="#colorCondition"
