@@ -1,12 +1,12 @@
 package com.tbar.makeupstoreapplication.service;
 
 import com.tbar.makeupstoreapplication.model.Product;
-import com.tbar.makeupstoreapplication.utility.AppProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,21 +31,16 @@ public class PaginationNumbersBuilderTest {
     private final List<Product> sliceContentSmallerThanPageListSize = new ArrayList<>(
             Collections.nCopies(sizeOfProductListOnPage / 2, new Product()));
 
-    private final AppProperties appProperties = new AppProperties();
     private PaginationNumbersBuilder paginationNumbersBuilder;
     private Page<Product> examplePage;
     private int examplePageNumber;
     private List<Integer> expectedNumbers;
 
-    PaginationNumbersBuilderTest() {
-        appProperties.setPaginationNumbersSize(paginationNumbersSize);
-        appProperties.setPaginationLeftOffset(paginationOffset);
-        appProperties.setSizeOfProductListOnPage(sizeOfProductListOnPage);
-    }
-
     @BeforeEach
     void init() {
-        paginationNumbersBuilder = new PaginationNumbersBuilder(appProperties);
+        paginationNumbersBuilder = new PaginationNumbersBuilder();
+        ReflectionTestUtils.setField(paginationNumbersBuilder, "paginationNumbersSize", 10);
+        ReflectionTestUtils.setField(paginationNumbersBuilder, "paginationLeftOffset", 4);
     }
 
     @Test

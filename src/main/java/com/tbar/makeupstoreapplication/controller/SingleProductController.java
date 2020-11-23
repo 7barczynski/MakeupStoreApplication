@@ -7,7 +7,6 @@ import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import com.tbar.makeupstoreapplication.utility.ViewNames;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,23 +24,21 @@ public class SingleProductController {
     @GetMapping
     public String singleProductPage(Model model, @PathVariable("id") long id) throws SingleProductNotFoundException {
         Product product = makeupService.findProduct(id);
-        addAttributesToSingleProductModel(model, product);
+        addAttributesToModel(model, product);
         return ViewNames.SINGLE_PRODUCT;
     }
 
-    private void addAttributesToSingleProductModel(Model model, Product product) {
+    private void addAttributesToModel(Model model, Product product) {
         model.addAttribute(AttributeNames.SINGLE_PRODUCT, product);
-        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
     }
 
     @ExceptionHandler(Exception.class)
     public String handleExceptions(Model model, Exception exception) {
-        addAttributesToExceptionHandlerModel(model, exception);
+        addAttributesToModel(model, exception);
         return ViewNames.SINGLE_PRODUCT;
     }
 
-    private void addAttributesToExceptionHandlerModel(Model model, Exception exception) {
-        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+    private void addAttributesToModel(Model model, Exception exception) {
         model.addAttribute(AttributeNames.EXCEPTION, ExceptionHandlerUtilities.chooseSpecificException(exception));
     }
 }

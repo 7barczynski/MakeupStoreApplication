@@ -2,11 +2,13 @@ package com.tbar.makeupstoreapplication.controller;
 
 import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.service.MakeupService;
-import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import com.tbar.makeupstoreapplication.utility.exceptions.ProductsNotFoundException;
-import net.kaczmarzyk.spring.data.jpa.domain.*;
+import net.kaczmarzyk.spring.data.jpa.domain.Conjunction;
+import net.kaczmarzyk.spring.data.jpa.domain.EmptyResultOnTypeMismatch;
+import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
+import net.kaczmarzyk.spring.data.jpa.domain.Join;
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.web.WebRequestQueryContext;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.OnTypeMismatch;
@@ -17,7 +19,6 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
@@ -39,13 +40,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SuppressWarnings("SameParameterValue")
 @WebMvcTest(controllers = ShopController.class)
-@Import(AppProperties.class)
 class ShopControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private AppProperties appProperties;
     @MockBean
     private MakeupService makeupService;
     @Mock

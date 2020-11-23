@@ -1,7 +1,6 @@
 package com.tbar.makeupstoreapplication.dao;
 
 import com.tbar.makeupstoreapplication.model.Product;
-import com.tbar.makeupstoreapplication.utility.AppProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +11,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,15 +28,13 @@ class MakeupAPIConsumerTest {
 
     @Mock
     private RestTemplate restTemplate;
-    @Mock
-    private AppProperties appProperties;
     private APIConsumer<Product> makeupAPIConsumer;
-    private final URI exampleUri = URI.create("http://www.example.com");
+    private final String exampleUri = "http://www.example.com";
 
     @BeforeEach
     void init() {
-        when(appProperties.getMakeupApiUriForAllProducts()).thenReturn(exampleUri.toString());
-        makeupAPIConsumer = new MakeupAPIConsumer(restTemplate, appProperties);
+        makeupAPIConsumer = new MakeupAPIConsumer(restTemplate);
+        ReflectionTestUtils.setField(makeupAPIConsumer, "makeupApiUriForAllProducts", exampleUri);
     }
 
     @Test

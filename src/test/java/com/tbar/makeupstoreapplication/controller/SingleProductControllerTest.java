@@ -2,7 +2,6 @@ package com.tbar.makeupstoreapplication.controller;
 
 import com.tbar.makeupstoreapplication.model.Product;
 import com.tbar.makeupstoreapplication.service.MakeupService;
-import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import com.tbar.makeupstoreapplication.utility.exceptions.SingleProductNotFoundException;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,13 +23,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = SingleProductController.class)
-@Import(AppProperties.class)
 class SingleProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private AppProperties appProperties;
     @MockBean
     private MakeupService makeupService;
     private MvcResult mvcResult;

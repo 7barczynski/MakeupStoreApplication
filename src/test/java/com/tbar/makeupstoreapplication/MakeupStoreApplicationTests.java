@@ -7,6 +7,8 @@ import com.tbar.makeupstoreapplication.repository.ProductRepository;
 import com.tbar.makeupstoreapplication.utility.AttributeNames;
 import com.tbar.makeupstoreapplication.utility.ExceptionHandlerUtilities;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -61,6 +64,15 @@ class MakeupStoreApplicationTests {
         Page<Product> actualPageOfProducts = getPageOfProductsFromModel();
 
         assertEquals(12, actualPageOfProducts.getNumberOfElements());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/", "/shop", "/shop/3"})
+    void when_userRequestAnyPage_then_currentLocaleIsAddedIntoModel(String url) throws Exception {
+        mvcResult = performGetRequest(url);
+        Locale localeFromModel = getLocaleFromModel();
+
+        assertEquals("en", localeFromModel.getLanguage());
     }
 
     @Test
@@ -155,6 +167,10 @@ class MakeupStoreApplicationTests {
     private Product getSingleProductFromModel() {
         return (Product) Objects.requireNonNull(mvcResult.getModelAndView()).getModel()
                 .get(AttributeNames.SINGLE_PRODUCT);
+    }
+
+    private Locale getLocaleFromModel() {
+        return (Locale) Objects.requireNonNull(mvcResult.getModelAndView()).getModel().get(AttributeNames.CURRENT_LOCALE);
     }
 
     private ExceptionHandlerUtilities.ExceptionCase getExceptionFromModel() {

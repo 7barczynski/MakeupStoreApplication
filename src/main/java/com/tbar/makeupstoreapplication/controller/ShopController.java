@@ -14,7 +14,6 @@ import net.kaczmarzyk.spring.data.jpa.domain.LessThanOrEqual;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -49,25 +48,23 @@ public class ShopController {
        @PageableDefault(size = 12, sort = {"id"}, direction = Sort.Direction.ASC) Pageable pageable)
             throws ProductsNotFoundException {
         Page<Product> pageOfProducts = makeupService.findProducts(productSpecification, pageable);
-        addAttributesToShopModel(model, pageOfProducts);
+        addAttributesToModel(model, pageOfProducts);
         return ViewNames.SHOP;
     }
 
-    private void addAttributesToShopModel(Model model, Page<Product> pageOfProducts) {
+    private void addAttributesToModel(Model model, Page<Product> pageOfProducts) {
         model.addAttribute(AttributeNames.PRODUCTS_LIST_ON_PAGE, pageOfProducts);
         model.addAttribute(AttributeNames.PAGINATION_NUMBERS_LIST,
                 makeupService.getPaginationNumbers(pageOfProducts));
-        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
     }
 
     @ExceptionHandler(Exception.class)
     String handleExceptions(Model model, Exception exception) {
-        addAttributesToExceptionHandlerModel(model, exception);
+        addAttributesToModel(model, exception);
         return ViewNames.SHOP;
     }
 
-    private void addAttributesToExceptionHandlerModel(Model model, Exception exception) {
-        model.addAttribute(AttributeNames.CURRENT_LANGUAGE, LocaleContextHolder.getLocale());
+    private void addAttributesToModel(Model model, Exception exception) {
         model.addAttribute(AttributeNames.EXCEPTION, ExceptionHandlerUtilities.chooseSpecificException(exception));
     }
 }

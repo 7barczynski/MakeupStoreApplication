@@ -31,7 +31,7 @@
         th:text="#{nails.name}"/>
 
   <attr sel="#localeSwitcherOption"
-        th:with="currentLocale = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).CURRENT_LANGUAGE}__}"
+        th:with="currentLocale = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).CURRENT_LOCALE}__}"
         th:each="language : ${#strings.listSplit(@environment.getProperty('applicationLanguagesList'), ',')}"
         th:text="${#strings.toUpperCase(language)}"
         th:value="${language}"

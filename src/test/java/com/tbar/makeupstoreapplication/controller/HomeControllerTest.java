@@ -1,11 +1,9 @@
 package com.tbar.makeupstoreapplication.controller;
 
-import com.tbar.makeupstoreapplication.utility.AppProperties;
 import com.tbar.makeupstoreapplication.utility.ViewNames;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -18,30 +16,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = HomeController.class)
-@Import(AppProperties.class)
 class HomeControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private AppProperties appProperties;
     private MvcResult mvcResult;
 
     @Test
     void when_requestToHomePage_then_return200OK() throws Exception {
-        performGetRequest("/").andExpect(status().isOk());
+        performGetRequest().andExpect(status().isOk());
     }
 
     @Test
     void when_requestToHomePage_then_returnHomeView() throws Exception {
-        mvcResult = performGetRequest("/").andReturn();
+        mvcResult = performGetRequest().andReturn();
 
         String actualViewName = getViewNameFromModel();
         assertEquals(ViewNames.HOME, actualViewName);
     }
 
-    private ResultActions performGetRequest(String url) throws Exception {
-        return mockMvc.perform(get(url).contentType(MediaType.TEXT_HTML));
+    private ResultActions performGetRequest() throws Exception {
+        return mockMvc.perform(get("/").contentType(MediaType.TEXT_HTML));
     }
 
     private String getViewNameFromModel() {

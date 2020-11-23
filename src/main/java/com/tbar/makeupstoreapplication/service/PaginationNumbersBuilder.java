@@ -1,8 +1,7 @@
 package com.tbar.makeupstoreapplication.service;
 
 import com.tbar.makeupstoreapplication.model.Product;
-import com.tbar.makeupstoreapplication.utility.AppProperties;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,9 @@ import static com.tbar.makeupstoreapplication.service.PaginationNumbersBuilder.C
 @Component
 public class PaginationNumbersBuilder {
 
+    @Value("${paginationNumbersSize}")
     private int paginationNumbersSize;
+    @Value("${paginationLeftOffset}")
     private int paginationLeftOffset;
     private int totalPages;
     private int currentPageMinusOffset;
@@ -28,12 +29,6 @@ public class PaginationNumbersBuilder {
         AT_THE_START,
         AT_THE_END,
         IN_THE_MIDDLE
-    }
-
-    @Autowired
-    public PaginationNumbersBuilder(AppProperties appProperties) {
-        paginationNumbersSize = appProperties.getPaginationNumbersSize();
-        paginationLeftOffset = appProperties.getPaginationLeftOffset();
     }
 
     public List<Integer> build(Page<Product> currentPage) {
