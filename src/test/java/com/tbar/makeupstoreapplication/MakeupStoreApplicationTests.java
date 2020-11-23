@@ -14,13 +14,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
@@ -64,6 +64,7 @@ class MakeupStoreApplicationTests {
     }
 
     @Test
+    @Transactional
     void given_complicatedRequest_when_requestForShopPage_then_returnProperProduct() throws Exception {
         Product expectedProduct = expectedRealProduct();
 
@@ -77,6 +78,7 @@ class MakeupStoreApplicationTests {
     }
 
     @Test
+    @Transactional
     void given_oneProductTagInARequest_when_requestShopPage_then_returnProductsThatMightGotNotOnlyTheGivenTag() throws Exception {
         ProductTag expectedTag = new ProductTag("Natural");
 
@@ -88,24 +90,6 @@ class MakeupStoreApplicationTests {
         assertTrue(actualPageContent.get(1).getProductTags().contains(expectedTag));
         assertTrue(actualPageContent.get(0).getProductTags().size() > 1);
         assertTrue(actualPageContent.get(1).getProductTags().size() > 1);
-    }
-
-    @Test
-    void given_twoProductTagsInARequest_when_requestShopPage_then_returnProductsWithAtLeastOneOfThemInTheirProductTagsSet() throws Exception {
-        ProductTag expectedTag1 = new ProductTag("Vegan");
-        ProductTag expectedTag2 = new ProductTag("Natural");
-
-        mvcResult = performGetRequest(String.format("/shop?brand=zorah&product_tags=%s&product_tags=%s",
-                expectedTag1.getName(), expectedTag2.getName()));
-        List<Product> actualPageContent = getPageOfProductsFromModel().getContent();
-        Set<ProductTag> actualTagsForFirstProduct = actualPageContent.get(0).getProductTags();
-        Set<ProductTag> actualTagsForSecondProduct = actualPageContent.get(1).getProductTags();
-
-        assertEquals(2, actualPageContent.size());
-        assertTrue(!actualTagsForFirstProduct.contains(expectedTag1) &&
-                actualTagsForFirstProduct.contains(expectedTag2)); // this product has got 1 tag
-        assertTrue(actualTagsForSecondProduct.contains(expectedTag1) &&
-                actualTagsForSecondProduct.contains(expectedTag2)); // this product has got all 2 tags
     }
 
     @Test
@@ -144,6 +128,16 @@ class MakeupStoreApplicationTests {
         ExceptionHandlerUtilities.ExceptionCase actualExceptionCase = getExceptionFromModel();
 
         assertEquals(ExceptionHandlerUtilities.ExceptionCase.SINGLE_PRODUCT_NOT_FOUND_EXCEPTION, actualExceptionCase);
+    }
+
+    @Test
+    void given_requestFor1stPage_when_requestForShopPageWithGlutenFreeTagParam_return_differentContentThanRequestFor5thPage() throws Exception {
+        mvcResult = performGetRequest("/shop?product_tags=Gluten Free&page=0");
+        Page<Product> firstPageResults = getPageOfProductsFromModel();
+        mvcResult = performGetRequest("/shop?product_tags=Gluten Free&page=4");
+        Page<Product> secondPageResults = getPageOfProductsFromModel();
+
+        assertNotEquals(firstPageResults.getContent(), secondPageResults.getContent());
     }
 
     private MvcResult performGetRequest(String url) throws Exception {

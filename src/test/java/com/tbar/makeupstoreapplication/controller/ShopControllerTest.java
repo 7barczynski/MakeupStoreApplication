@@ -69,11 +69,13 @@ class ShopControllerTest {
     @Test
     void when_requestToShopPage_then_addPageOfProductsToModel() throws Exception {
         Page<Product> expectedProductsPage = createPageWithContent(0, 12);
-        mockServiceResponse(PageRequest.of(0, 12), expectedProductsPage);
+        mockServiceResponse(PageRequest.of(0, 12, Sort.by("id").ascending()), expectedProductsPage);
 
         mvcResult = performGetRequestWithParameters(
                 "page", "0",
-                "size", "12").andReturn();
+                "size", "12",
+                "sort", "id,asc")
+                .andReturn();
 
         Object actualPage = getObjectFromModel(AttributeNames.PRODUCTS_LIST_ON_PAGE);
         assertEquals(expectedProductsPage, actualPage);
@@ -118,6 +120,16 @@ class ShopControllerTest {
                 getObjectFromModel(AttributeNames.EXCEPTION));
     }
 
+    @Test
+    void given_nullPointerException_when_requestToShopPage_then_returnExceptionCaseInModel() throws Exception {
+        mockServiceNullPointerExceptionExceptionResponse();
+
+        mvcResult = performGetRequest().andReturn();
+
+        assertEquals(ExceptionHandlerUtilities.ExceptionCase.OTHER_EXCEPTION,
+                getObjectFromModel(AttributeNames.EXCEPTION));
+    }
+
     private void mockServiceResponse(Pageable requestPageable, Page<Product> pageToReturn) throws ProductsNotFoundException {
         when(makeupService.findProducts(any(), eq(requestPageable))).thenReturn(pageToReturn);
     }
@@ -125,6 +137,11 @@ class ShopControllerTest {
     private void mockServiceProductsNotFoundExceptionResponse() throws ProductsNotFoundException {
         when(makeupService.findProducts(any(), any(Pageable.class)))
                 .thenThrow(ProductsNotFoundException.class);
+    }
+
+    private void mockServiceNullPointerExceptionExceptionResponse() throws ProductsNotFoundException {
+        when(makeupService.findProducts(any(), any(Pageable.class)))
+                .thenThrow(NullPointerException.class);
     }
 
     private ResultActions performGetRequest() throws Exception {
@@ -137,6 +154,15 @@ class ShopControllerTest {
                 .contentType(MediaType.TEXT_HTML)
                 .param(p1, v1)
                 .param(p2, v2));
+    }
+
+    private ResultActions performGetRequestWithParameters(String p1, String v1, String p2, String v2,
+                                                          String p3, String v3) throws Exception {
+        return mockMvc.perform(get("/shop")
+                .contentType(MediaType.TEXT_HTML)
+                .param(p1, v1)
+                .param(p2, v2)
+                .param(p3, v3));
     }
 
     private ResultActions performGetRequestWithParameters(String p1, String v1, String p2, String v2,
@@ -167,7 +193,7 @@ class ShopControllerTest {
                                         "productType", new String[]{productTypeValue},
                                         Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT))),
                         new EmptyResultOnTypeMismatch<>(
-                                new In<>(
+                                new EqualIgnoreCase<>(
                                         new WebRequestQueryContext(nativeWebRequestMock),
                                         "pt.name", new String[]{productTagsValue},
                                         Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT)))

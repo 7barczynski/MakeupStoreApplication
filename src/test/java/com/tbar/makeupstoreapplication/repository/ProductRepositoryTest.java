@@ -5,7 +5,6 @@ import com.tbar.makeupstoreapplication.model.ProductTag;
 import net.kaczmarzyk.spring.data.jpa.domain.Conjunction;
 import net.kaczmarzyk.spring.data.jpa.domain.EmptyResultOnTypeMismatch;
 import net.kaczmarzyk.spring.data.jpa.domain.EqualIgnoreCase;
-import net.kaczmarzyk.spring.data.jpa.domain.In;
 import net.kaczmarzyk.spring.data.jpa.domain.Join;
 import net.kaczmarzyk.spring.data.jpa.utils.Converter;
 import net.kaczmarzyk.spring.data.jpa.web.WebRequestQueryContext;
@@ -70,34 +69,16 @@ class ProductRepositoryTest {
 
     @Disabled("help needed to work out what is wrong with this test")
     @Test
-    void given_specificationWithManyProductTags_when_findAll_then_findAllProperItems() {
-        Product product1 = createProductWithTags(1L, "ProperTag", "ProperTag2", "OtherTag");
-        Product product2 = createProductWithTags(2L, "ProperTag", "ProperTag2");
-        Product anotherProduct = createProductWithTags(3L, "OtherTag");
-        saveProducts(product1, product2, anotherProduct);
+    void given_sameProductTag_when_findAllForDifferentPages_return_differentContentForDifferentPages() {
+        List<Product> products = createNthProductsWithUniqueIds(25);
+        setProductTagTo("Gluten Free", products);
 
-        List<Product> expectedProducts = List.of(product1, product2);
-        Specification<Product> specification = createSpecWithTag("ProperTag", "ProperTag2");
-        PageRequest pageable = PageRequest.of(0, 12);
+        List<Product> firstPageContent = productRepository.findAll(
+                createSpecWithTag("Gluten Free"), PageRequest.of(0, 12)).getContent();
+        List<Product> secondPageContent = productRepository.findAll(
+                createSpecWithTag("Gluten Free"), PageRequest.of(1, 12)).getContent();
 
-        Page<Product> actualPageOfProducts = productRepository.findAll(specification, pageable);
-
-        assertEquals(2, actualPageOfProducts.getContent().size());
-        assertEquals(expectedProducts, actualPageOfProducts);
-    }
-
-    @Disabled("help needed to work out what is wrong with this test")
-    @Test
-    void shouldFindProductWithTag() {
-        Product expectedProduct = createProductWithTags(1L, "ProperTag");
-        productRepository.save(expectedProduct);
-
-        Specification<Product> specification = createSpecWithTag("ProperTag");
-        Pageable pageable = PageRequest.of(0, 12);
-
-        Page<Product> actualPageOfProducts = productRepository.findAll(specification, pageable);
-
-        assertEquals(expectedProduct, actualPageOfProducts.getContent().get(0));
+        assertNotEquals(firstPageContent, secondPageContent);
     }
 
     @Test
@@ -215,22 +196,28 @@ class ProductRepositoryTest {
         }
     }
 
-    private Conjunction<Product> createSpecWithTag(String... tagName) {
+    private List<Product> createNthProductsWithUniqueIds(int numberOfCopies) {
+        List<Product> products = Collections.nCopies(numberOfCopies, new Product());
+        long tempId = 1L;
+        for (Product p : products) {
+            p.setId(tempId++);
+        }
+        return products;
+    }
+
+    private void setProductTagTo(String tagName, List<Product> products) {
+        products.forEach((product) -> product.setProductTags(Set.of(new ProductTag(tagName))));
+    }
+
+    private Conjunction<Product> createSpecWithTag(String tagName) {
         return new Conjunction<>(createJoin("productTags", "pt"),
-                new Conjunction<>(createSpecIn("pt.name", tagName)));
+                new Conjunction<>(createSpecEqual("pt.name", tagName)));
     }
 
     private EmptyResultOnTypeMismatch<Product> createSpecEqual(String path, String expectedValue) {
         return new EmptyResultOnTypeMismatch<>(
                 new EqualIgnoreCase<>(
                         new WebRequestQueryContext(nativeWebRequestMock), path, new String[]{expectedValue},
-                        Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT)));
-    }
-
-    private EmptyResultOnTypeMismatch<Product> createSpecIn(String path, String[] expectedValue) {
-        return new EmptyResultOnTypeMismatch<>(
-                new In<>(
-                        new WebRequestQueryContext(nativeWebRequestMock), path, expectedValue,
                         Converter.withTypeMismatchBehaviour(OnTypeMismatch.EMPTY_RESULT)));
     }
 

@@ -41,7 +41,7 @@ public class Product {
     @JsonAlias(value = "product_type")
     private String productType;
     @JsonAlias(value = "tag_list")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_ID")
     private Set<ProductTag> productTags;
     @ToString.Exclude
@@ -57,7 +57,7 @@ public class Product {
     @JsonAlias(value = "api_featured_image")
     private String apiFeaturedImage;
     @JsonAlias(value = "product_colors")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCT_ID")
     private Set<Color> productColors;
 }

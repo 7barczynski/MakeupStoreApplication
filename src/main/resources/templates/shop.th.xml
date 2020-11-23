@@ -11,51 +11,51 @@
     <attr sel="#filterName"
           th:text="#{filter.name}"/>
     <attr sel="#filter"
-          th:attr="action=@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"/>
+          th:action="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#typeName"
           th:text="#{type.name}"/>
     <attr sel="#typeList"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
     <attr sel="#typeForEach"
-          th:each="type : ${@AppProperties.getProductTypeList()}"
+          th:each="type : ${#strings.setSplit(@environment.getProperty('productTypeList'), ',')}"
           th:text="#{__${type}__.name}"
-          th:attr="value=${type}"/>
+          th:value="${type}"/>
     <attr sel="#categoryName"
           th:text="#{category.name}"/>
     <attr sel="#categoryList"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"/>
     <attr sel="#categoryForEach"
-          th:each="category : ${@AppProperties.getProductCategoryList()}"
+          th:each="category : ${#strings.setSplit(@environment.getProperty('productCategoryList'), ',')}"
           th:text="#{__${category}__.name}"
-          th:attr="value=${category}"/>
+          th:value="${category}"/>
     <attr sel="#brandName"
           th:text="#{brand.name}"/>
     <attr sel="#brandList"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"/>
     <attr sel="#brandForEach"
-          th:each="brand : ${@AppProperties.getBrandList()}"
+          th:each="brand : ${#strings.setSplit(@environment.getProperty('brandList'), ',')}"
           th:text="${#strings.capitalizeWords(brand)}"
-          th:attr="value=${brand}"/>
+          th:value="${brand}"/>
     <attr sel="#tagsName"
           th:text="#{tags.name}"/>
     <attr sel="#tagsList"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"/>
     <attr sel="#tagsForEach"
-          th:each="tag : ${@AppProperties.getProductTagsList()}"
+          th:each="tag : ${#strings.setSplit(@environment.getProperty('productTagsList'), ',')}"
           th:text="#{__${#strings.toLowerCase(tag)}__.name}"
-          th:attr="value=${tag}"/>
+          th:value="${tag}"/>
     <attr sel="#priceName"
           th:text="#{price.name}"/>
     <attr sel="#priceGreater"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_GREATER_THAN}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_GREATER_THAN}"/>
     <attr sel="#priceLess"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_LESS_THAN}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_LESS_THAN}"/>
     <attr sel="#ratingName"
           th:text="#{rating.name}"/>
     <attr sel="#ratingGreater"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_GREATER_THAN}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_GREATER_THAN}"/>
     <attr sel="#ratingLess"
-          th:attr="name=${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_LESS_THAN}"/>
+          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_LESS_THAN}"/>
     <attr sel="#filteringName"
           th:text="#{filtering.name}"/>
 

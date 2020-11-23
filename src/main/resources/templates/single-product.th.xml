@@ -32,9 +32,11 @@
     <attr sel="#brandName"
           th:text="${product.getBrand()} ? ${#strings.capitalizeWords(product.getBrand())} : '__#{undefined.brand.name}__'"/>
     <attr sel="#typeName"
-          th:text="${product.getProductType()} ? #{__${product.getProductType()}__.name} : '__#{undefined.type.name}__'"/>
+          th:text="${product.getProductType()} != null AND !${#strings.isEmpty(product.getProductType())}
+           ? #{__${product.getProductType()}__.name} : '__#{undefined.type.name}__'"/>
     <attr sel="#categoryName"
-          th:text="${product.getCategory()} ? #{__${product.getCategory()}__.name} : '__#{undefined.category.name}__'"/>
+          th:text="${product.getCategory()} != null AND !${#strings.isEmpty(product.getCategory())}
+           ? #{__${product.getCategory()}__.name} : '__#{undefined.category.name}__'"/>
     <attr sel="#priceName"
           th:text="${#strings.capitalize('__#{price.name}__') + ':'}"/>
     <attr sel="#productPrice"
@@ -48,13 +50,23 @@
           th:text="${product.getDescription()}"/>
     <attr sel="#colorCondition"
           th:if="${!product.getProductColors().isEmpty()}"/>
-    <attr sel="#colorName"
-          th:text="|#{color.name}:|"/>
     <attr sel="#colorForEach"
           th:each="color : ${product.getProductColors()}"/>
     <attr sel="#colorHex"
-          th:title="${color.getColorName()}"
           th:style="'background-color: ' + ${color.getHexValue()} + ';'"/>
+    <attr sel="#colorName"
+          th:text="${color.getColorName()}"/>
+    <attr sel="#tagsCondition"
+          th:if="${!product.getProductTags().isEmpty()}"/>
+    <attr sel="#tagsName"
+          th:text="#{tags.name} + ': '"/>
+    <attr sel="#tagsForEach"
+          th:each="tag : ${product.getProductTags()}"/>
+    <attr sel="#tagLink"
+          th:with="shopMapping = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP},
+                    productTagsParam = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"
+          th:href="@{/__${shopMapping}__(${productTagsParam} = ${tag.name})}"
+          th:text="#{__${#strings.toLowerCase(tag.name)}__.name}"/>
 
     <!-- Footer -->
     <attr sel="#footerTemplate"

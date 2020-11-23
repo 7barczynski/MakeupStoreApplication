@@ -56,7 +56,7 @@ html {
 }
 
 .single-product-section {
-    min-height: 80vh;
+    min-height: 75vh;
 }
 
 .single-product-section img {
@@ -65,4 +65,9 @@ html {
 
 .product-card #brandName {
     white-space: pre;
+}
+
+#colorHex {
+    width: 18px;
+    height: 18px
 }

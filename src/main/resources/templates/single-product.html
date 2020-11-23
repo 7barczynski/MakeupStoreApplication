@@ -17,8 +17,8 @@
       </div>
     </div>
     <div id="productDefaultCase" class="row">
-      <div class="col-md-5 d-flex">
-        <img class="align-self-center h-100 mx-auto" id="productImage" alt="product image">
+      <div class="col-md-5 d-flex mb-5">
+        <img class="align-self-center h-100 mw-100 mx-auto" id="productImage" alt="product image">
       </div>
       <div class="col-md-7">
         <div>
@@ -31,20 +31,28 @@
           </div>
           <p><strong id="priceName">Price:</strong> <span id="productPrice"></span></p>
           <p class="mb-5"><strong id="ratingName">Rating:</strong> <span id="productRating"></span></p>
-          <p id="productDescription">
+          <p class="mb-5" id="productDescription">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut
             deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur?
             Eveniet consequatur ipsum dicta recusandae.
           </p>
           <div id="colorCondition">
-            <div class="color-swatches">
-              <span id="colorName">Color:</span>
-              <ul>
-                <li id="colorForEach">
-                  <a id="colorHex" href="#" ></a>
-                </li>
-              </ul>
+            <hr class="my-3"/>
+            <div class="d-inline-flex align-items-center" id="colorForEach">
+              <div class="rounded-circle" id="colorHex"></div>
+              <span class="text-muted font-weight-light align-text-bottom ml-1 mr-3" id="colorName">color</span>
             </div>
+          </div>
+          <div id="tagsCondition">
+            <hr class="my-3"/>
+            <p class="d-inline mr-2">
+              <strong id="tagsName">Tags: </strong>
+            </p>
+            <ul class="list-inline d-inline">
+              <li class="list-inline-item" id="tagsForEach">
+                <a class="text-reset" href="#" id="tagLink" style="text-decoration: underline;"></a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
