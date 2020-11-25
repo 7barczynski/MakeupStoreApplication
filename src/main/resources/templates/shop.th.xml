@@ -89,17 +89,20 @@
     <attr sel="#previousIconCondition"
           th:if="${page.hasPrevious() && page.hasContent()}"/>
     <attr sel="#previousLink"
-          th:href="${urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${page.number-1}__').toUriString()}"/>
+          th:href="${#uris.unescapeQueryParam(
+            urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${page.number-1}__').toUriString())}"/>
     <attr sel="#paginationForEach"
           th:each="pageNumber : ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PAGINATION_NUMBERS_LIST}__}"
           th:classappend="${pageNumber==page.number + 1} ? active"/>
     <attr sel="#paginationLink"
-          th:href="${urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${pageNumber-1}__').toUriString()}"
+          th:href="${#uris.unescapeQueryParam(
+            urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${pageNumber-1}__').toUriString())}"
           th:text="${pageNumber}"/>
     <attr sel="#nextIconCondition"
           th:if="${page.hasNext() && page.hasContent()}"/>
     <attr sel="#nextLink"
-          th:href="${urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${page.number+1}__').toUriString()}"/>
+          th:href="${#uris.unescapeQueryParam(
+            urlBuilder.replaceQueryParam('__${queryParamPage}__', '__${page.number+1}__').toUriString())}"/>
 
     <!-- Footer -->
     <attr sel="#footerTemplate"

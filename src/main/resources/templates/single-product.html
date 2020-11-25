@@ -17,7 +17,7 @@
       </div>
     </div>
     <div id="productDefaultCase" class="row">
-      <div class="col-md-5 d-flex mb-5">
+      <div class="col-md-5 d-flex mb-5 mb-md-0">
         <img class="align-self-center h-100 mw-100 mx-auto" id="productImage" alt="product image">
       </div>
       <div class="col-md-7">
@@ -29,8 +29,23 @@
             <span class="col-4 col-sm-3 font-weight-light border-right border-black" id="typeName">Type</span>
             <span class="col-4 col-sm-4 font-weight-light" id="categoryName">Category</span>
           </div>
-          <p><strong id="priceName">Price:</strong> <span id="productPrice"></span></p>
-          <p class="mb-5"><strong id="ratingName">Rating:</strong> <span id="productRating"></span></p>
+          <div class="row mb-5">
+            <div class="col-6 col-sm-7">
+              <p><strong class="mr-2" id="priceName">Price:</strong><span id="productPrice">$21.37</span></p>
+              <p class="d-flex mb-0">
+                <strong class="mr-2" id="ratingName">Rating:</strong>
+                <svg class="bi bi-star align-self-center text-black-50" width="1em" height="1em" viewBox="0 0 18 18"
+                     fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="ratingStarIf">
+                  <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                </svg>
+                <span id="productRating">6.9</span>
+              </p>
+            </div>
+            <div class="col-6 col-sm-5 d-flex align-items-center">
+              <a class="btn btn-lg btn-outline-danger" role="button" target="_blank"
+                 data-toggle="button" aria-pressed="false" id="buyItButton">Buy!</a>
+            </div>
+          </div>
           <p class="mb-5" id="productDescription">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum ipsum dicta quod, quia doloremque aut
             deserunt commodi quis. Totam a consequatur beatae nostrum, earum consequuntur?
