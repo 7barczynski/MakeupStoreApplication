@@ -15,47 +15,63 @@
     <attr sel="#typeName"
           th:text="#{type.name}"/>
     <attr sel="#typeList"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"/>
+          th:with="typeParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"
+          th:name="${typeParamName}"/>
     <attr sel="#typeForEach"
           th:each="type : ${#strings.setSplit(@environment.getProperty('productTypeList'), ',')}"
           th:text="#{__${type}__.name}"
-          th:value="${type}"/>
+          th:value="${type}"
+          th:selected="${#strings.equalsIgnoreCase(type, param.__${typeParamName}__)}"/>
     <attr sel="#categoryName"
           th:text="#{category.name}"/>
     <attr sel="#categoryList"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"/>
+          th:with="categoryParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"
+          th:name="${categoryParamName}"/>
     <attr sel="#categoryForEach"
           th:each="category : ${#strings.setSplit(@environment.getProperty('productCategoryList'), ',')}"
           th:text="#{__${category}__.name}"
-          th:value="${category}"/>
+          th:value="${category}"
+          th:selected="${#strings.equalsIgnoreCase(category, param.__${categoryParamName}__)}"/>
     <attr sel="#brandName"
           th:text="#{brand.name}"/>
     <attr sel="#brandList"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"/>
+          th:with="brandParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"
+          th:name="${brandParamName}"/>
     <attr sel="#brandForEach"
           th:each="brand : ${#strings.setSplit(@environment.getProperty('brandList'), ',')}"
           th:text="${#strings.capitalizeWords(brand)}"
-          th:value="${brand}"/>
+          th:value="${brand}"
+          th:selected="${#strings.equalsIgnoreCase(brand, param.__${brandParamName}__)}"/>
     <attr sel="#tagsName"
           th:text="#{tags.name}"/>
     <attr sel="#tagsList"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"/>
+          th:with="tagsParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"
+          th:name="${tagsParamName}"/>
     <attr sel="#tagsForEach"
           th:each="tag : ${#strings.setSplit(@environment.getProperty('productTagsList'), ',')}"
           th:text="#{__${#strings.toLowerCase(tag)}__.name}"
-          th:value="${tag}"/>
+          th:value="${tag}"
+          th:selected="${#strings.equalsIgnoreCase(tag, param.__${tagsParamName}__)}"/>
     <attr sel="#priceName"
           th:text="#{price.name}"/>
     <attr sel="#priceGreater"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_GREATER_THAN}"/>
+          th:with="priceGreaterParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_GREATER_THAN}"
+          th:name="${priceGreaterParamName}"
+          th:value="${param.__${priceGreaterParamName}__}"/>
     <attr sel="#priceLess"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_LESS_THAN}"/>
+          th:with="priceLessParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRICE_LESS_THAN}"
+          th:name="${priceLessParamName}"
+          th:value="${param.__${priceLessParamName}__}"/>
     <attr sel="#ratingName"
           th:text="#{rating.name}"/>
     <attr sel="#ratingGreater"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_GREATER_THAN}"/>
+          th:with="ratingGreaterParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_GREATER_THAN}"
+          th:name="${ratingGreaterParamName}"
+          th:value="${param.__${ratingGreaterParamName}__}"/>
     <attr sel="#ratingLess"
-          th:name="${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_LESS_THAN}"/>
+          th:with="ratingLessParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_RATING_LESS_THAN}"
+          th:name="${ratingLessParamName}"
+          th:value="${param.__${ratingLessParamName}__}"/>
     <attr sel="#filteringName"
           th:text="#{filtering.name}"/>
 

@@ -1,5 +1,5 @@
     /*
-    * This function is used on filter panel in shop view.
+    * Used on filter form in shop view.
     */
     function disableEmptyInputs(form) {
         var elements = form.elements;
@@ -8,34 +8,20 @@
 
     function disableEmptyElements(elements) {
         for (var i=0; i<elements.length; i++) {
-            elements[i].disabled = elements[i].value == "" || elements[i].value == "-";
+            elements[i].disabled = elements[i].value === "" || elements[i].value === "-" || elements[i].value === "0";
         }
     }
 
     /*
-    * This function is used in locale switcher on the navigation bar.
+    * Used on body in shop view.
     */
-    function changeLocale(switcherId) {
-        newUrl = setOrAddLocaleParamInCurrentUrl(switcherId);
-        replaceLocationAndHistoryState(newUrl);
-    }
-
-    function setOrAddLocaleParamInCurrentUrl(switcherId) {
-        var localeSwitcherValue = document.getElementById(switcherId).value;
-        var searchParams = new URLSearchParams(location.search);
-
-        searchParams.set("locale", localeSwitcherValue);
-
-        return `${location.pathname}?${searchParams}`;
-    }
-
-    function replaceLocationAndHistoryState(url) {
-        window.history.replaceState({}, '', url);
-        location.replace(url);
+    function resetFilterFormOnUnload() {
+        var form = document.getElementById("filter");
+        form.reset();
     }
 
     /*
-    * This function is used only in shop view
+    * Used in shop's view script tag.
     */
     function toggleFilterVisibilityOnWidthBreakpoint(mediaWidth) {
         var filter = document.getElementById("collapseFilter");
@@ -61,3 +47,25 @@
             element.classList.remove("show");
         }
      }
+
+    /*
+    * Used in locale switchers.
+    */
+    function changeLocale(switcherId) {
+        newUrl = setOrAddLocaleParamInCurrentUrl(switcherId);
+        replaceLocationAndHistoryState(newUrl);
+    }
+
+    function setOrAddLocaleParamInCurrentUrl(switcherId) {
+        var localeSwitcherValue = document.getElementById(switcherId).value;
+        var searchParams = new URLSearchParams(location.search);
+
+        searchParams.set("locale", localeSwitcherValue);
+
+        return `${location.pathname}?${searchParams}`;
+    }
+
+    function replaceLocationAndHistoryState(url) {
+        window.history.replaceState({}, '', url);
+        location.replace(url);
+    }
