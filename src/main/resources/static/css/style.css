@@ -71,3 +71,9 @@ html {
     width: 18px;
     height: 18px
 }
+
+@media (max-width: 767px) {
+    #navbar li {
+        border-right: 0px none !important;
+    }
+}
