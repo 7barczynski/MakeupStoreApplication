@@ -8,13 +8,13 @@
         th:replace="~{fragments/navbar :: navbarFragment}"/>
 
     <!-- Filter -->
-    <attr sel="#filterName"
-          th:text="#{filter.name}"/>
+    <attr sel="#filterCollapseName"
+          th:text="#{filter.collapse.name}"/>
     <attr sel="#filter"
           th:action="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#typeName"
           th:text="#{type.name}"/>
-    <attr sel="#typeList"
+    <attr sel="#typeParamName"
           th:with="typeParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"
           th:name="${typeParamName}"/>
     <attr sel="#typeForEach"
@@ -24,7 +24,7 @@
           th:selected="${#strings.equalsIgnoreCase(type, param.__${typeParamName}__)}"/>
     <attr sel="#categoryName"
           th:text="#{category.name}"/>
-    <attr sel="#categoryList"
+    <attr sel="#categoryParamName"
           th:with="categoryParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"
           th:name="${categoryParamName}"/>
     <attr sel="#categoryForEach"
@@ -34,7 +34,7 @@
           th:selected="${#strings.equalsIgnoreCase(category, param.__${categoryParamName}__)}"/>
     <attr sel="#brandName"
           th:text="#{brand.name}"/>
-    <attr sel="#brandList"
+    <attr sel="#brandParamName"
           th:with="brandParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"
           th:name="${brandParamName}"/>
     <attr sel="#brandForEach"
@@ -44,7 +44,7 @@
           th:selected="${#strings.equalsIgnoreCase(brand, param.__${brandParamName}__)}"/>
     <attr sel="#tagsName"
           th:text="#{tags.name}"/>
-    <attr sel="#tagsList"
+    <attr sel="#tagsParamName"
           th:with="tagsParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"
           th:name="${tagsParamName}"/>
     <attr sel="#tagsForEach"

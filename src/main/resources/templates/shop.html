@@ -6,39 +6,39 @@
 <!-- Navbar -->
 <section id="navbarTemplate"></section>
 
-<div class="container-fluid w-75 mt-5">
+<div class="container-fluid w-75 mt-5 shop-section">
 	<div class="row">
 		<!--Collapse button-->
-		<button class="d-md-none btn btn-info mb-5 w-75 mx-auto" id="filterName" type="button" data-toggle="collapse"
-						data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">Filter
+		<button class="d-md-none btn btn-info mb-5 w-75 mx-auto" id="filterCollapseName" type="button" data-toggle="collapse"
+						data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">Filter collapse
 		</button>
 		<!-- Filter -->
-		<div class="col-md-3 col-lg-2 collapse" id="collapseFilter">
+		<div class="col-md-3 col-lg-2 mb-5 mb-md-0 collapse" id="collapseFilter">
 			<form id="filter" onsubmit="disableEmptyInputs(this)">
 				<div class="form-group">
-					<label id="typeName" for="typeList">Type</label>
-					<select class="form-control" id="typeList">
+					<label id="typeName" for="typeParamName">Type</label>
+					<select class="form-control" id="typeParamName">
 						<option>-</option>
 						<option id="typeForEach"></option>
 					</select>
 				</div>
 				<div class="form-group">
-					<label id="categoryName" for="categoryList">Category</label>
-					<select class="form-control" id="categoryList">
+					<label id="categoryName" for="categoryParamName">Category</label>
+					<select class="form-control" id="categoryParamName">
 						<option>-</option>
 						<option id="categoryForEach"></option>
 					</select>
 				</div>
 				<div class="form-group">
-					<label id="brandName" for="brandList">Brand</label>
-					<select class="form-control" id="brandList">
+					<label id="brandName" for="brandParamName">Brand</label>
+					<select class="form-control" id="brandParamName">
 						<option>-</option>
 						<option id="brandForEach"></option>
 					</select>
 				</div>
 				<div class="form-group">
-					<label id="tagsName" for="tagsList">Tags</label>
-					<select class="form-control" id="tagsList">
+					<label id="tagsName" for="tagsParamName">Tags</label>
+					<select class="form-control" id="tagsParamName">
 						<option>-</option>
 						<option id="tagsForEach"></option>
 					</select>
@@ -57,12 +57,14 @@
 				<div class="form-group">
 					<input type="number" class="form-control" id="ratingLess" placeholder="Max">
 				</div>
-				<button id="filteringName" type="submit" class="btn btn-primary">Filter</button>
+				<button type="submit" class="btn btn-primary w-50 d-flex mx-auto mx-md-0 justify-content-center">
+					<span class="font-weight-bolder" id="filteringName">Filter</span>
+				</button>
 			</form>
 		</div>
 		<!-- Product list -->
 		<div class="col-md-9 col-lg-10">
-			<div id="productListSwitch" class="row my-4">
+			<div id="productListSwitch" class="row mb-4">
 				<!--Exception case-->
 				<div class="d-flex w-100 justify-content-center" id="productsNullCase">
 					<div class="alert alert-warning" id="exceptionSwitch" role="alert">
@@ -72,11 +74,23 @@
 				</div>
 				<!--Default case-->
 				<div class="row w-100 mx-0" id="productsDefaultCase">
+					<!--Sorting-->
+					<div class="col-12 d-flex justify-content-center mb-5">
+						<div class="d-flex">
+							<label class="d-flex align-self-center mb-0 mr-2" id="sortName" for="sortParamName">Sort:</label>
+							<select class="form-control" id="sortParamName">
+								<option>-</option>
+								<option id="sortForEach"></option>
+							</select>
+						</div>
+					</div>
+					<!--Products-->
 					<div class="col-sm-6 col-lg-4" id="productsForEach">
 						<div id="productTemplate"></div>
 					</div>
 				</div>
 			</div>
+			<!--Pagination-->
 			<nav id="paginationCondition" aria-label="Search results pages">
 				<ul class="pagination flex-wrap justify-content-center">
 					<li class="page-item" id="previousIconCondition">
