@@ -75,6 +75,19 @@
     <attr sel="#filteringName"
           th:text="#{filtering.name}"/>
 
+    <!--Sorting-->
+    <attr sel="#sortName"
+          th:text="#{sort.name} + ':'"/>
+    <attr sel="#sortParamName"
+          th:with="sortParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_SORT}"
+          th:name="${sortParamName}"/>
+    <attr sel="#sortForEach"
+          th:each="sort : ${#strings.setSplit(@environment.getProperty('sortList'), ',')}"
+          th:with="decodedSort = ${#strings.replace(sort, '-', ',')}"
+          th:text="#{__${#strings.toLowerCase(sort)}__.name}"
+          th:value="${decodedSort}"
+          th:selected="${#strings.equalsIgnoreCase(decodedSort, param.__${sortParamName}__)}"/>
+
     <!-- Product List -->
     <attr sel="#productListSwitch"
           th:switch="${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__}"/>

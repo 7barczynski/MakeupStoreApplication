@@ -52,15 +52,15 @@
     * Used in locale switchers.
     */
     function changeLocale(switcherId) {
-        newUrl = setOrAddLocaleParamInCurrentUrl(switcherId);
+        var newUrl = setOrAddParamInCurrentUrl("locale", switcherId);
         replaceLocationAndHistoryState(newUrl);
     }
 
-    function setOrAddLocaleParamInCurrentUrl(switcherId) {
-        var localeSwitcherValue = document.getElementById(switcherId).value;
+    function setOrAddParamInCurrentUrl(paramName ,elementId) {
+        var elementValue = document.getElementById(elementId).value;
         var searchParams = new URLSearchParams(location.search);
 
-        searchParams.set("locale", localeSwitcherValue);
+        searchParams.set(paramName, elementValue);
 
         return `${location.pathname}?${searchParams}`;
     }
@@ -68,4 +68,12 @@
     function replaceLocationAndHistoryState(url) {
         window.history.replaceState({}, '', url);
         location.replace(url);
+    }
+
+    /*
+    * Used in shop's view sort select
+    */
+    function sendRequestForSortedProducts() {
+        var newUrl = setOrAddParamInCurrentUrl("sort", "sortParamName");
+        replaceLocationAndHistoryState(newUrl);
     }

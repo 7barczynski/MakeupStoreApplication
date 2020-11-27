@@ -78,7 +78,7 @@
 					<div class="col-12 d-flex justify-content-center mb-5">
 						<div class="d-flex">
 							<label class="d-flex align-self-center mb-0 mr-2" id="sortName" for="sortParamName">Sort:</label>
-							<select class="form-control" id="sortParamName">
+							<select class="form-control" id="sortParamName" onchange="sendRequestForSortedProducts()">
 								<option>-</option>
 								<option id="sortForEach"></option>
 							</select>
