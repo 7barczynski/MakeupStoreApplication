@@ -14,21 +14,55 @@
         th:href="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).HOME}__}"
         th:text="#{home.name}"/>
 
-  <attr sel="#shopLink"
+  <attr sel="#allProductsLink"
         th:href="@{/__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"
-        th:text="#{shop.name}"/>
-  <attr sel="#faceLink"
-        th:href="@{/__${shopMapping}__(__${product_type}__ = foundation)}"
+        th:text="#{all.products.name}"/>
+
+  <!--Face-->
+  <attr sel="#faceName"
         th:text="#{face.name}"/>
-  <attr sel="#eyesLink"
-        th:href="@{/__${shopMapping}__(__${product_type}__ = eyeshadow)}"
+  <attr sel="#blushesLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = blush)}"
+        th:text="#{blush.name}"/>
+  <attr sel="#bronzersLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = bronzer)}"
+        th:text="#{bronzer.name}"/>
+  <attr sel="#foundationsLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = foundation)}"
+        th:text="#{foundation.name}"/>
+
+  <!--Eyes-->
+  <attr sel="#eyesName"
         th:text="#{eyes.name}"/>
-  <attr sel="#lipsLink"
-        th:href="@{/__${shopMapping}__(__${product_type}__ = lipstick)}"
+  <attr sel="#eyebrowsLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = eyebrow)}"
+        th:text="#{eyebrow.name}"/>
+  <attr sel="#eyelinersLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = eyeliner)}"
+        th:text="#{eyeliner.name}"/>
+  <attr sel="#eyeshadowsLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = eyeshadow)}"
+        th:text="#{eyeshadow.name}"/>
+  <attr sel="#mascarasLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = mascara)}"
+        th:text="#{mascara.name}"/>
+
+  <!--Lips-->
+  <attr sel="#lipsName"
         th:text="#{lips.name}"/>
-  <attr sel="#nailsLink"
-        th:href="@{/__${shopMapping}__(__${product_type}__ = nail_polish)}"
+  <attr sel="#lipsticksLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = lipstick)}"
+        th:text="#{lipstick.name}"/>
+  <attr sel="#liplinersLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = lip_liner)}"
+        th:text="#{lip_liner.name}"/>
+
+  <!--Nails-->
+  <attr sel="#nailsName"
         th:text="#{nails.name}"/>
+  <attr sel="#nailPolishesLink"
+        th:href="@{/__${shopMapping}__(__${product_type}__ = nail_polish)}"
+        th:text="#{nail_polish.name}"/>
 
   <attr sel="#localeSwitcherOption"
         th:with="currentLocale = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).CURRENT_LOCALE}__}"
