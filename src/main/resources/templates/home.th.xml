@@ -77,6 +77,8 @@
           th:selected="${#strings.equals(language, currentLocale)}"/>
 
     <!--Contact-->
+    <attr sel="#contactName"
+          th:text="#{contact.name}"/>
     <attr sel="#contactMessage"
           th:text="#{home.contact.message}"/>
     <attr sel="#githubLink"

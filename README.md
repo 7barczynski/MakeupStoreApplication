@@ -1,6 +1,8 @@
 # Face Greases
 Application for browsing makeup products. It presents, filters and sorts them.
 
+You can view an already deployed application [here](https://face-greases.herokuapp.com).
+
 Makeup products data comes from free [Makeup API](http://makeup-api.herokuapp.com/).
 
 ### Setup
@@ -11,7 +13,7 @@ You can run application in two ways:
 Application needs Java to run. I use Java 11 and this is the version I recommend.
 
 ### How to 
-Application uses embeded Tomcat and its port is 8080.
+These are all views that make up the application:
 - Home ([localhost:8080](http://localhost:8080/)) - home page with some information about project and contact links,
 - Shop ([localhost:8080/shop](http://localhost:8080/shop)) - In this view you can filter and sort makeup products,
 - Detailed product view ([localhost:8080/shop/{id}](http://localhost:8080/shop/1)) - this view presents details about one product.
