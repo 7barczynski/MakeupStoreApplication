@@ -16,29 +16,29 @@
 		<div class="col-md-3 col-lg-2 mb-5 mb-md-0 collapse" id="collapseFilter">
 			<form id="filter" onsubmit="disableEmptyInputs(this)">
 				<div class="form-group">
-					<label id="typeName" for="typeParamName">Type</label>
-					<select class="form-control" id="typeParamName">
+					<label id="typeName" for="typeOptionsList">Type</label>
+					<select class="form-control" id="typeOptionsList">
 						<option>-</option>
 						<option id="typeForEach"></option>
 					</select>
 				</div>
 				<div class="form-group">
-					<label id="categoryName" for="categoryParamName">Category</label>
-					<select class="form-control" id="categoryParamName">
+					<label id="categoryName" for="categoryOptionsList">Category</label>
+					<select class="form-control" id="categoryOptionsList">
 						<option>-</option>
 						<option id="categoryForEach"></option>
 					</select>
 				</div>
 				<div class="form-group">
-					<label id="brandName" for="brandParamName">Brand</label>
-					<select class="form-control" id="brandParamName">
+					<label id="brandName" for="brandOptionsList">Brand</label>
+					<select class="form-control" id="brandOptionsList">
 						<option>-</option>
 						<option id="brandForEach"></option>
 					</select>
 				</div>
 				<div class="form-group">
-					<label id="tagsName" for="tagsParamName">Tags</label>
-					<select class="form-control" id="tagsParamName">
+					<label id="tagsName" for="tagsOptionsList">Tags</label>
+					<select class="form-control" id="tagsOptionsList">
 						<option>-</option>
 						<option id="tagsForEach"></option>
 					</select>
@@ -75,13 +75,17 @@
 				<!--Default case-->
 				<div class="row w-100 mx-0" id="productsDefaultCase">
 					<!--Sorting-->
-					<div class="col-12 d-flex justify-content-center mb-5">
-						<div class="d-flex">
-							<label class="d-flex align-self-center mb-0 mr-2" id="sortName" for="sortParamName">Sort:</label>
-							<select class="form-control" id="sortParamName" onchange="sendRequestForSortedProducts()">
+					<div class="row w-100 mx-0 mb-5 mt-4 mt-xl-0">
+						<div class="col-xl-4"></div>
+						<div class="col-12 col-sm-6 col-md-8 col-xl-4 d-flex">
+							<label class="align-self-center mb-0 mr-2 ml-auto" id="sortName" for="sortOptionsList">Sort:</label>
+							<select class="form-control w-auto mr-auto" id="sortOptionsList" onchange="sendRequestForSortedProducts()">
 								<option>-</option>
 								<option id="sortForEach"></option>
 							</select>
+						</div>
+						<div class="col-sm-6 col-md-4 d-none d-sm-flex">
+							<span class="text-right text-nowrap font-weight-light align-self-center ml-auto p-1">1 - 12  from  931</span>
 						</div>
 					</div>
 					<!--Products-->

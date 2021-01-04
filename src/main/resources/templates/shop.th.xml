@@ -14,7 +14,7 @@
           th:action="@{__${T(com.tbar.makeupstoreapplication.utility.AppMappings).SHOP}__}"/>
     <attr sel="#typeName"
           th:text="#{type.name}"/>
-    <attr sel="#typeParamName"
+    <attr sel="#typeOptionsList"
           th:with="typeParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TYPE}"
           th:name="${typeParamName}"/>
     <attr sel="#typeForEach"
@@ -24,7 +24,7 @@
           th:selected="${#strings.equalsIgnoreCase(type, param.__${typeParamName}__)}"/>
     <attr sel="#categoryName"
           th:text="#{category.name}"/>
-    <attr sel="#categoryParamName"
+    <attr sel="#categoryOptionsList"
           th:with="categoryParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_CATEGORY}"
           th:name="${categoryParamName}"/>
     <attr sel="#categoryForEach"
@@ -34,7 +34,7 @@
           th:selected="${#strings.equalsIgnoreCase(category, param.__${categoryParamName}__)}"/>
     <attr sel="#brandName"
           th:text="#{brand.name}"/>
-    <attr sel="#brandParamName"
+    <attr sel="#brandOptionsList"
           th:with="brandParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_BRAND}"
           th:name="${brandParamName}"/>
     <attr sel="#brandForEach"
@@ -44,7 +44,7 @@
           th:selected="${#strings.equalsIgnoreCase(brand, param.__${brandParamName}__)}"/>
     <attr sel="#tagsName"
           th:text="#{tags.name}"/>
-    <attr sel="#tagsParamName"
+    <attr sel="#tagsOptionsList"
           th:with="tagsParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_PRODUCT_TAGS}"
           th:name="${tagsParamName}"/>
     <attr sel="#tagsForEach"
@@ -78,7 +78,7 @@
     <!--Sorting-->
     <attr sel="#sortName"
           th:text="#{sort.name} + ':'"/>
-    <attr sel="#sortParamName"
+    <attr sel="#sortOptionsList"
           th:with="sortParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_SORT}"
           th:name="${sortParamName}"/>
     <attr sel="#sortForEach"
