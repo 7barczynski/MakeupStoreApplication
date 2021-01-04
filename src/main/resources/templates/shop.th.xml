@@ -87,6 +87,12 @@
           th:text="#{__${#strings.toLowerCase(sort)}__.name}"
           th:value="${decodedSort}"
           th:selected="${#strings.equalsIgnoreCase(decodedSort, param.__${sortParamName}__)}"/>
+    <attr sel="#totalElementsInfo"
+          th:with="currentPageOfProducts = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__},
+                    firstProductIndex = ${currentPageOfProducts.getPageable().getOffset()} + 1,
+                    lastProductIndex = ${firstProductIndex + currentPageOfProducts.getNumberOfElements()} - 1,
+                    totalProductsNumber = ${currentPageOfProducts.getTotalElements()}"
+          th:text="|${firstProductIndex} - ${lastProductIndex}   #{from.name}   ${totalProductsNumber}|"/>
 
     <!-- Product List -->
     <attr sel="#productListSwitch"
