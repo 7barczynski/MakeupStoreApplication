@@ -9,11 +9,11 @@
 <div class="container-fluid w-75 mt-5 shop-section">
 	<div class="row">
 		<!--Collapse button-->
-		<button class="d-md-none btn btn-info mb-5 w-75 mx-auto" id="filterCollapseName" type="button" data-toggle="collapse"
+		<button class="d-md-none btn btn-info mb-4 w-75 mx-auto" id="filterCollapseName" type="button" data-toggle="collapse"
 						data-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">Filter collapse
 		</button>
 		<!-- Filter -->
-		<div class="col-md-3 col-lg-2 mb-5 mb-md-0 collapse" id="collapseFilter">
+		<div class="col-md-3 col-lg-2 mb-4 mb-md-0 collapse" id="collapseFilter">
 			<form id="filter" onsubmit="disableEmptyInputs(this)">
 				<div class="form-group">
 					<label id="typeName" for="typeOptionsList">Type</label>
@@ -76,17 +76,26 @@
 				<div class="row w-100 mx-0" id="productsDefaultCase">
 					<!--Sorting-->
 					<div class="row w-100 mx-0 mb-5 mt-4 mt-xl-0">
-						<div class="col-xl-4"></div>
-						<div class="col-12 col-sm-6 col-md-8 col-xl-4 d-flex">
-							<label class="align-self-center mb-0 mr-2 ml-auto" id="sortName" for="sortOptionsList">Sort:</label>
+						<div class="col-12 col-sm-6 col-lg-5 col-xl-4 mb-3 d-flex align-items-center">
+							<label class="ml-auto mr-2 mb-0" id="sortName" for="sortOptionsList">Sort:</label>
 							<select class="form-control w-auto mr-auto" id="sortOptionsList" onchange="sendRequestForSortedProducts()">
 								<option>-</option>
 								<option id="sortForEach"></option>
 							</select>
 						</div>
-						<div class="col-sm-6 col-md-4 d-none d-sm-flex">
-							<span class="text-right font-weight-light align-self-center ml-auto p-1"
-										id="totalElementsInfo" style="white-space: pre;">1 - 12  from  931</span>
+						<div class="col-6 col-sm-6 col-lg-5 col-xl-4 d-flex align-items-center">
+							<label class="ml-auto mr-2 mb-0">Size: </label>
+							<select class="form-control w-auto mr-auto">
+								<option>9</option>
+								<option>12</option>
+								<option>25</option>
+								<option>50</option>
+								<option>100</option>
+							</select>
+						</div>
+						<div class="col-6 col-lg-2 col-xl-4 d-flex">
+							<span class="text-nowrap align-self-center font-weight-light mx-auto"
+										id="totalElementsInfo">1-12 from 931</span>
 						</div>
 					</div>
 					<!--Products-->

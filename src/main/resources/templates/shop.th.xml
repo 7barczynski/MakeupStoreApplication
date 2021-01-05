@@ -92,7 +92,7 @@
                     firstProductIndex = ${currentPageOfProducts.getPageable().getOffset()} + 1,
                     lastProductIndex = ${firstProductIndex + currentPageOfProducts.getNumberOfElements()} - 1,
                     totalProductsNumber = ${currentPageOfProducts.getTotalElements()}"
-          th:text="|${firstProductIndex} - ${lastProductIndex}   #{from.name}   ${totalProductsNumber}|"/>
+          th:text="|${firstProductIndex}-${lastProductIndex} #{from.name} ${totalProductsNumber}|"/>
 
     <!-- Product List -->
     <attr sel="#productListSwitch"
