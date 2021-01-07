@@ -60,10 +60,6 @@ html {
     min-height: 75vh;
 }
 
-.single-product-section img {
-    max-height: 350px
-}
-
 .product-card #brandName {
     white-space: pre;
 }
