@@ -52,43 +52,65 @@
     * Used in locale switchers.
     */
     function changeLocale(switcherId) {
-        var newUrl = handleParamInCurrentUrl("locale", switcherId);
-        replaceLocationAndHistoryState(newUrl);
+        var switcherValue = document.getElementById(switcherId).value;
+        var searchParams = getSearchParamsWith(location.search, "locale", switcherValue);
+        replaceUrlWith(searchParams);
     }
 
-    function handleParamInCurrentUrl(paramName ,elementId) {
-        var elementValue = document.getElementById(elementId).value;
-        var searchParams = new URLSearchParams(location.search);
-
-        setOrDeleteInSearchParams(searchParams, paramName, elementValue);
-
-        return `${location.pathname}?${searchParams}`;
+    function getSearchParamsWith(searchString, paramName, paramValue) {
+        var searchParams = new URLSearchParams(searchString);
+        searchParams.set(paramName, paramValue);
+        return searchParams;
     }
 
-    function setOrDeleteInSearchParams(searchParams, paramName, elementValue) {
-        if (isElementValueValid(elementValue)) {
-            searchParams.set(paramName, elementValue);
-        } else {
-            searchParams.delete(paramName);
-        }
-    }
-
-    function isElementValueValid(elementValue) {
-        if (elementValue === "-") {
-            return false;
-        }
-        return true;
-    }
-
-    function replaceLocationAndHistoryState(url) {
+    function replaceUrlWith(searchParams) {
+        url = `${location.pathname}?${searchParams}`;
         window.history.replaceState({}, '', url);
         location.replace(url);
     }
 
     /*
-    * Used in shop's view select onchange events
+    * Used in shop's view sort select
     */
-    function sendRequestForSelectedOption(paramName, elementId) {
-        var newUrl = handleParamInCurrentUrl(paramName, elementId);
-        location.assign(newUrl);
+    function sendRequestForSortOption() {
+        var sortValue = document.getElementById("sortOptionsList").value;
+        var searchParams = getSearchParamsWithForSort(location.search, "sort", sortValue);
+        assignUrlWith(searchParams);
+    }
+
+    function getSearchParamsWithForSort(searchString, paramName, paramValue) {
+        if (isParamValueValid(paramValue)) {
+            return getSearchParamsWith(searchString, paramName, paramValue);
+        }
+        return getSearchParamsWithout(searchString, paramName);
+    }
+
+    function isParamValueValid(paramValue) {
+        return paramValue != "-";
+    }
+
+    function getSearchParamsWithout(searchString, paramName) {
+        var searchParams = new URLSearchParams(searchString);
+        searchParams.delete(paramName);
+        return searchParams;
+    }
+
+    function assignUrlWith(searchParams) {
+        url = `${location.pathname}?${searchParams}`;
+        location.assign(url);
+    }
+
+    /*
+    * Used in shop's view size select
+    */
+    function sendRequestForSizeOption() {
+        var sizeValue = document.getElementById("sizeOptionsList").value;
+        var searchParams = getSearchParamsWithForSize(location.search, "size", sizeValue, "page");
+        assignUrlWith(searchParams);
+    }
+
+    function getSearchParamsWithForSize(searchString, paramName, paramValue, paramNameForDelete) {
+        var searchParams = getSearchParamsWith(searchString, paramName, paramValue);
+        searchParams.delete(paramNameForDelete);
+        return searchParams;
     }
