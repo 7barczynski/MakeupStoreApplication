@@ -15,6 +15,7 @@ public final class AppMappings {
     public static final String QUERY_PARAM_RATING_GREATER_THAN = "rating_greater_than";
     public static final String QUERY_PARAM_RATING_LESS_THAN = "rating_less_than";
     public static final String QUERY_PARAM_SORT = "sort";
+    public static final String QUERY_PARAM_SIZE = "size";
 
     private AppMappings() {}
 }

@@ -87,6 +87,18 @@
           th:text="#{__${#strings.toLowerCase(sort)}__.name}"
           th:value="${decodedSort}"
           th:selected="${#strings.equalsIgnoreCase(decodedSort, param.__${sortParamName}__)}"/>
+    <attr sel="#sizeName"
+          th:text="#{size.name} + ':'"/>
+    <attr sel="#sizeOptionsList"
+          th:with="sizeParamName = ${T(com.tbar.makeupstoreapplication.utility.AppMappings).QUERY_PARAM_SIZE}"
+          th:name="${sizeParamName}"/>
+    <attr sel="#sizeForEach"
+          th:each="size : ${#strings.setSplit(@environment.getProperty('sizeList'), ',')}"
+          th:text="${size}"
+          th:with="sizeValue = ${param.__${sizeParamName}__},
+                    currentPageOfProducts = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__},
+                    defaultPageSize = ${currentPageOfProducts.getPageable().getPageSize()}"
+          th:selected="${sizeValue != null ? #strings.equals(size, sizeValue) : #strings.equals(size, defaultPageSize)}"/>
     <attr sel="#totalElementsInfo"
           th:with="currentPageOfProducts = ${__${T(com.tbar.makeupstoreapplication.utility.AttributeNames).PRODUCTS_LIST_ON_PAGE}__},
                     firstProductIndex = ${currentPageOfProducts.getPageable().getOffset()} + 1,

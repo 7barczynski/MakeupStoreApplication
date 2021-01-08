@@ -86,9 +86,9 @@
     }
 
     /*
-    * Used in shop's view sort select
+    * Used in shop's view select onchange events
     */
-    function sendRequestForSortedProducts() {
-        var newUrl = handleParamInCurrentUrl("sort", "sortOptionsList");
+    function sendRequestForSelectedOption(paramName, elementId) {
+        var newUrl = handleParamInCurrentUrl(paramName, elementId);
         location.assign(newUrl);
     }
