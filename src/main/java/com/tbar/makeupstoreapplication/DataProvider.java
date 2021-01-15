@@ -15,8 +15,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-// On feature branch there is no need to download every restart whole db
-//@Component
+@Component
 public class DataProvider implements ApplicationRunner {
 
     private final APIConsumer<Product> makeupApiConsumer;
