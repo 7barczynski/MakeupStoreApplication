@@ -8,7 +8,7 @@ Makeup products data comes from free [Makeup API](http://makeup-api.herokuapp.co
 ### Setup
 You can run application in two ways:
 1. by running main method in MakeupStoreApplication.java in your IDE,
-2. by reaching in the Command Prompt main directory of this application ("MakeupStoreAppliaction") and running task 'bootRun' on a 'gradlew.bat' file.
+2. by running command 'bootRun' on a 'gradlew.bat' file on Windows or running './gradlew bootRun' on Linux and MacOS in application's main directory.
 
 Application needs Java to run. I use Java 11 and this is the version I recommend.
 
