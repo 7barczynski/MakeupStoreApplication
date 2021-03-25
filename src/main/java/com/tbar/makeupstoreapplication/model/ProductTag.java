@@ -1,22 +1,18 @@
 package com.tbar.makeupstoreapplication.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
 
-@Entity
-@Table
+@Embeddable
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductTag {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Exclude
-    private int id;
     @NonNull
     private String name;
 }

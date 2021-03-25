@@ -1,7 +1,6 @@
 package com.tbar.makeupstoreapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,10 +9,8 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
 
     @Id
@@ -41,8 +38,7 @@ public class Product {
     @JsonAlias(value = "product_type")
     private String productType;
     @JsonAlias(value = "tag_list")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PRODUCT_ID")
+    @ElementCollection
     private Set<ProductTag> productTags;
     @ToString.Exclude
     @JsonAlias(value = "created_at")
@@ -57,7 +53,6 @@ public class Product {
     @JsonAlias(value = "api_featured_image")
     private String apiFeaturedImage;
     @JsonAlias(value = "product_colors")
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PRODUCT_ID")
+    @ElementCollection
     private Set<Color> productColors;
 }
