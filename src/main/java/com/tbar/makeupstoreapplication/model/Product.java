@@ -1,11 +1,13 @@
 package com.tbar.makeupstoreapplication.model;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -17,6 +19,7 @@ public class Product {
     private Long id;
     private String brand;
     private String name;
+    @Setter(AccessLevel.NONE)
     private Double price;
     @JsonAlias(value = "price_sign")
     private String priceSign;
@@ -33,6 +36,7 @@ public class Product {
     @ToString.Exclude
     @Column(length = 10000)
     private String description;
+    @Setter(AccessLevel.NONE)
     private Double rating;
     private String category;
     @JsonAlias(value = "product_type")
@@ -55,4 +59,12 @@ public class Product {
     @JsonAlias(value = "product_colors")
     @ElementCollection
     private Set<Color> productColors;
+
+    public void setPrice(Double price) {
+        this.price = Optional.ofNullable(price).orElse(0.0);
+    }
+
+    public void setRating(Double rating) {
+        this.rating = Optional.ofNullable(rating).orElse(0.0);
+    }
 }
