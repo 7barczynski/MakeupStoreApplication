@@ -6,11 +6,19 @@ You can view an already deployed application [here](https://face-greases.herokua
 Makeup products data comes from free [Makeup API](http://makeup-api.herokuapp.com/).
 
 ### Setup
-You can run application in two ways:
-1. by running main method in MakeupStoreApplication.java in your IDE,
-2. by running command 'bootRun' on a 'gradlew.bat' file on Windows or running './gradlew bootRun' on Linux and MacOS in application's main directory.
+Application needs Java (recomended Java 11) and PostgreSQL installed to run.
 
-Application needs Java to run. I use Java 11 and this is the version I recommend.
+Firstly, if you want to run the app locally you should change these values of database access properties in <i>application.properties</i> or create own environment variables on your system or IDE.  
+``` properties
+# postgresql
+spring.datasource.url=${SPRING_DATASOURCE_URL}
+spring.datasource.username=${SPRING_DATASOURCE_USER}
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+```
+
+Then you can run application in two ways:
+1. by running main method in MakeupStoreApplication.java in your IDE,
+2. by running command 'bootRun' on a 'gradlew.bat' file on Windows or running './gradlew bootRun' on Linux and MacOS in application's main directory. 
 
 ### How to 
 These are all views that make up the application:
